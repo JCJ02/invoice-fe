@@ -8,16 +8,14 @@ export default function InvoiceApplicationLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body>
-        <div className="flex h-screen w-full">
-          <SideNavigationBar />
-          <div className="w-full">
-            <NavigationBar />
-            <div>{children}</div>
-          </div>
+    <>
+      <div className="flex h-screen w-full">
+        <SideNavigationBar />
+        <div className="w-full">
+          <NavigationBar />
+          <div>{children}</div>
         </div>
-      </body>
-    </html>
+      </div>
+    </>
   );
 }
