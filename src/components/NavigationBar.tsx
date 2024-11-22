@@ -4,15 +4,15 @@ import Image from "next/image";
 import React from "react";
 import adminProfile from "../assets/images/admin-profile.png";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
-import { useAuth } from "@/context/AuthContext";
+import { useUser } from "@/context/UserContext";
 
 const NavigationBar = () => {
-  const { user } = useAuth();
+  const { user } = useUser();
   return (
     <>
       <div className="flex border-[#BBBBBB] border-b-2 h-[80px]">
         <nav className="flex justify-end items-center w-full">
-          <div className="flex items-center px-5 lg:px-10 gap-2 cursor-pointer">
+          <div className="flex items-center px-5 gap-2 cursor-pointer">
             <Image
               src={adminProfile}
               alt="Admin Profile"
