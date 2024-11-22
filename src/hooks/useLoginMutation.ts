@@ -21,7 +21,7 @@ interface LoginResponse {
 const useLoginMutation = () => {
   const router = useRouter();
   const { setUser } = useUser();
-  const [authToken, setAuthToken] = useLocalStorage<string | null>("authToken", null);
+  const [authToken, setAuthToken] = useLocalStorage<string | null>("token", null);
 
   const loginMutation = usePost<Login, LoginResponse>({
     api: "http://localhost:8080/api/admin/authenticate",
@@ -38,12 +38,8 @@ const useLoginMutation = () => {
         theme: "light",
         transition: Bounce,
       });
-
-      // localStorage.setItem("authToken", data.data.token);
       setAuthToken(data.data.token);
-
       setUser(data.data.admin);
-
       router.push("/client");
     }
   });

@@ -5,7 +5,7 @@ const useAuthentication = () => {
     const router = useRouter();
 
     useEffect(() => {
-        const token = localStorage.getItem('authToken');
+        const token = localStorage.getItem('token');
         if (!token) {
             router.push('/sign-in');
         }

@@ -21,7 +21,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<AdminType | null>(null);
 
   useEffect(() => {
-    const savedUserInfo = localStorage.getItem("authToken");
+    const savedUserInfo = localStorage.getItem("admin");
     if (savedUserInfo) {
       setUser(JSON.parse(savedUserInfo));
     }
@@ -29,9 +29,9 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     if (user) {
-      localStorage.setItem("authToken", JSON.stringify(user));
+      localStorage.setItem("admin", JSON.stringify(user));
     } else {
-      localStorage.removeItem("authToken");
+      localStorage.removeItem("admin");
     }
   }, [user]);
 

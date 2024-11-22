@@ -28,7 +28,8 @@ const SideNavigationBar = () => {
   }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("authToken");
+    localStorage.removeItem("token");
+    localStorage.removeItem("admin");
     toast.success("Logged Out Successfully!", {
       toastId: "loggedOutSuccess",
       position: "top-right",
