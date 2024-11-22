@@ -1,7 +1,7 @@
 "use client";
 
 import Footer from "@/components/Footer";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import signInFormImage from "../../../assets/images/sign-in-form-image.jpg";
 import lwsLogo from "../../../assets/images/lws-logo.png";
@@ -9,14 +9,25 @@ import Link from "next/link";
 import backgroundImageSignIn from "../../../assets/images/background-image-sign-in.png";
 import useLoginForm from "@/hooks/useLoginForm";
 import useLoginMutation from "@/hooks/useLoginMutation";
+import useRememberPassword from "@/hooks/useRememberPassword";
 import { IoEyeSharp } from "react-icons/io5";
 import { IoEyeOffSharp } from "react-icons/io5";
 
 const SignIn = () => {
-  const { values, errors, handleChange, validateForm } = useLoginForm();
+  const { values, setValues, errors, handleChange, validateForm } = useLoginForm();
   const loginMutation = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const { rememberPasswordData, updateRememberPasswordData } = useRememberPassword();
+
+  React.useEffect(() => {
+    if (rememberPasswordData.rememberMe) {
+      setValues({
+        email: rememberPasswordData.email,
+        password: rememberPasswordData.password,
+      });
+    }
+  }, [rememberPasswordData, setValues]);
 
   const togglePasswordVisibility = (event: React.FormEvent) => {
     event.preventDefault();
@@ -28,6 +39,11 @@ const SignIn = () => {
 
     if (validateForm()) {
       loginMutation.mutate(values, {
+        onSuccess: () => {
+          updateRememberPasswordData("email", values.email);
+          updateRememberPasswordData("password", values.password);
+          updateRememberPasswordData("rememberMe", rememberPasswordData.rememberMe);
+        },
         onError: () => {
           const message = "Oops, Invalid Crendentials! Please Check Your Credentials!";
           setErrorMessage(message);
@@ -65,7 +81,10 @@ const SignIn = () => {
                   placeholder="Enter E-mail Address"
                   name="email"
                   value={values.email}
-                  onChange={handleChange}
+                  onChange={(event) => {
+                    handleChange(event);
+                    updateRememberPasswordData("email", event.target.value);
+                  }}
                 />
                 {errors.email && (
                   <p className="font-poppins text-red-700 text-xs md:text-md w-[250px]">
@@ -83,7 +102,10 @@ const SignIn = () => {
                     placeholder="Enter Password"
                     name="password"
                     value={values.password}
-                    onChange={handleChange}
+                    onChange={(event) => {
+                      handleChange(event);
+                      updateRememberPasswordData("password", event.target.value);
+                    }}
                   />
                   <button className="absolute right-0 px-3 text-xl text-[#D2232D]" onClick={togglePasswordVisibility}>
                     {showPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
@@ -97,7 +119,14 @@ const SignIn = () => {
               </div>
               <div className="flex flex-col md:flex-row justify-between items-center gap-2 w-full">
                 <div className="flex self-start items-center gap-1">
-                  <input id="remember-password" type="checkbox" />
+                  <input
+                    id="remember-password"
+                    type="checkbox"
+                    checked={rememberPasswordData.rememberMe}
+                    onChange={
+                      (e) => updateRememberPasswordData("rememberMe", e.target.checked)
+                    }
+                  />
                   <label className="text-xs md:text-md">
                     Remember Password
                   </label>
