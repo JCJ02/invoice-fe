@@ -21,7 +21,7 @@ const SignIn = () => {
     if (validateForm()) {
       loginMutation.mutate(values, {
         onError: () => {
-          const message = "Invalid Credentials!";
+          const message = "Oops, Invalid Crendentials!";
           setErrorMessage(message);
         },
       });
