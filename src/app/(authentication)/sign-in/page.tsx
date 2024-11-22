@@ -14,13 +14,15 @@ import { IoEyeSharp } from "react-icons/io5";
 import { IoEyeOffSharp } from "react-icons/io5";
 
 const SignIn = () => {
-  const { values, setValues, errors, handleChange, validateForm } = useLoginForm();
+  const { values, setValues, errors, handleChange, validateForm } =
+    useLoginForm();
   const loginMutation = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { rememberPasswordData, updateRememberPasswordData } = useRememberPassword();
+  const { rememberPasswordData, updateRememberPasswordData } =
+    useRememberPassword();
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (rememberPasswordData.rememberMe) {
       setValues({
         email: rememberPasswordData.email,
@@ -32,7 +34,7 @@ const SignIn = () => {
   const togglePasswordVisibility = (event: React.FormEvent) => {
     event.preventDefault();
     setShowPassword((type) => !type);
-  }
+  };
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
@@ -42,10 +44,14 @@ const SignIn = () => {
         onSuccess: () => {
           updateRememberPasswordData("email", values.email);
           updateRememberPasswordData("password", values.password);
-          updateRememberPasswordData("rememberMe", rememberPasswordData.rememberMe);
+          updateRememberPasswordData(
+            "rememberMe",
+            rememberPasswordData.rememberMe
+          );
         },
         onError: () => {
-          const message = "Oops, Invalid Crendentials! Please Check Your Credentials!";
+          const message =
+            "Oops, Invalid Crendentials! Please Check Your Credentials!";
           setErrorMessage(message);
         },
       });
@@ -104,10 +110,16 @@ const SignIn = () => {
                     value={values.password}
                     onChange={(event) => {
                       handleChange(event);
-                      updateRememberPasswordData("password", event.target.value);
+                      updateRememberPasswordData(
+                        "password",
+                        event.target.value
+                      );
                     }}
                   />
-                  <button className="absolute right-0 px-3 text-xl text-[#D2232D]" onClick={togglePasswordVisibility}>
+                  <button
+                    className="absolute right-0 px-3 text-xl text-[#D2232D]"
+                    onClick={togglePasswordVisibility}
+                  >
                     {showPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
                   </button>
                 </div>
@@ -123,8 +135,8 @@ const SignIn = () => {
                     id="remember-password"
                     type="checkbox"
                     checked={rememberPasswordData.rememberMe}
-                    onChange={
-                      (e) => updateRememberPasswordData("rememberMe", e.target.checked)
+                    onChange={(e) =>
+                      updateRememberPasswordData("rememberMe", e.target.checked)
                     }
                   />
                   <label className="text-xs md:text-md">
