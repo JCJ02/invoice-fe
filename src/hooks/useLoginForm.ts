@@ -13,7 +13,7 @@ const useLoginForm = () => {
 
   const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = target;
-    setValues((prev) => ({ ...prev, [name]: value }));
+    setValues((input) => ({ ...input, [name]: value }));
   };
 
   const validateForm = () => {
@@ -27,7 +27,6 @@ const useLoginForm = () => {
       return false;
     }
     setErrors({});
-    setValues(defaultValues);
     return true;
   };
 

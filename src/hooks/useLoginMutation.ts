@@ -2,7 +2,8 @@ import { useRouter } from "next/navigation";
 import { Login } from "@/utils/validations/AdminSchema";
 import { Bounce, toast } from 'react-toastify';
 import usePost from "./usePost";
-import { useAuth } from "@/context/AuthContext";
+import { useUser } from "@/context/UserContext";
+import useLocalStorage from "./useLocalStorage";
 
 interface LoginResponse {
   data: {
@@ -19,7 +20,8 @@ interface LoginResponse {
 
 const useLoginMutation = () => {
   const router = useRouter();
-  const { setUser } = useAuth();
+  const { setUser } = useUser();
+  const [authToken, setAuthToken] = useLocalStorage<string | null>("authToken", null);
 
   const loginMutation = usePost<Login, LoginResponse>({
     api: "http://localhost:8080/api/admin/authenticate",
@@ -36,9 +38,12 @@ const useLoginMutation = () => {
         theme: "light",
         transition: Bounce,
       });
-      console.log("Logged In User Data:", data);
-      localStorage.setItem("authToken", data.data.token);
+
+      // localStorage.setItem("authToken", data.data.token);
+      setAuthToken(data.data.token);
+
       setUser(data.data.admin);
+
       router.push("/client");
     }
   });
