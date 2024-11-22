@@ -9,11 +9,19 @@ import Link from "next/link";
 import backgroundImageSignIn from "../../../assets/images/background-image-sign-in.png";
 import useLoginForm from "@/hooks/useLoginForm";
 import useLoginMutation from "@/hooks/useLoginMutation";
+import { IoEyeSharp } from "react-icons/io5";
+import { IoEyeOffSharp } from "react-icons/io5";
 
 const SignIn = () => {
   const { values, errors, handleChange, validateForm } = useLoginForm();
   const loginMutation = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = (event: React.FormEvent) => {
+    event.preventDefault();
+    setShowPassword((type) => !type);
+  }
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
@@ -21,7 +29,7 @@ const SignIn = () => {
     if (validateForm()) {
       loginMutation.mutate(values, {
         onError: () => {
-          const message = "Oops, Invalid Crendentials!";
+          const message = "Oops, Invalid Crendentials! Please Check Your Credentials!";
           setErrorMessage(message);
         },
       });
@@ -60,29 +68,34 @@ const SignIn = () => {
                   onChange={handleChange}
                 />
                 {errors.email && (
-                  <p className="font-poppins text-red-700 text-xs md:text-md">
+                  <p className="font-poppins text-red-700 text-xs md:text-md w-[250px]">
                     {errors.email}
                   </p>
                 )}
               </div>
               <div className="flex flex-col items-start w-full">
                 <label className="text-xs md:text-md">Password</label>
-                <input
-                  id="password"
-                  className="border-2 border-[#EEEEEE] text-xs md:text-md rounded-md pl-2 py-2 w-full"
-                  type="password"
-                  placeholder="Enter Password"
-                  name="password"
-                  value={values.password}
-                  onChange={handleChange}
-                />
+                <div className="relative flex items-center w-full">
+                  <input
+                    id="password"
+                    className="border-2 border-[#EEEEEE] text-xs md:text-md rounded-md pl-2 py-2 w-full"
+                    type={showPassword ? "text" : "password"}
+                    placeholder="Enter Password"
+                    name="password"
+                    value={values.password}
+                    onChange={handleChange}
+                  />
+                  <button className="absolute right-0 px-3 text-xl text-[#D2232D]" onClick={togglePasswordVisibility}>
+                    {showPassword ? <IoEyeSharp /> : <IoEyeOffSharp />}
+                  </button>
+                </div>
                 {errors.password && (
-                  <p className="font-poppins text-red-700 text-xs md:text-md">
+                  <p className="font-poppins text-red-700 text-xs md:text-md w-[250px]">
                     {errors.password}
                   </p>
                 )}
               </div>
-              <div className="flex flex-col md:flex-row items-center gap-2 w-full">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-2 w-full">
                 <div className="flex self-start items-center gap-1">
                   <input id="remember-password" type="checkbox" />
                   <label className="text-xs md:text-md">
@@ -105,7 +118,7 @@ const SignIn = () => {
                 Sign In
               </button>
               {errorMessage && (
-                <p className="font-poppins font-bold text-red-700 text-xs md:text-md">
+                <p className="font-poppins text-red-700 text-xs md:text-md w-[250px]">
                   {errorMessage}
                 </p>
               )}
