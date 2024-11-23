@@ -135,8 +135,11 @@ const SignIn = () => {
                     id="remember-password"
                     type="checkbox"
                     checked={rememberPasswordData.rememberMe}
-                    onChange={(e) =>
-                      updateRememberPasswordData("rememberMe", e.target.checked)
+                    onChange={(event) =>
+                      updateRememberPasswordData(
+                        "rememberMe",
+                        event.target.checked
+                      )
                     }
                   />
                   <label className="text-xs md:text-md">
