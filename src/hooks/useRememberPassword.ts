@@ -35,7 +35,7 @@ const useRememberPassword = () => {
         } else {
             localStorage.removeItem("email");
             localStorage.removeItem("password");
-            localStorage.removeItem("rememberMe");
+            localStorage.setItem("rememberMe", "false");
         }
     };
 
