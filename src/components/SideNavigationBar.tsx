@@ -3,6 +3,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import lwsLogo from "../assets/images/lws-logo.png";
+import lwsFavicon from "../assets/images/lws-favicon.png";
 import Link from "next/link";
 import { MdOutlineLogout } from "react-icons/md";
 import { usePathname } from "next/navigation";
@@ -48,7 +49,11 @@ const SideNavigationBar = () => {
   return (
     <>
       <div className="flex flex-col items-center bg-white [box-shadow:10px_0_20px_0_rgba(0,0,0,0.1)] px-5 h-full w-[78px] lg:w-[280px]">
-        <Image className="my-12 lg:w-[144px]" src={lwsLogo} alt="LWS Logo" />
+        {isMobileView ? (
+          <Image className="my-12" src={lwsFavicon} alt="LWS Favicon" />
+        ) : (
+          <Image className="my-12 w-[144px]" src={lwsLogo} alt="LWS Logo" />
+        )}
         <div className="flex flex-col justify-between items-center h-full w-full">
           <ul className="flex flex-col items-center lg:items-start gap-4 lg:px-5 w-full">
             <li className="font-poppins text-lg">
