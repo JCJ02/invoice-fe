@@ -1,6 +1,12 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
 interface AdminType {
   id: number;
@@ -45,7 +51,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 export const useUser = (): UserContextType => {
   const context = useContext(UserContext);
   if (!context) {
-    throw new Error("Must Be Used Within An UserProvider!");
+    throw new Error("It Must Be Used Within An UserProvider!");
   }
   return context;
 };
