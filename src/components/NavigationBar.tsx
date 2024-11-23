@@ -12,7 +12,7 @@ const NavigationBar = () => {
     <>
       <div className="flex border-[#BBBBBB] border-b-2 h-[80px]">
         <nav className="flex justify-end items-center w-full">
-          <div className="flex items-center px-5 gap-2 cursor-pointer">
+          <div className="flex items-center px-8 gap-2 cursor-pointer">
             <Image
               src={adminProfile}
               alt="Admin Profile"
