@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import React from "react";
 
 type InputProps = {
@@ -19,7 +20,10 @@ const InputFields = ({
 }: InputProps) => {
   return (
     <input
-      className={`${className} border-[1px] border-[#BBBBBB] py-2 pl-1 rounded-md`}
+      className={clsx(
+        "border-[1px] border-[#BBBBBB] py-2 pl-1 rounded-md",
+        className
+      )}
       type={type}
       onChange={onChange}
       name={name}
