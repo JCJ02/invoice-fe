@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import SearchInput from "@/components/SearchInput";
 import useAuthentication from "@/hooks/useAuthentication";
 import React, { useEffect } from "react";
 
@@ -19,7 +20,7 @@ const Invoices = () => {
           <Button>New Invoice</Button>
         </div>
         <hr className="border-[1px] border-solid w-full" />
-        <div className="flex flex-col lg:flex-row lg:justify-around items-center gap-4 pt-2 pb-5 pl-4 pr-8 w-full">
+        <div className="flex flex-col md:flex-row md:justify-around items-center gap-4 pt-2 pb-5 pl-4 pr-8 w-full">
           <div className="flex flex-col items-center">
             <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
               ₱4.5m PHP
@@ -40,6 +41,12 @@ const Invoices = () => {
           </div>
         </div>
         <hr className="border-[1px] border-solid ml-4 mr-8" />
+        <div className="flex justify-between items-center pt-5 pl-4 pr-8 w-full">
+          <h1 className="font-semibold text-sm md:text-md lg:text-xl">
+            All Invoices
+          </h1>
+          <SearchInput />
+        </div>
       </div>
     </>
   );
