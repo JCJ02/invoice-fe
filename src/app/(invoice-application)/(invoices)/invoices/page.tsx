@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+import Button from "@/components/Button";
 import useAuthentication from "@/hooks/useAuthentication";
 import React, { useEffect } from "react";
 
@@ -21,15 +21,21 @@ const Invoices = () => {
         <hr className="border-[1px] border-solid w-full" />
         <div className="flex flex-col lg:flex-row lg:justify-around items-center gap-4 pt-2 pb-5 pl-4 pr-8 w-full">
           <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">₱4.5m PHP</h1>
+            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+              ₱4.5m PHP
+            </h1>
             <p className="text-[#BBBBBB] text-xs">Overdue</p>
           </div>
           <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">₱4.5m PHP</h1>
+            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+              ₱4.5m PHP
+            </h1>
             <p className="text-[#BBBBBB] text-xs">Total Outstanding</p>
           </div>
           <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">₱4.5m PHP</h1>
+            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+              ₱4.5m PHP
+            </h1>
             <p className="text-[#BBBBBB] text-xs">In Draft</p>
           </div>
         </div>

@@ -1,6 +1,6 @@
 "use client";
 
-import Button from "@/components/ui/Button";
+import Button from "@/components/Button";
 import useAuthentication from "@/hooks/useAuthentication";
 import React, { useEffect } from "react";
 
