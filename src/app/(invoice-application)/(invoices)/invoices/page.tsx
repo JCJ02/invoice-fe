@@ -15,11 +15,14 @@ const Invoices = () => {
   return (
     <>
       <div className="flex flex-col font-poppins gap-5 h-full w-full">
+        {/* 1st Section */}
         <div className="flex justify-between items-center pt-5 pl-4 pr-8 w-full">
           <h1 className="font-semibold text-md lg:text-2xl">Invoices</h1>
           <Button>New Invoice</Button>
         </div>
         <hr className="border-[1px] border-solid w-full" />
+
+        {/* 2nd Section */}
         <div className="flex flex-col md:flex-row md:justify-around items-center gap-4 pt-2 pb-5 pl-4 pr-8 w-full">
           <div className="flex flex-col items-center">
             <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
@@ -41,6 +44,8 @@ const Invoices = () => {
           </div>
         </div>
         <hr className="border-[1px] border-solid ml-4 mr-8" />
+
+        {/* 3rd Section */}
         <div className="flex justify-between items-center pt-5 pl-4 pr-8 w-full">
           <h1 className="font-semibold text-sm md:text-md lg:text-xl">
             All Invoices
