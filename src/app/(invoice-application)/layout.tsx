@@ -9,11 +9,11 @@ export default function InvoiceApplicationLayout({
 }) {
   return (
     <>
-      <div className="flex h-screen w-full">
+      <div className="flex h-full w-full">
         <SideNavigationBar />
-        <div className="w-full">
+        <div className="flex flex-col h-screen w-10/12 md:w-11/12">
           <NavigationBar />
-          <div>{children}</div>
+          {children}
         </div>
       </div>
     </>
