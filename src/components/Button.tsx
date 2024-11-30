@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 type ButtonProps = {
@@ -10,7 +10,7 @@ type ButtonProps = {
 const Button = ({ className, children, onClick }: ButtonProps) => {
   return (
     <button
-      className={clsx(
+      className={cn(
         "bg-[#D2232D] text-white text-xs md:text-md lg:text-lg py-1 px-2 lg:px-6 rounded-md",
         className
       )}

@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { cn } from "@/lib/utils";
 import React from "react";
 
 type InputProps = {
@@ -20,7 +20,7 @@ const InputFields = ({
 }: InputProps) => {
   return (
     <input
-      className={clsx(
+      className={cn(
         "border-[1px] border-[#BBBBBB] py-2 pl-1 rounded-md",
         className
       )}
