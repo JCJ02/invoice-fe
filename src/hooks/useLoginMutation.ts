@@ -4,6 +4,7 @@ import { Bounce, toast } from 'react-toastify';
 import usePost from "./usePost";
 import { useUser } from "@/context/UserContext";
 import useLocalStorage from "./useLocalStorage";
+import baseUrl from "@/utils/baseUrl";
 
 interface LoginResponse {
   data: {
@@ -24,7 +25,7 @@ const useLoginMutation = () => {
   const [authToken, setAuthToken] = useLocalStorage<string | null>("token", null);
 
   const loginMutation = usePost<Login, LoginResponse>({
-    api: "http://localhost:8080/api/admin/authenticate",
+    api: `${baseUrl}api/admin/authenticate`,
     onSuccess: (data) => {
       toast.success('Logged In Successfully!', {
         toastId: "loggedInSuccess",
