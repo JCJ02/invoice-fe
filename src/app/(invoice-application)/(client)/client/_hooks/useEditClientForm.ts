@@ -30,7 +30,7 @@ const useEditClientForm = () => {
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = target;
         setCurrentValues((input) => ({ ...input, [name]: value }));
-      };
+    };
 
     const validateEditClientForm = () => {
         const result = updateClientSchema.safeParse(currentValues);
