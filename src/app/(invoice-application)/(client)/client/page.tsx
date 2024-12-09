@@ -1,15 +1,10 @@
 "use client";
 
 import Button from "@/components/Button";
-import InputFields from "@/components/InputFields";
 import Modal from "@/components/Modal";
 import SearchInput from "@/components/SearchInput";
 import useAuthentication from "@/hooks/useAuthentication";
 import React, { useEffect, useState } from "react";
-import { MdAccessAlarms } from "react-icons/md";
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { FaPlus } from "react-icons/fa6";
-import { FaMinus } from "react-icons/fa6";
 import {
   Table,
   TableBody,
@@ -21,8 +16,8 @@ import {
 import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
-import { ClientTypes } from "@/hooks/useFetchClient";
-import useFetchClient from "@/hooks/useFetchClient";
+import { ClientType } from "@/types/ClientType";
+import useFetchClients from "@/app/(invoice-application)/(client)/client/_hooks/useFetchClients";
 import {
   Pagination,
   PaginationContent,
@@ -32,23 +27,24 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import generatePaginationLinks from "@/utils/generatePaginationLinks";
+import NewClientForm from "@/app/(invoice-application)/(client)/client/_components/NewClientForm";
+import EditClient from "./_components/EditClientForm";
+import ViewClientModal from "./_components/ViewClientModal";
+import DeleteClientModal from "./_components/DeleteClientModal";
 
 const Client = () => {
   useAuthentication();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [showBusinessNumberField, setShowBusinessNumberField] = useState(false);
-  const [showMobilePhoneField, setShowMobilePhoneField] = useState(false);
-  const [showAddress, setShowAddress] = useState(false);
+  const [isNewClientModalOpen, setIsNewClientModalOpen] = useState(false);
+  const [isViewClientModalOpen, setIsViewClientModalOpen] = useState(false);
+  const [isEditClientModalOpen, setIsEditClientModalOpen] = useState(false);
+  const [isDeleteClientModalOpen, setIsDeleteClientModalOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<ClientType | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [limit] = useState(5);
+  const [limit] = useState(8);
 
-  useEffect(() => {
-    document.title = "Client - Invoice Application";
-  });
-
-  const { data, isPending, error } = useFetchClient(
+  const { data, isLoading, isError, error } = useFetchClients(
     searchQuery,
     currentPage,
     limit
@@ -63,20 +59,38 @@ const Client = () => {
     setCurrentPage(page);
   };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
-  const toggleBusinessNumber = (event: any) => {
-    event.preventDefault();
-    setShowBusinessNumberField((previous) => !previous);
+  const openNewClientModal = () => setIsNewClientModalOpen(true);
+  const closeNewClientModal = () => {
+    setIsNewClientModalOpen(false);
   };
-  const toggleMobilePhone = (event: any) => {
+  const openEditClientModal = (event: React.FormEvent, client: ClientType) => {
     event.preventDefault();
-    setShowMobilePhoneField((previous) => !previous);
+    setSelectedClient(client);
+    setIsEditClientModalOpen(true);
   };
-  const toggleAddress = (event: any) => {
+  const closeEditClientModal = () => setIsEditClientModalOpen(false);
+  const openDeleteClientModal = (
+    event: React.FormEvent,
+    client: ClientType
+  ) => {
     event.preventDefault();
-    setShowAddress((previous) => !previous);
+    setSelectedClient(client);
+    setIsDeleteClientModalOpen(true);
   };
+  const closeDeleteClientModal = () => setIsDeleteClientModalOpen(false);
+  const openViewClientModal = (event: React.FormEvent, client: ClientType) => {
+    event.preventDefault();
+    setSelectedClient(client);
+    setIsViewClientModalOpen(true);
+  };
+  const closeViewClientModal = (event: React.FormEvent) => {
+    event.preventDefault();
+    setIsViewClientModalOpen(false);
+  };
+
+  useEffect(() => {
+    document.title = "Client - Invoice Application";
+  });
 
   return (
     <>
@@ -89,7 +103,7 @@ const Client = () => {
           {/* 1ST SECTION */}
           <div className="flex justify-between w-full">
             <SearchInput value={searchQuery} onChange={handleSearchChange} />
-            <Button onClick={openModal}>New Client</Button>
+            <Button onClick={openNewClientModal}>New Client</Button>
           </div>
           {/* 2ND SECTION */}
           <div className="flex flex-col gap-1 w-full">
@@ -104,13 +118,7 @@ const Client = () => {
                     Email
                   </TableHead>
                   <TableHead className="text-white text-xs md:text-md">
-                    Phone Number
-                  </TableHead>
-                  <TableHead className="text-white text-xs md:text-md">
-                    Business Phone
-                  </TableHead>
-                  <TableHead className="text-white text-xs md:text-md">
-                    Mobile Phone
+                    Phone Number/Business Phone/Mobile Phone
                   </TableHead>
                   <TableHead className="text-white text-xs md:text-md">
                     Address
@@ -121,7 +129,7 @@ const Client = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {isPending ? (
+                {isLoading ? (
                   <TableRow>
                     <TableCell
                       colSpan={8}
@@ -130,64 +138,74 @@ const Client = () => {
                       Loading...
                     </TableCell>
                   </TableRow>
-                ) : error ? (
+                ) : isError ? (
                   <TableRow>
                     <TableCell
-                      colSpan={7}
+                      colSpan={5}
                       className="text-center text-xs md:text-md lg:text-lg text-red-500"
                     >
-                      {`Error: ${error}`}
+                      {`Error: ${
+                        error?.message || "An Unknown Error Occurred."
+                      }`}
                     </TableCell>
                   </TableRow>
                 ) : data && data?.data?.clients?.length > 0 ? (
-                  data.data.clients.map(
-                    (client: ClientTypes, index: number) => (
-                      <TableRow
-                        key={client.id}
-                        className={
-                          index % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
-                        }
-                      >
-                        <TableCell className="flex flex-col">
-                          <label className="text-sm">
-                            {client.companyName}
-                          </label>
-                          <label className="text-sm text-gray-500">{`${client.firstname} ${client.lastname}`}</label>
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {client.email}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {client.phoneNumber}
-                        </TableCell>
-                        <TableCell className="text-sm">
+                  data.data.clients.map((client: ClientType, index: number) => (
+                    <TableRow
+                      key={client.id}
+                      className={index % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"}
+                    >
+                      <TableCell className="flex flex-col gap-1">
+                        <label className="text-sm">{client.companyName}</label>
+                        <label className="text-sm text-gray-500">{`${client.firstname} ${client.lastname}`}</label>
+                      </TableCell>
+                      <TableCell className="text-sm">{client.email}</TableCell>
+                      <TableCell className="flex flex-col gap-1">
+                        <label className="text-sm">{client.phoneNumber}</label>
+                        <label className="text-sm">
                           {client.businessPhone}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {client.mobilePhone}
-                        </TableCell>
-                        <TableCell className="text-sm">
-                          {client.address}
-                        </TableCell>
-                        <TableCell className="flex items-center gap-1">
-                          <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
-                            <IoEyeOutline />
-                          </Button>
-                          <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
-                            <FaRegEdit />
-                          </Button>
-                          <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
-                            <MdDeleteOutline />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    )
-                  )
+                        </label>
+                        <label className="text-sm">{client.mobilePhone}</label>
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        {client.address}
+                      </TableCell>
+                      <TableCell className="flex items-center gap-1 h-full">
+                        {/* VIEW BUTTON */}
+                        <Button
+                          className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                          onClick={(event: React.FormEvent) =>
+                            openViewClientModal(event, client)
+                          }
+                        >
+                          <IoEyeOutline />
+                        </Button>
+                        {/* EDIT BUTTON */}
+                        <Button
+                          className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                          onClick={(event: React.FormEvent) => {
+                            openEditClientModal(event, client);
+                          }}
+                        >
+                          <FaRegEdit />
+                        </Button>
+                        {/* DELETE BUTTON */}
+                        <Button
+                          className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                          onClick={(event: React.FormEvent) => {
+                            openDeleteClientModal(event, client);
+                          }}
+                        >
+                          <MdDeleteOutline />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
                 ) : (
                   <TableRow>
                     <TableCell
                       colSpan={8}
-                      className="text-center text-xs md:text-md text-gray-500"
+                      className="text-center text-xs md:text-md lg:text-lg text-gray-500"
                     >
                       No Data Found
                     </TableCell>
@@ -204,6 +222,7 @@ const Client = () => {
                     href="#"
                     onClick={() => handlePageChange(currentPage - 1)}
                     disabled={currentPage === 1}
+                    className="text-xs md:text-md lg:text-lg"
                   />
                 </PaginationItem>
 
@@ -217,7 +236,9 @@ const Client = () => {
                       href="#"
                       onClick={() => handlePageChange(page)}
                       className={
-                        currentPage === page ? "bg-[#D2232D] text-white" : ""
+                        currentPage === page
+                          ? "bg-[#D2232D] text-white text-xs md:text-md lg:text-lg"
+                          : ""
                       }
                     >
                       {page}
@@ -230,6 +251,7 @@ const Client = () => {
                     href="#"
                     onClick={() => handlePageChange(currentPage + 1)}
                     disabled={data && data?.data?.clients?.length < limit}
+                    className="text-xs md:text-md lg:text-lg"
                   />
                 </PaginationItem>
               </PaginationContent>
@@ -238,186 +260,41 @@ const Client = () => {
         </div>
 
         {/* NEW CLIENT MODAL */}
-        <Modal isOpen={isModalOpen} onClose={closeModal}>
-          <form className="flex bg-white">
-            {/* NEW CLIENT FORM */}
-            <div className="flex flex-col gap-2 border-r-[1px] border-r-[#BBBBBB] p-8 w-2/3">
-              <h1 className="text-md md:text-xl font-semibold">New Client</h1>
+        <Modal isOpen={isNewClientModalOpen} onClose={closeNewClientModal}>
+          <NewClientForm closeModal={closeNewClientModal} />
+        </Modal>
 
-              {/* 1st FIELD SECTION */}
-              <div className="flex flex-col items-start gap-4 w-full">
-                <div className="flex flex-col md:flex-row items-center gap-4 w-full">
-                  <div className="flex flex-col items-start w-full">
-                    <label className="text-xs md:text-sm">
-                      First Name<b className="text-red-600">*</b>
-                    </label>
-                    <InputFields className="text-xs md:text-sm w-full" />
-                  </div>
-                  <div className="flex flex-col items-start w-full">
-                    <label className="text-xs md:text-sm">
-                      Last Name<b className="text-red-600">*</b>
-                    </label>
-                    <InputFields className="text-xs md:text-sm w-full" />
-                  </div>
-                </div>
-                <div className="flex flex-col items-start w-full">
-                  <label className="text-xs md:text-sm">
-                    Company Name<b className="text-red-600">*</b>
-                  </label>
-                  <InputFields className="text-xs md:text-sm w-full" />
-                </div>
-                <div className="flex flex-col items-start w-full md:w-1/2">
-                  <label className="text-xs md:text-sm">Email Address</label>
-                  <InputFields className="text-xs md:text-sm w-full" />
-                </div>
-                <div className="flex flex-col items-start w-full md:w-1/2">
-                  <label className="text-xs md:text-sm">Phone Number</label>
-                  <InputFields className="text-xs md:text-sm w-full" />
-                </div>
-              </div>
+        {/* EDIT CLIENT MODAL */}
+        <Modal isOpen={isEditClientModalOpen} onClose={closeEditClientModal}>
+          {isEditClientModalOpen && selectedClient ? (
+            <EditClient
+              client={selectedClient}
+              closeModal={closeEditClientModal}
+            />
+          ) : null}
+        </Modal>
 
-              {/* 2nd FIELD SECTION */}
-              <div className="flex flex-col justify-start items-start gap-1">
-                <Button
-                  className="flex items-center gap-1 px-0 lg:px-0 bg-white"
-                  onClick={toggleBusinessNumber}
-                >
-                  {showBusinessNumberField ? (
-                    <FaMinus className="text-xs text-red-600" />
-                  ) : (
-                    <FaPlus className="text-xs text-red-600" />
-                  )}
-                  <label className="text-xs text-red-600 cursor-pointer">
-                    Add Business Phone
-                  </label>
-                </Button>
-                <div
-                  className={`${
-                    showBusinessNumberField
-                      ? "flex flex-col items-start w-full"
-                      : "hidden"
-                  }`}
-                >
-                  <label className="text-xs md:text-sm">Business Number</label>
-                  <InputFields className="text-xs md:text-sm w-full" />
-                </div>
-                <Button
-                  className="flex items-center gap-1 px-0 lg:px-0 bg-white"
-                  onClick={toggleMobilePhone}
-                >
-                  {showMobilePhoneField ? (
-                    <FaMinus className="text-xs text-red-600" />
-                  ) : (
-                    <FaPlus className="text-xs text-red-600" />
-                  )}
-                  <label className="text-xs text-red-600 cursor-pointer">
-                    Add Mobile Phone
-                  </label>
-                </Button>
-                <div
-                  className={`${
-                    showMobilePhoneField
-                      ? "flex flex-col items-start w-full"
-                      : "hidden"
-                  }`}
-                >
-                  <label className="text-xs md:text-sm">Mobile Phone</label>
-                  <InputFields className="text-xs md:text-sm w-full" />
-                </div>
-                <Button
-                  className="flex items-center gap-1 px-0 lg:px-0 bg-white"
-                  onClick={toggleAddress}
-                >
-                  {showAddress ? (
-                    <FaMinus className="text-xs text-red-600" />
-                  ) : (
-                    <FaPlus className="text-xs text-red-600" />
-                  )}
-                  <label className="text-xs text-red-600 cursor-pointer">
-                    Address
-                  </label>
-                </Button>
-                <div
-                  className={`${
-                    showAddress ? "flex flex-col items-start w-full" : "hidden"
-                  }`}
-                >
-                  <label className="text-xs md:text-sm">Address</label>
-                  <InputFields className="text-xs md:text-sm w-full" />
-                </div>
-              </div>
+        {/* DELETE CLIENT */}
+        <Modal
+          isOpen={isDeleteClientModalOpen}
+          onClose={closeDeleteClientModal}
+        >
+          {isDeleteClientModalOpen && selectedClient ? (
+            <DeleteClientModal
+              client={selectedClient}
+              closeModal={closeDeleteClientModal}
+            />
+          ) : null}
+        </Modal>
 
-              {/* 3rd Field Section */}
-              <div className="flex justify-end items-center gap-2 top-2">
-                <Button className="bg-white" onClick={closeModal}>
-                  <label className="text-xs text-red-600 cursor-pointer">
-                    Cancel
-                  </label>
-                </Button>
-                <Button className="lg:text-xs py-2 lg:px-8">Save</Button>
-              </div>
-            </div>
-
-            {/* CLIENT SETTING SECTION */}
-            <div className="flex flex-col gap-4 pt-8 pl-4 w-2/5">
-              <h1 className="text-sm md:text-md font-semibold">
-                Client Setting
-              </h1>
-              <div className="flex flex-col w-full">
-                <div className="flex items-start gap-1 py-3 border-t-[1px] border-b-[1px] border-t-[#BBBBBB] border-b-[#BBBBBB] w-full">
-                  <MdAccessAlarms />
-                  <div className="flex flex-col items-start">
-                    <h1 className="text-xs">Send Reminders</h1>
-                    <p className="text-xs text-[#BBBBBB]">
-                      At Customizable Intervals
-                    </p>
-                  </div>
-                  <Button className="flex items-center bg-white">
-                    <label className="text-black text-xs">No</label>
-                    <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-                  </Button>
-                </div>
-                <div className="flex items-start gap-1 py-3 border-b-[1px] border-t-[#BBBBBB] border-b-[#BBBBBB] w-full">
-                  <MdAccessAlarms />
-                  <div className="flex flex-col items-start">
-                    <h1 className="text-xs">Charge Late Fees</h1>
-                    <p className="text-xs text-[#BBBBBB]">
-                      Percentage or Flat Rate Fees
-                    </p>
-                  </div>
-                  <Button className="flex items-center bg-white">
-                    <label className="text-black text-xs">No</label>
-                    <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-                  </Button>
-                </div>
-                <div className="flex items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-                  <MdAccessAlarms />
-                  <div className="flex flex-col items-start">
-                    <h1 className="text-xs">Country & Language</h1>
-                    <p className="text-xs text-[#BBBBBB]">
-                      PHP, English (United States)
-                    </p>
-                  </div>
-                  <Button className="flex items-center bg-white">
-                    <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-                  </Button>
-                </div>
-                <div className="flex items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-                  <MdAccessAlarms />
-                  <div className="flex flex-col items-start">
-                    <h1 className="text-xs">Invoice Attatchments</h1>
-                    <p className="break-words text-xs text-[#BBBBBB]">
-                      Attatch PDF copy to emails
-                    </p>
-                  </div>
-                  <Button className="flex items-center bg-white">
-                    <label className="text-black text-xs">No</label>
-                    <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </form>
+        {/* VIEW CLIENT */}
+        <Modal isOpen={isViewClientModalOpen} onClose={closeViewClientModal}>
+          {isViewClientModalOpen && selectedClient ? (
+            <ViewClientModal
+              client={selectedClient}
+              closeModal={closeViewClientModal}
+            />
+          ) : null}
         </Modal>
       </div>
     </>
