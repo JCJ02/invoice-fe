@@ -8,7 +8,7 @@ interface UsePostParams<TRequest, TResponse> {
   onError?: (error: AxiosError) => void;
 }
 
-const usePost = <TRequest, TResponse>({
+const useDelete = <TRequest, TResponse>({
   url,
   requiresAuthentication,
   onSuccess,
@@ -24,7 +24,7 @@ const usePost = <TRequest, TResponse>({
         }
         headers["Authorization"] = `Bearer ${token}`;
       }
-      const response = await axios.post<TResponse>(url, data, { headers });
+      const response = await axios.delete<TResponse>(url, { data, headers });
       return response.data;
     },
     onSuccess,
@@ -34,5 +34,5 @@ const usePost = <TRequest, TResponse>({
   return mutation;
 };
 
-export default usePost;
+export default useDelete;
 
