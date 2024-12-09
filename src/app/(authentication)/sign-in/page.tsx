@@ -7,9 +7,9 @@ import signInFormImage from "../../../assets/images/sign-in-form-image.jpg";
 import lwsLogo from "../../../assets/images/lws-logo.png";
 import Link from "next/link";
 import backgroundImageSignIn from "../../../assets/images/background-image-sign-in.png";
-import useLoginForm from "@/hooks/useLoginForm";
-import useLoginMutation from "@/hooks/useLoginMutation";
-import useRememberPassword from "@/hooks/useRememberPassword";
+import useLoginForm from "@/app/(authentication)/sign-in/_hooks/useLoginForm";
+import useLoginMutation from "@/app/(authentication)/sign-in/_hooks/useLoginMutation";
+import useRememberPassword from "@/app/(authentication)/sign-in/_hooks/useRememberPassword";
 import { IoEyeSharp } from "react-icons/io5";
 import { IoEyeOffSharp } from "react-icons/io5";
 
