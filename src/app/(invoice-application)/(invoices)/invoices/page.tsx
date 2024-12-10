@@ -25,9 +25,19 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import generatePaginationLinks from "@/utils/generatePaginationLinks";
+import Modal from "@/components/Modal";
+import SelectClientModal from "./_components/SelectClientModal";
+import DeleteInvoiceModal from "./_components/DeleteInvoiceModal";
+import NewInvoicesForm from "./_components/NewInvoicesForm";
+import EditInvoicesForm from "./_components/EditInvoicesForm";
 
 const Invoices = () => {
   useAuthentication();
+
+  const [isSelectClientModalOpen, setSelectClientModalOpen] = useState(false);
+  const [isDeleteInvoiceModalOpen, setDeleteInvoiceModalOpen] = useState(false);
+  const [isNewInvoicesFormOpen, setNewInvoicesFormOpen] = useState(false);
+  const [isEditInvoicesFormOpen, setEditInvoicesFormOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,6 +58,38 @@ const Invoices = () => {
     setCurrentPage(page);
   };
 
+  // HANDLE SELECT CLIENT MODAL
+  const openSelectClientModal = () => {
+    setSelectClientModalOpen(true);
+  };
+  const closeSelectClientModal = () => {
+    setSelectClientModalOpen(false);
+  };
+
+  // HANDLE DELETE INVOICE MODAL
+  const openDeleteInvoiceModal = () => {
+    setDeleteInvoiceModalOpen(true);
+  };
+  const closeDeleteInvoiceModal = () => {
+    setDeleteInvoiceModalOpen(false);
+  };
+
+  // HANDLE NEW INVOICES FORM
+  const openNewInvoicesForm = () => {
+    setNewInvoicesFormOpen(true);
+  };
+  const closeNewInvoicesForm = () => {
+    setNewInvoicesFormOpen(false);
+  };
+
+  // HANDLE EDIT INVOICES FORM
+  const openEditInvoicesForm = () => {
+    setEditInvoicesFormOpen(true);
+  };
+  const closeEditInvoicesForm = () => {
+    setEditInvoicesFormOpen(false);
+  };
+
   useEffect(() => {
     document.title = "Invoices - Invoice Application";
     console.log(
@@ -61,7 +103,7 @@ const Invoices = () => {
         {/* 1ST SECTION */}
         <div className="flex justify-between items-center pt-5 pl-4 pr-8 w-full">
           <h1 className="font-semibold text-md lg:text-2xl">Invoices</h1>
-          <Button>New Invoice</Button>
+          <Button onClick={openSelectClientModal}>New Invoice</Button>
         </div>
         <hr className="border-[1px] border-solid w-full" />
 
@@ -148,10 +190,10 @@ const Invoices = () => {
                           }
                         >
                           <TableCell className="flex flex-col gap-1">
-                            <label className="text-sm text-gray-500">
+                            <label className="text-sm">
                               {client.companyName}
                             </label>
-                            <label className="text-sm">
+                            <label className="text-sm text-gray-500">
                               {invoice.invoiceNumber}
                             </label>
                           </TableCell>
@@ -177,10 +219,16 @@ const Invoices = () => {
                             <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
                               <IoEyeOutline />
                             </Button>
-                            <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
+                            <Button
+                              className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                              onClick={openEditInvoicesForm}
+                            >
                               <FaRegEdit />
                             </Button>
-                            <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
+                            <Button
+                              className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                              onClick={openDeleteInvoiceModal}
+                            >
                               <MdDeleteOutline />
                             </Button>
                           </TableCell>
@@ -244,6 +292,38 @@ const Invoices = () => {
             </PaginationContent>
           </Pagination>
         </div>
+
+        {/* SELECT CLIENT MODAL */}
+        <Modal
+          isOpen={isSelectClientModalOpen}
+          onClose={closeSelectClientModal}
+        >
+          <SelectClientModal
+            closeModal={closeSelectClientModal}
+            openNewInvoiceForm={() => {
+              openNewInvoicesForm();
+              closeSelectClientModal();
+            }}
+          />
+        </Modal>
+
+        {/* DELETE INVOICE MODAL */}
+        <Modal
+          isOpen={isDeleteInvoiceModalOpen}
+          onClose={closeDeleteInvoiceModal}
+        >
+          <DeleteInvoiceModal closeModal={closeDeleteInvoiceModal} />
+        </Modal>
+
+        {/* NEW INVOICES FORM */}
+        <Modal isOpen={isNewInvoicesFormOpen} onClose={closeNewInvoicesForm}>
+          <NewInvoicesForm closeModal={closeNewInvoicesForm} />
+        </Modal>
+
+        {/* EDIT INVOICES FORM */}
+        <Modal isOpen={isEditInvoicesFormOpen} onClose={closeEditInvoicesForm}>
+          <EditInvoicesForm closeModal={closeEditInvoicesForm} />
+        </Modal>
       </div>
     </>
   );
