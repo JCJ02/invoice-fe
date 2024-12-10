@@ -56,7 +56,7 @@ const NewClientForm = ({ closeModal }: NewClientFormProps) => {
     <>
       <form className="flex bg-white" onSubmit={handleSubmit}>
         {/* NEW CLIENT FORM */}
-        <div className="flex flex-col gap-2 border-r-[1px] border-r-[#BBBBBB] p-8 w-2/3">
+        <div className="flex flex-col gap-2 border-r-[1px] border-[#BBBBBB] p-8 w-2/3">
           <h1 className="text-md md:text-xl font-semibold">New Client</h1>
 
           {/* 1st FIELD SECTION */}
@@ -250,7 +250,7 @@ const NewClientForm = ({ closeModal }: NewClientFormProps) => {
           {/* 3rd Field Section */}
           <div className="flex justify-end items-center gap-2 top-2">
             <Button className="bg-white" onClick={closeModal}>
-              <label className="text-xs text-red-600 cursor-pointer">
+              <label className="text-xs text-red-700 hover:border-2 hover:border-red-700 cursor-pointer">
                 Cancel
               </label>
             </Button>
@@ -262,51 +262,59 @@ const NewClientForm = ({ closeModal }: NewClientFormProps) => {
         <div className="flex flex-col gap-4 pt-8 pl-4 w-2/5">
           <h1 className="text-sm md:text-md font-semibold">Client Setting</h1>
           <div className="flex flex-col w-full">
-            <div className="flex items-start gap-1 py-3 border-t-[1px] border-b-[1px] border-t-[#BBBBBB] border-b-[#BBBBBB] w-full">
-              <MdAccessAlarms />
-              <div className="flex flex-col items-start">
-                <h1 className="text-xs">Send Reminders</h1>
-                <p className="text-xs text-[#BBBBBB]">
-                  At Customizable Intervals
-                </p>
+            <div className="flex justify-between items-start gap-1 py-3 border-t-[1px] border-b-[1px] border-t-[#BBBBBB] border-b-[#BBBBBB] w-full">
+              <div className="flex items-start gap-1">
+                <MdAccessAlarms />
+                <div className="flex flex-col items-start">
+                  <h1 className="text-xs">Send Reminders</h1>
+                  <p className="text-xs text-[#BBBBBB]">
+                    At Customizable Intervals
+                  </p>
+                </div>
               </div>
               <Button className="flex items-center bg-white">
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
             </div>
-            <div className="flex items-start gap-1 py-3 border-b-[1px] border-t-[#BBBBBB] border-b-[#BBBBBB] w-full">
-              <MdAccessAlarms />
-              <div className="flex flex-col items-start">
-                <h1 className="text-xs">Charge Late Fees</h1>
-                <p className="text-xs text-[#BBBBBB]">
-                  Percentage or Flat Rate Fees
-                </p>
+            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
+              <div className="flex items-start gap-1">
+                <MdAccessAlarms />
+                <div className="flex flex-col items-start">
+                  <h1 className="text-xs">Charge Late Fees</h1>
+                  <p className="text-xs text-[#BBBBBB]">
+                    Percentage or Flat Rate Fees
+                  </p>
+                </div>
               </div>
               <Button className="flex items-center bg-white">
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
             </div>
-            <div className="flex items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <MdAccessAlarms />
-              <div className="flex flex-col items-start">
-                <h1 className="text-xs">Country & Language</h1>
-                <p className="text-xs text-[#BBBBBB]">
-                  PHP, English (United States)
-                </p>
+            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
+              <div className="flex items-start gap-1">
+                <MdAccessAlarms />
+                <div className="flex flex-col items-start">
+                  <h1 className="text-xs">Country & Language</h1>
+                  <p className="text-xs text-[#BBBBBB]">
+                    PHP, English (United States)
+                  </p>
+                </div>
               </div>
               <Button className="flex items-center bg-white">
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
             </div>
-            <div className="flex items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <MdAccessAlarms />
-              <div className="flex flex-col items-start">
-                <h1 className="text-xs">Invoice Attatchments</h1>
-                <p className="break-words text-xs text-[#BBBBBB]">
-                  Attatch PDF copy to emails
-                </p>
+            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
+              <div className="flex items-start gap-1">
+                <MdAccessAlarms />
+                <div className="flex flex-col items-start">
+                  <h1 className="text-xs">Invoice Attatchments</h1>
+                  <p className="break-words text-xs text-[#BBBBBB]">
+                    Attatch PDF copy to emails
+                  </p>
+                </div>
               </div>
               <Button className="flex items-center bg-white">
                 <label className="text-black text-xs">No</label>
