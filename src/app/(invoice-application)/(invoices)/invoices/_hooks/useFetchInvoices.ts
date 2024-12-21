@@ -41,35 +41,6 @@ interface InvoicesResponse {
     message: string;
     code: number;
 }
-  
-// const fetchInvoices = async (
-//     query: string,
-//     page: number,
-//     limit: number
-// ): Promise<InvoicesResponse> => {
-//     const token = localStorage.getItem("token");
-  
-//     if (!token) {
-//         throw new Error("Authorization Token is Missing!");
-//     }
-//     const response = await axios.get<InvoicesResponse>(
-//         `${baseUrl}api/client/retrieve/invoice-list/`,
-//         {
-//             headers: {
-//                 Authorization: `Bearer ${token}`
-//             },
-//             params: { query, page, limit },
-//         }
-//     );
-//     return response.data;
-// };
-
-// const useFetchInvoices = (query: string, page: number, limit: number) => {
-//     return useQuery<InvoicesResponse, Error>({
-//         queryKey: ["invoices", query, page, limit],
-//         queryFn: () => fetchInvoices(query, page, limit)
-//     });
-// };
 
 const useFetchInvoices = (query: string, page: number, limit: number) => {
     const token = localStorage.getItem("token");
