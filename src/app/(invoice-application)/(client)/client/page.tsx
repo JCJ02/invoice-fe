@@ -180,6 +180,7 @@ const Client = () => {
                         >
                           <IoEyeOutline />
                         </Button>
+
                         {/* EDIT BUTTON */}
                         <Button
                           className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
@@ -189,6 +190,7 @@ const Client = () => {
                         >
                           <FaRegEdit />
                         </Button>
+
                         {/* DELETE BUTTON */}
                         <Button
                           className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
