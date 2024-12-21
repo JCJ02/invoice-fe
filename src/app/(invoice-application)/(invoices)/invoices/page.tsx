@@ -28,8 +28,9 @@ import generatePaginationLinks from "@/utils/generatePaginationLinks";
 import Modal from "@/components/Modal";
 import SelectClientModal from "./_components/SelectClientModal";
 import DeleteInvoiceModal from "./_components/DeleteInvoiceModal";
-import NewInvoicesForm from "./_components/NewInvoicesForm";
 import EditInvoicesForm from "./_components/EditInvoicesForm";
+import { ClientType } from "@/types/ClientType";
+import NewInvoicesForm from "./_components/NewInvoicesForm";
 
 const Invoices = () => {
   useAuthentication();
@@ -38,6 +39,7 @@ const Invoices = () => {
   const [isDeleteInvoiceModalOpen, setDeleteInvoiceModalOpen] = useState(false);
   const [isNewInvoicesFormOpen, setNewInvoicesFormOpen] = useState(false);
   const [isEditInvoicesFormOpen, setEditInvoicesFormOpen] = useState(false);
+  const [selectedClient, setSelectedClient] = useState<ClientType | null>(null);
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -75,7 +77,8 @@ const Invoices = () => {
   };
 
   // HANDLE NEW INVOICES FORM
-  const openNewInvoicesForm = () => {
+  const openNewInvoicesForm = (client: ClientType) => {
+    setSelectedClient(client);
     setNewInvoicesFormOpen(true);
   };
   const closeNewInvoicesForm = () => {
@@ -300,8 +303,8 @@ const Invoices = () => {
         >
           <SelectClientModal
             closeModal={closeSelectClientModal}
-            openNewInvoiceForm={() => {
-              openNewInvoicesForm();
+            openNewInvoicesForm={(client: ClientType) => {
+              openNewInvoicesForm(client);
               closeSelectClientModal();
             }}
           />
@@ -317,7 +320,12 @@ const Invoices = () => {
 
         {/* NEW INVOICES FORM */}
         <Modal isOpen={isNewInvoicesFormOpen} onClose={closeNewInvoicesForm}>
-          <NewInvoicesForm closeModal={closeNewInvoicesForm} />
+          {isNewInvoicesFormOpen && selectedClient ? (
+            <NewInvoicesForm
+              client={selectedClient}
+              closeModal={closeNewInvoicesForm}
+            />
+          ) : null}
         </Modal>
 
         {/* EDIT INVOICES FORM */}
