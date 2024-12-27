@@ -34,6 +34,10 @@ const SelectClientModal = ({
             onChange={handleSelectClient}
             value={selectedClientId || ""}
           >
+            {/* DEFAULT OPTION */}
+            <option className="text-sm" value={""}>
+              Select Client
+            </option>
             {isLoading && (
               <option className="text-sm" value={""}>
                 Select Client
