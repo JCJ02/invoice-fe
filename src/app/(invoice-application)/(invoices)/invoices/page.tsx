@@ -102,7 +102,7 @@ const Invoices = () => {
 
   return (
     <>
-      <div className="flex flex-col font-poppins gap-5 overflow-y-scroll h-screen w-full">
+      <div className="flex flex-col font-poppins gap-5 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-screen w-full">
         {/* 1ST SECTION */}
         <div className="flex justify-between items-center pt-5 pl-4 pr-8 w-full">
           <h1 className="font-semibold text-md lg:text-2xl">Invoices</h1>
