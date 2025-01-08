@@ -264,11 +264,12 @@ const EditClient = ({ client, closeModal }: EditClientProps) => {
           </div>
 
           {/* 3rd Field Section */}
-          <div className="flex justify-end items-center gap-2 top-2">
-            <Button className="bg-white" onClick={closeModal}>
-              <label className="text-xs text-red-700 hover:border-2 hover:border-red-700 cursor-pointer">
-                Cancel
-              </label>
+          <div className="flex justify-end items-center gap-2">
+            <Button
+              className="bg-white lg:text-xs text-red-700 border-2 border-white hover:border-2 hover:border-red-700 py-2 px-5"
+              onClick={closeModal}
+            >
+              Cancel
             </Button>
             <Button className="lg:text-xs py-2 lg:px-8">Save</Button>
           </div>
