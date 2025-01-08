@@ -114,19 +114,19 @@ const Invoices = () => {
         <div className="flex flex-col md:flex-row md:justify-around items-center gap-4 pt-2 pb-5 pl-4 pr-8 w-full">
           <div className="flex flex-col items-center">
             <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-              ₱4.5m PHP
+              ₱0.00m PHP
             </h1>
             <p className="text-[#BBBBBB] text-xs">Overdue</p>
           </div>
           <div className="flex flex-col items-center">
             <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-              ₱4.5m PHP
+              ₱0.00m PHP
             </h1>
             <p className="text-[#BBBBBB] text-xs">Total Outstanding</p>
           </div>
           <div className="flex flex-col items-center">
             <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-              ₱4.5m PHP
+              ₱0.00m PHP
             </h1>
             <p className="text-[#BBBBBB] text-xs">In Draft</p>
           </div>
