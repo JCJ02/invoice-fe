@@ -6,6 +6,7 @@ import Image from "next/image";
 import InputFields from "@/components/InputFields";
 import { FaPlus } from "react-icons/fa6";
 import { ClientType } from "@/types/ClientType";
+import formattedDate from "@/utils/date";
 
 type NewInvoiceFormProps = {
   closeModal: any;
@@ -17,6 +18,7 @@ type LineField = {
   rate: number;
   quantity: number;
   lineTotal: number;
+  [key: string]: string | number;
 };
 
 const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
@@ -32,23 +34,33 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
   };
 
   // HANDLE INPUT CHANGES
-  // const handleInputChange = (
-  //   index: number,
-  //   field: keyof LineField,
-  //   value: string | number
-  // ) => {
-  //   const updatedLineItems = [...lineFields];
-  //   updatedLineItems[index][field] =
-  //     field === "rate" || field === "quantity" ? Number(value) : value;
+  const handleInputChange = (
+    index: number,
+    field: keyof LineField,
+    value: string | number
+  ) => {
+    const updatedLineItems = [...lineFields];
+    updatedLineItems[index][field] =
+      field === "rate" || field === "quantity"
+        ? Number(value)
+        : (value as string);
 
-  //   // Recalculate the line total if rate or quantity changes
-  //   if (field === "rate" || field === "quantity") {
-  //     updatedLineItems[index].lineTotal =
-  //       updatedLineItems[index].rate * updatedLineItems[index].quantity;
-  //   }
+    // RECALCULATE THE LINE TOTAL IF RATE OR QUANTITY CHANGES
+    if (field === "rate" || field === "quantity") {
+      updatedLineItems[index].lineTotal =
+        updatedLineItems[index].rate * updatedLineItems[index].quantity;
+    }
 
-  //   setLineFields(updatedLineItems);
-  // };
+    setLineFields(updatedLineItems);
+  };
+
+  const handleAddADiscount = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
+
+  const handleRequestADeposit = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
 
   useEffect(() => {
     document.title = "New Invoices - Invoice Application";
@@ -90,11 +102,12 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   <div className="flex flex-col items-start gap-3">
                     <div className="flex flex-col items-start gap-1">
                       <h1 className="text-xs text-red-600">Date of Issue</h1>
-                      <label className="text-xs">11/30/2024</label>
+                      <label className="text-xs">{formattedDate}</label>
                     </div>
                     <div className="flex flex-col items-start gap-1">
                       <h1 className="text-xs text-red-600">Date of Due</h1>
-                      <label className="text-xs">11/30/2024</label>
+                      {/* <label className="text-xs">11/30/2024</label> */}
+                      <InputFields className="text-xs py-1" type="date" />
                     </div>
                   </div>
                 </div>
@@ -132,6 +145,8 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     placeholder="Line Total"
                   />
                 </div>
+
+                {/* LINE FIELDS */}
                 {lineFields.map((item, index) => (
                   <div
                     key={index}
@@ -140,34 +155,38 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     <InputFields
                       className="text-xs w-1/2"
                       placeholder="Description"
-                      // value={item.description}
-                      // onChange={(e) =>
-                      //   handleInputChange(index, "description", e.target.value)
-                      // }
+                      value={item.description}
+                      onChange={(event: any) =>
+                        handleInputChange(
+                          index,
+                          "description",
+                          event.target.value
+                        )
+                      }
                     />
                     <InputFields
                       className="text-xs w-1/4"
                       placeholder="Rate"
                       type="number"
-                      // value={item.rate}
-                      // onChange={(e) =>
-                      //   handleInputChange(index, "rate", e.target.value)
-                      // }
+                      value={item.rate}
+                      onChange={(event: any) =>
+                        handleInputChange(index, "rate", event.target.value)
+                      }
                     />
                     <InputFields
                       className="text-xs w-1/4"
                       placeholder="Quantity"
                       type="number"
-                      // value={item.quantity}
-                      // onChange={(e) =>
-                      //   handleInputChange(index, "quantity", e.target.value)
-                      // }
+                      value={item.quantity}
+                      onChange={(event: any) =>
+                        handleInputChange(index, "quantity", event.target.value)
+                      }
                     />
                     <InputFields
                       className="text-xs w-1/4"
                       placeholder="Line Total"
-                      // value={item.lineTotal.toFixed(2)}
-                      // readOnly
+                      value={item.lineTotal.toFixed(2)}
+                      readOnly
                     />
                   </div>
                 ))}
@@ -189,7 +208,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     </div>
                     <label className="text-xs">0.00</label>
                   </div>
-                  <Button className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0">
+                  <Button
+                    className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
+                    onClick={handleAddADiscount}
+                  >
                     Add Discount
                   </Button>
                   <div className="flex justify-between items-center w-full">
@@ -212,7 +234,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     </label>
                     <label className="text-xs">0.00</label>
                   </div>
-                  <Button className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0">
+                  <Button
+                    className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
+                    onClick={handleRequestADeposit}
+                  >
                     Request a Deposit
                   </Button>
                 </div>
