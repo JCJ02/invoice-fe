@@ -17,9 +17,9 @@ const usePost = <TRequest, TResponse>({
   const mutation = useMutation<TResponse, AxiosError, TRequest>({
     mutationFn: async (data: TRequest) => {
       const headers: Record<string, string> = {};
-      if(requiresAuthentication) {
+      if (requiresAuthentication) {
         const token = localStorage.getItem("token");
-        if(!token) {
+        if (!token) {
           throw new Error("Authentication Token is Missing!");
         }
         headers["Authorization"] = `Bearer ${token}`;

@@ -11,7 +11,7 @@ const DeleteInvoiceModal = ({ closeModal }: DeleteInvoiceModalProps) => {
     <>
       <div
         className="bg-[#FFFFFF] flex flex-col items-center font-poppins gap-5 py-8 px-12"
-        // key={client.id}
+      // key={client.id}
       >
         <MdDeleteOutline className="text-7xl text-red-700" />
         <h1 className="text-md md:text-lg lg:text-xl font-semibold">
@@ -29,7 +29,7 @@ const DeleteInvoiceModal = ({ closeModal }: DeleteInvoiceModalProps) => {
           </Button>
           <Button
             className="text-sm md:text-md lg:text-lg px-5 lg:px-8"
-            // onClick={handleDelete}
+          // onClick={handleDelete}
           >
             Yes
           </Button>

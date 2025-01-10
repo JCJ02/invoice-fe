@@ -34,7 +34,7 @@ const useEditClientMutation = (clientId: number) => {
                 theme: "light",
                 transition: Bounce,
             });
-            UseQueryClient.invalidateQueries({queryKey: ["clients"]});
+            UseQueryClient.invalidateQueries({ queryKey: ["clients"] });
         }
     });
 

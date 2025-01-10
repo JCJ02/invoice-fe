@@ -12,7 +12,7 @@ export type ClientType = {
     updatedAt: Date;
     deleteAt: Date;
 };
-  
+
 export type ClientResponse = {
     data: {
         clients: ClientType[];

@@ -3,7 +3,7 @@ import axios from "axios";
 
 const useFetch = <T>(
   key: string,
-  url: string, 
+  url: string,
   options?: {
     headers?: Record<string, string>;
     params?: Record<string, any>;

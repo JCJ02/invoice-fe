@@ -34,7 +34,7 @@ const useEditClientForm = () => {
 
     const validateEditClientForm = () => {
         const result = updateClientSchema.safeParse(currentValues);
-        if(result.error) {
+        if (result.error) {
             const errorMessages = result.error.flatten().fieldErrors;
             setErrors({
                 firstname: errorMessages.firstname?.[0],

@@ -29,11 +29,11 @@ const useNewClientForm = () => {
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = target;
         setValues((input) => ({ ...input, [name]: value }));
-      };
+    };
 
     const validateNewClientForm = () => {
         const result = newClientSchema.safeParse(values);
-        if(result.error) {
+        if (result.error) {
             const errorMessages = result.error.flatten().fieldErrors;
             setErrors({
                 firstname: errorMessages.firstname?.[0],
