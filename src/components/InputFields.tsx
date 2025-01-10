@@ -8,6 +8,7 @@ type InputProps = {
   name?: string;
   value?: any;
   placeholder?: string;
+  readOnly?: true;
 };
 
 const InputFields = ({
@@ -17,6 +18,7 @@ const InputFields = ({
   name,
   value,
   placeholder,
+  readOnly,
 }: InputProps) => {
   return (
     <input
@@ -29,6 +31,7 @@ const InputFields = ({
       name={name}
       value={value}
       placeholder={placeholder}
+      readOnly={readOnly}
     />
   );
 };

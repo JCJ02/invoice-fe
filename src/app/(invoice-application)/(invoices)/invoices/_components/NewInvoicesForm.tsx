@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import lwsMainLogo from "../../../../../assets/images/lws-main-logo.png";
 import { MdAccessAlarms, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Button from "@/components/Button";
@@ -6,13 +6,62 @@ import Image from "next/image";
 import InputFields from "@/components/InputFields";
 import { FaPlus } from "react-icons/fa6";
 import { ClientType } from "@/types/ClientType";
+import formattedDate from "@/utils/date";
 
 type NewInvoiceFormProps = {
   closeModal: any;
   client?: ClientType;
 };
 
+type LineField = {
+  description: string;
+  rate: number;
+  quantity: number;
+  lineTotal: number;
+  [key: string]: string | number;
+};
+
 const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
+  const [lineFields, setLineFields] = useState<LineField[]>([]);
+
+  // ADD NEW LINE FIELDS
+  const handleAddLine = (event: React.FormEvent) => {
+    event.preventDefault();
+    setLineFields([
+      ...lineFields,
+      { description: "", rate: 0, quantity: 0, lineTotal: 0 },
+    ]);
+  };
+
+  // HANDLE INPUT CHANGES
+  const handleInputChange = (
+    index: number,
+    field: keyof LineField,
+    value: string | number
+  ) => {
+    const updatedLineItems = [...lineFields];
+    updatedLineItems[index][field] =
+      field === "rate" || field === "quantity"
+        ? Number(value)
+        : (value as string);
+
+    // RECALCULATE THE LINE TOTAL IF RATE OR QUANTITY CHANGES
+    if (field === "rate" || field === "quantity") {
+      updatedLineItems[index].lineTotal =
+        updatedLineItems[index].rate * updatedLineItems[index].quantity;
+    }
+
+    setLineFields(updatedLineItems);
+  };
+
+  const handleAddADiscount = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
+
+  const handleRequestADeposit = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
+
   useEffect(() => {
     document.title = "New Invoices - Invoice Application";
   }, []);
@@ -23,7 +72,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full">
             <h1 className="text-xl font-semibold w-full">New Invoice</h1>
-            <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] w-full">
+            <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
               {/* HEADER */}
               <div className="flex justify-between items-start gap-10 lg:gap-20 w-full">
                 <Image className="w-32" alt="LWS Main Logo" src={lwsMainLogo} />
@@ -53,11 +102,12 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   <div className="flex flex-col items-start gap-3">
                     <div className="flex flex-col items-start gap-1">
                       <h1 className="text-xs text-red-600">Date of Issue</h1>
-                      <label className="text-xs">11/30/2024</label>
+                      <label className="text-xs">{formattedDate}</label>
                     </div>
                     <div className="flex flex-col items-start gap-1">
                       <h1 className="text-xs text-red-600">Date of Due</h1>
-                      <label className="text-xs">11/30/2024</label>
+                      {/* <label className="text-xs">11/30/2024</label> */}
+                      <InputFields className="text-xs py-1" type="date" />
                     </div>
                   </div>
                 </div>
@@ -95,10 +145,102 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     placeholder="Line Total"
                   />
                 </div>
-                <Button className="flex justify-center items-center gap-1 bg-white border-dotted border-4 my-1 text-black w-full">
+
+                {/* LINE FIELDS */}
+                {lineFields.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex justify-between items-center gap-1 w-full"
+                  >
+                    <InputFields
+                      className="text-xs w-1/2"
+                      placeholder="Description"
+                      value={item.description}
+                      onChange={(event: any) =>
+                        handleInputChange(
+                          index,
+                          "description",
+                          event.target.value
+                        )
+                      }
+                    />
+                    <InputFields
+                      className="text-xs w-1/4"
+                      placeholder="Rate"
+                      type="number"
+                      value={item.rate}
+                      onChange={(event: any) =>
+                        handleInputChange(index, "rate", event.target.value)
+                      }
+                    />
+                    <InputFields
+                      className="text-xs w-1/4"
+                      placeholder="Quantity"
+                      type="number"
+                      value={item.quantity}
+                      onChange={(event: any) =>
+                        handleInputChange(index, "quantity", event.target.value)
+                      }
+                    />
+                    <InputFields
+                      className="text-xs w-1/4"
+                      placeholder="Line Total"
+                      value={item.lineTotal.toFixed(2)}
+                      readOnly
+                    />
+                  </div>
+                ))}
+                <Button
+                  className="flex justify-center items-center gap-1 bg-white border-dotted border-4 my-1 text-black w-full"
+                  onClick={handleAddLine}
+                >
                   <FaPlus className="cursor-pointer" /> Add a Line
                   {/* <label className="cursor-pointer text-xs">Add a Line</label> */}
                 </Button>
+              </div>
+
+              {/* RESULTS */}
+              <div className="flex flex-col items-end w-full">
+                <div className="flex flex-col items-start w-1/3">
+                  <div className="flex justify-between items-center w-full">
+                    <div className="self-end w-full">
+                      <label className="text-xs">Subtotal:</label>
+                    </div>
+                    <label className="text-xs">0.00</label>
+                  </div>
+                  <Button
+                    className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
+                    onClick={handleAddADiscount}
+                  >
+                    Add Discount
+                  </Button>
+                  <div className="flex justify-between items-center w-full">
+                    <label className="text-xs">Tax:</label>
+                    <label className="text-xs">0.00</label>
+                  </div>
+                  <div className="flex flex-col items-start border-t-[1px] border-b-[1px] border-[#BBBBBB] py-1 my-1 w-full">
+                    <div className="flex justify-between items-center w-full">
+                      <label className="text-xs">Total:</label>
+                      <label className="text-xs">0.00</label>
+                    </div>
+                    <div className="flex justify-between items-center w-full">
+                      <label className="text-xs">Amount Total:</label>
+                      <label className="text-xs">0.00</label>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center w-full">
+                    <label className="text-xs text-red-600">
+                      Amount Due (PHP):
+                    </label>
+                    <label className="text-xs">0.00</label>
+                  </div>
+                  <Button
+                    className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
+                    onClick={handleRequestADeposit}
+                  >
+                    Request a Deposit
+                  </Button>
+                </div>
               </div>
 
               {/* NOTES and TERMS */}
