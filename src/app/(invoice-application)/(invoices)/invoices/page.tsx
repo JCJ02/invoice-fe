@@ -186,57 +186,57 @@ const Invoices = () => {
                 data?.data?.clients?.map((client) =>
                   client?.invoices?.length > 0
                     ? client?.invoices?.map((invoice) => (
-                      <TableRow
-                        key={invoice.id}
-                        className={
-                          invoice.id % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
-                        }
-                      >
-                        <TableCell className="flex flex-col gap-1">
-                          <label className="text-sm">
-                            {client.companyName}
-                          </label>
-                          <label className="text-sm text-gray-500">
-                            {invoice.invoiceNumber}
-                          </label>
-                        </TableCell>
-                        <TableCell>{invoice.description}</TableCell>
-                        <TableCell className="flex flex-col gap-1">
-                          <label className="text-sm">
-                            {new Date(
-                              invoice.issuedDate
-                            ).toLocaleDateString()}
-                          </label>
-                          <label className="text-sm">
-                            {new Date(invoice.dueDate).toLocaleDateString()}
-                          </label>
-                        </TableCell>
-                        <TableCell>
-                          ₱{" "}
-                          {parseFloat(
-                            invoice.totalOutstanding
-                          ).toLocaleString()}{" "}
-                          PHP
-                        </TableCell>
-                        <TableCell className="flex items-center gap-1">
-                          <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
-                            <IoEyeOutline />
-                          </Button>
-                          <Button
-                            className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                            onClick={openEditInvoicesForm}
-                          >
-                            <FaRegEdit />
-                          </Button>
-                          <Button
-                            className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                            onClick={openDeleteInvoiceModal}
-                          >
-                            <MdDeleteOutline />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
+                        <TableRow
+                          key={invoice.id}
+                          className={
+                            invoice.id % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
+                          }
+                        >
+                          <TableCell className="flex flex-col gap-1">
+                            <label className="text-sm">
+                              {client.companyName}
+                            </label>
+                            <label className="text-sm text-gray-500">
+                              {invoice.invoiceNumber}
+                            </label>
+                          </TableCell>
+                          <TableCell>{invoice.description}</TableCell>
+                          <TableCell className="flex flex-col gap-1">
+                            <label className="text-sm">
+                              {new Date(
+                                invoice.issuedDate
+                              ).toLocaleDateString()}
+                            </label>
+                            <label className="text-sm">
+                              {new Date(invoice.dueDate).toLocaleDateString()}
+                            </label>
+                          </TableCell>
+                          <TableCell>
+                            ₱{" "}
+                            {parseFloat(
+                              invoice.totalOutstanding
+                            ).toLocaleString()}{" "}
+                            PHP
+                          </TableCell>
+                          <TableCell className="flex items-center gap-1">
+                            <Button className="bg-white px-1 lg:px-1 py-1 text-black text-sm">
+                              <IoEyeOutline />
+                            </Button>
+                            <Button
+                              className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                              onClick={openEditInvoicesForm}
+                            >
+                              <FaRegEdit />
+                            </Button>
+                            <Button
+                              className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                              onClick={openDeleteInvoiceModal}
+                            >
+                              <MdDeleteOutline />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
                     : null
                 )
               ) : (
