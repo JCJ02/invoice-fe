@@ -185,11 +185,11 @@ const Invoices = () => {
               ) : data && data?.data?.clients?.length > 0 ? (
                 data?.data?.clients?.map((client) =>
                   client?.invoices?.length > 0
-                    ? client?.invoices?.map((invoice) => (
+                    ? client?.invoices?.map((invoice, index) => (
                         <TableRow
                           key={invoice.id}
                           className={
-                            invoice.id % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
+                            index % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
                           }
                         >
                           <TableCell className="flex flex-col gap-1">
