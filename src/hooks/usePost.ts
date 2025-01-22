@@ -17,12 +17,20 @@ const usePost = <TRequest, TResponse>({
   const mutation = useMutation<TResponse, AxiosError, TRequest>({
     mutationFn: async (data: TRequest) => {
       const headers: Record<string, string> = {};
-      if(requiresAuthentication) {
-        const token = localStorage.getItem("token");
-        if(!token) {
+
+      if (requiresAuthentication) {
+
+        // ENSURE THE TOKEN IS AVAILABLE
+        let token = localStorage.getItem("token");
+
+        // IF THE TOKEN IS NOT PRESENT IN THE LOCALSTORAGE, TRY GETTING IT FROM THE STATE OR CONTEXT IF NECESSARY
+        if (!token) {
           throw new Error("Authentication Token is Missing!");
         }
+
+        console.log("Token From LocalStorage:", token); // Log the token
         headers["Authorization"] = `Bearer ${token}`;
+
       }
       const response = await axios.post<TResponse>(url, data, { headers });
       return response.data;
