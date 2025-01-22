@@ -1,3 +1,5 @@
+import { InvoiceType } from "./InvoiceType";
+
 export type ClientType = {
     id: number;
     firstname: string;
@@ -11,6 +13,7 @@ export type ClientType = {
     createdAt: Date;
     updatedAt: Date;
     deleteAt: Date;
+    invoices?: InvoiceType[] | undefined;
 };
   
 export type ClientResponse = {
