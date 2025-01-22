@@ -22,12 +22,13 @@ interface LoginResponse {
 const useLoginMutation = () => {
   const router = useRouter();
   const { setUser } = useUser();
-  const [authToken, setAuthToken] = useLocalStorage<string | null>("token", null);
+  const [authenticationToken, setAuthenticationToken] = useLocalStorage<string | null>("token", null);
 
   const loginMutation = usePost<Login, LoginResponse>({
     url: `${baseUrl}api/admin/authenticate`,
     requiresAuthentication: false,
     onSuccess: (data) => {
+      router.push("/client");
       toast.success('Logged In Successfully!', {
         toastId: "loggedInSuccess",
         position: "top-right",
@@ -40,13 +41,13 @@ const useLoginMutation = () => {
         theme: "light",
         transition: Bounce,
       });
-      if(!authToken) {
-        setAuthToken(data.data.token);
+      if(!authenticationToken) {
+        setAuthenticationToken(data.data.token);
+        console.log(`Token: ${authenticationToken}`);
       } else {
-        console.log(`Token: ${authToken}`);
+        console.log(`Token Is Already Set: ${authenticationToken}`);
       }
       setUser(data.data.admin);
-      router.push("/client");
     }
   });
 
