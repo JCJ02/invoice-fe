@@ -29,7 +29,7 @@ const useNewClientForm = () => {
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = target;
         setValues((input) => ({ ...input, [name]: value }));
-      };
+    };
 
     const validateNewClientForm = () => {
         const result = newClientSchema.safeParse(values);
