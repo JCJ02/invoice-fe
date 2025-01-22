@@ -12,7 +12,11 @@ const SelectClientModal = ({
   closeModal,
   openNewInvoicesForm,
 }: SelectClientModalProps) => {
-  const { data, isLoading, isError, error } = useFetchClients();
+  const { data, isLoading, isError, error } = useFetchClients(
+    undefined,
+    undefined,
+    50
+  );
   const [selectedClientId, setSelectedClientId] = useState<number | null>(null);
 
   const handleSelectClient = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -48,7 +52,7 @@ const SelectClientModal = ({
                 error?.message || "An Unknown Error Occurred."
               }`}</option>
             )}
-            {data && data?.data?.clients?.length > 0 ? (
+            {data && data?.data.clients.length > 0 ? (
               data.data.clients.map((client: ClientType) => (
                 <option className="text-sm" key={client.id} value={client.id}>
                   {`${client.firstname} ${client.lastname} - ${client.companyName}`}
@@ -70,7 +74,7 @@ const SelectClientModal = ({
             className="border-2 border-[#D2232D] px-4 lg:px-10"
             onClick={() => {
               if (selectedClientId) {
-                const selectedClient = data?.data?.clients?.find(
+                const selectedClient = data?.data.clients.find(
                   (client: ClientType) => client.id === selectedClientId
                 );
                 if (selectedClient) {
