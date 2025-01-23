@@ -28,7 +28,6 @@ const usePost = <TRequest, TResponse>({
           throw new Error("Authentication Token is Missing!");
         }
 
-        console.log("Token From LocalStorage:", token); // Log the token
         headers["Authorization"] = `Bearer ${token}`;
 
       }
