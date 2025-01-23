@@ -59,16 +59,21 @@ const Client = () => {
     setCurrentPage(page);
   };
 
+  // HANDLE OPEN AND CLOSE NEW CLIENT MODAL
   const openNewClientModal = () => setIsNewClientModalOpen(true);
   const closeNewClientModal = () => {
     setIsNewClientModalOpen(false);
   };
+
+  // HANDLE OPEN AND CLOSE EDIT CLIENT MODAL
   const openEditClientModal = (event: React.FormEvent, client: ClientType) => {
     event.preventDefault();
     setSelectedClient(client);
     setIsEditClientModalOpen(true);
   };
   const closeEditClientModal = () => setIsEditClientModalOpen(false);
+
+  // HANDLE OPEN AND CLOSE DELETE CLIENT MODAL
   const openDeleteClientModal = (
     event: React.FormEvent,
     client: ClientType
@@ -78,6 +83,8 @@ const Client = () => {
     setIsDeleteClientModalOpen(true);
   };
   const closeDeleteClientModal = () => setIsDeleteClientModalOpen(false);
+
+  // HANDLE OPEN AND CLOSE VIEW CLIENT MODAL
   const openViewClientModal = (event: React.FormEvent, client: ClientType) => {
     event.preventDefault();
     setSelectedClient(client);
@@ -149,7 +156,7 @@ const Client = () => {
                       }`}
                     </TableCell>
                   </TableRow>
-                ) : data && data?.data?.clients?.length > 0 ? (
+                ) : data && data?.data.clients.length > 0 ? (
                   data.data.clients.map((client: ClientType, index: number) => (
                     <TableRow
                       key={client.id}
