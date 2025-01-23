@@ -216,7 +216,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   <div className="self-end w-full">
                     <label className="text-xs">Subtotal:</label>
                   </div>
-                  <label className="text-xs">0.00</label>
+                  <label className="text-xs">₱0.00</label>
                 </div>
                 <Button
                   className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
@@ -226,7 +226,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </Button>
                 <div className="flex justify-between items-center w-full">
                   <label className="text-xs">Tax:</label>
-                  <label className="text-xs">0.00</label>
+                  <label className="text-xs">₱0.00</label>
                 </div>
                 <div className="flex flex-col items-start border-t-[1px] border-b-[1px] border-[#BBBBBB] py-1 my-1 w-full">
                   <div className="flex justify-between items-center w-full">
@@ -237,7 +237,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   </div>
                   <div className="flex justify-between items-center w-full">
                     <label className="text-xs">Amount Paid:</label>
-                    <label className="text-xs">0.00</label>
+                    <label className="text-xs">₱0.00</label>
                   </div>
                 </div>
                 <div className="flex justify-between items-center w-full">
