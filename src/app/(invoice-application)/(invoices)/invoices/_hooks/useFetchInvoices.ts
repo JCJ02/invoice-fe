@@ -43,7 +43,7 @@ interface InvoicesResponse {
     code: number;
 }
 
-const useFetchInvoices = (query: string, page: number, limit: number) => {
+const useFetchInvoices = (query?: string, page?: number, limit?: number) => {
     const router = useRouter();
     const token = localStorage.getItem("token");
   
