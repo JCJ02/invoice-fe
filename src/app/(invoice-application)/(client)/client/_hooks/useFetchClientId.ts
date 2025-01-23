@@ -1,12 +1,14 @@
-// import baseUrl from "@/utils/baseUrl";
-// import useFetch from "@/hooks/useFetch";
-// import { ClientResponse } from "@/types/ClientType";
-  
-// const useViewClient = (id: number) => {
-//     return useFetch<ClientResponse>(
-//         ["clientid", id.toString()],
-//         `${baseUrl}api/client/${id}`
-//     );
-// };
-  
-// export default useViewClient;
+import baseUrl from "@/utils/baseUrl";
+import { ClientResponse, ClientWithInvoicesResponse } from "@/types/ClientType";
+import useFetch from "@/hooks/useFetch";
+
+const useFetchClientId = (clientId: number) => {
+  const { data, isLoading, isError, error } = useFetch<ClientWithInvoicesResponse>(
+    "client",
+    `${baseUrl}api/client/${clientId}`
+  );
+
+  return { data, isLoading, isError, error };
+};
+
+export default useFetchClientId;
