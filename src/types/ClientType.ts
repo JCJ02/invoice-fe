@@ -13,14 +13,23 @@ export type ClientType = {
     createdAt: Date;
     updatedAt: Date;
     deleteAt: Date;
-    invoices?: InvoiceType[] | undefined;
+    invoices?: InvoiceType[];
 };
-  
+
+export type ClientWithInvoicesResponse = {
+    data: {
+        client: ClientType;
+        totalClients?: number;
+    };
+    message?: string;
+    code?: number;
+}
+
 export type ClientResponse = {
     data: {
         clients: ClientType[];
-        totalClients: number;
+        totalClients?: number;
     };
-    message: string;
-    code: number;
+    message?: string;
+    code?: number;
 };
