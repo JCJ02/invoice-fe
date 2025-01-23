@@ -1,6 +1,6 @@
 "use client";
 
-import Footer from "@/components/Footer";
+import Footer from "@/layouts/Footer";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import signInFormImage from "../../../assets/images/sign-in-form-image.jpg";
@@ -12,6 +12,7 @@ import useLoginMutation from "@/app/(authentication)/sign-in/_hooks/useLoginMuta
 import useRememberPassword from "@/app/(authentication)/sign-in/_hooks/useRememberPassword";
 import { IoEyeSharp } from "react-icons/io5";
 import { IoEyeOffSharp } from "react-icons/io5";
+import MoonLoader from "react-spinners/MoonLoader";
 
 const SignIn = () => {
   const { values, setValues, errors, handleChange, validateForm } =
@@ -19,6 +20,7 @@ const SignIn = () => {
   const loginMutation = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const { rememberPasswordData, updateRememberPasswordData } =
     useRememberPassword();
 
@@ -38,10 +40,11 @@ const SignIn = () => {
 
   const handleLogin = (event: React.FormEvent) => {
     event.preventDefault();
-
+    setLoading(true);
     if (validateForm()) {
       loginMutation.mutate(values, {
         onSuccess: () => {
+          setLoading(false);
           updateRememberPasswordData("email", values.email);
           updateRememberPasswordData("password", values.password);
           updateRememberPasswordData(
@@ -50,6 +53,7 @@ const SignIn = () => {
           );
         },
         onError: () => {
+          setLoading(false);
           const message =
             "Oops, Invalid Crendentials! Please Check Your Credentials!";
           setErrorMessage(message);
@@ -156,10 +160,24 @@ const SignIn = () => {
               </div>
               <button
                 id="sign-in"
-                className="bg-[#D2232D] font-poppins text-white p-1 my-5 rounded-md hover:bg-[#E47B81] w-full"
+                className={`${
+                  loading ? "bg-[#E47B81]" : "bg-[#D2232D]"
+                } font-poppins text-white p-1 my-5 rounded-md hover:bg-[#E47B81] w-full`}
                 type="submit"
+                disabled={loading}
               >
-                Sign In
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <MoonLoader
+                      color="#FFFFFF"
+                      size={15}
+                      speedMultiplier={0.5}
+                    />
+                    Signing In...
+                  </span>
+                ) : (
+                  "Sign In"
+                )}
               </button>
               {errorMessage && (
                 <p className="font-poppins text-red-700 text-xs md:text-md w-[250px]">

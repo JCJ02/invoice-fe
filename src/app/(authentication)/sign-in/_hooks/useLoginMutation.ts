@@ -43,9 +43,8 @@ const useLoginMutation = () => {
       });
       if(!authenticationToken) {
         setAuthenticationToken(data.data.token);
-        console.log(`Token: ${authenticationToken}`);
       } else {
-        console.log(`Token Is Already Set: ${authenticationToken}`);
+        console.log(`Token is already Set: ${authenticationToken}`);
       }
       setUser(data.data.admin);
     }
