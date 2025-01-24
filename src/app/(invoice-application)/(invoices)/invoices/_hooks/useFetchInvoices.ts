@@ -54,7 +54,7 @@ const useFetchInvoices = (query?: string, page?: number, limit?: number) => {
   
     const { data, isLoading, isError, error } = useFetch<InvoicesResponse>(
       "invoices",
-      `${baseUrl}api/client/retrieve/client-with-invoice-list/`,
+      `${baseUrl}api/client/`,
       {
         params: {
           query,
