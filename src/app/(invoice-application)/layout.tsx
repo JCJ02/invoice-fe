@@ -1,5 +1,5 @@
-import SideNavigationBar from "@/components/SideNavigationBar";
-import NavigationBar from "@/components/NavigationBar";
+import SideNavigationBar from "@/layouts/SideNavigationBar";
+import NavigationBar from "@/layouts/NavigationBar";
 import "../globals.css";
 
 export default function InvoiceApplicationLayout({
