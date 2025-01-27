@@ -1,4 +1,5 @@
 import { InvoiceType } from "@/types/InvoiceType";
+
 import {
   Document,
   Font,
@@ -14,7 +15,9 @@ import { createTw } from "react-pdf-tailwind";
 const styles = StyleSheet.create({
   page: {
     display: "flex",
-    flexDirection: "row",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
     backgroundColor: "#FFFFFF",
     height: "100%",
     width: "100%",
@@ -40,17 +43,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: "36px",
     paddingBottom: "36px",
   },
-  column2: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-end",
-    gap: "4px",
-  },
 });
 
 Font.register({
   family: "Poppins",
   src: "https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap",
+});
+
+Font.register({
+  family: "Inter",
+  src: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
 });
 
 Font.register({
@@ -62,7 +64,7 @@ Font.register({
 const tw = createTw({
   theme: {
     fontFamily: {
-      sans: ["Comic Sans", "Poppins", "Roboto"],
+      sans: ["Comic Sans", "Poppins", "Roboto", "Inter"],
     },
     extend: {
       colors: {
@@ -85,17 +87,14 @@ const InvoicePDF = ({
       <View style={[styles.column, styles.padding, styles.gap]}>
         {/* HEADER */}
         <View style={styles.row}>
-          <Image
-            src="../../../../../assets/images/lws-main-logo.png"
-            style={tw("w-32")}
-          />
+          <Image src="/assets/images/lws-main-logo.png" style={tw("w-32")} />
           <View style={tw("flex flex-col items-end")}>
             <Text style={tw("font-roboto text-sm")}>Lightweight Solutions</Text>
             <Text style={tw("font-roboto text-sm")}>(02) 750-920-95</Text>
             <Text style={tw("font-roboto text-sm")}>
               5F, Phinma Plaza, 30 Plaza Drive Rockwell Center
             </Text>
-            <Text style={tw("font-roboto text-xs")}>
+            <Text style={tw("font-roboto text-sm")}>
               Makati City Metro Manila 1210
             </Text>
           </View>
@@ -145,10 +144,10 @@ const InvoicePDF = ({
           <View style={tw("flex flex-col items-end gap-1 w-full")}>
             <Text style={tw("text-sm text-red-600")}>Amount Due (PHP)</Text>
             <Text style={tw("font-roboto text-xl")}>
-              ₱
               {Number(
                 data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-              ).toLocaleString() || "0.00"}
+              ).toLocaleString() || "0.00"}{" "}
+              PHP
             </Text>
           </View>
         </View>
@@ -211,13 +210,14 @@ const InvoicePDF = ({
                       {new Date(invoice.dueDate).toLocaleDateString()}
                     </Text>
                     <Text style={tw("font-roboto text-sm w-1/5")}>
-                      {Number(invoice.rate).toFixed(2).toLocaleString()}
+                      {Number(invoice.rate).toFixed(2).toLocaleString()} PHP
                     </Text>
                     <Text style={tw("font-roboto text-sm w-1/6")}>
                       {invoice.quantity}
                     </Text>
                     <Text style={tw("font-poppins text-sm w-1/5")}>
-                      ₱{Number(invoice.lineTotal).toFixed(2).toLocaleString()}
+                      {Number(invoice.lineTotal).toFixed(2).toLocaleString()}{" "}
+                      PHP
                     </Text>
                   </View>
                 ))
@@ -231,12 +231,12 @@ const InvoicePDF = ({
           <View style={tw("flex flex-col items-start w-2/5")}>
             <View style={styles.row}>
               <Text style={tw("font-roboto text-sm")}>Subtotal:</Text>
-              <Text style={tw("font-roboto text-sm")}>₱0.00</Text>
+              <Text style={tw("font-roboto text-sm")}>{`0.00 PHP`}</Text>
             </View>
 
             <View style={styles.row}>
               <Text style={tw("font-roboto text-sm")}>Tax:</Text>
-              <Text style={tw("font-roboto text-sm")}>₱0.00</Text>
+              <Text style={tw("font-roboto text-sm")}>{`0.00 PHP`}</Text>
             </View>
 
             <View
@@ -247,16 +247,16 @@ const InvoicePDF = ({
               <View style={styles.row}>
                 <Text style={tw("font-roboto text-sm")}>Total:</Text>
                 <Text style={tw("font-roboto text-sm")}>
-                  ₱
                   {Number(
                     data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                  ).toLocaleString() || "0.00"}
+                  ).toLocaleString() || "0.00"}{" "}
+                  PHP
                 </Text>
               </View>
 
               <View style={styles.row}>
                 <Text style={tw("font-roboto text-sm")}>Amount Paid:</Text>
-                <Text style={tw("font-roboto text-sm")}>₱0.00</Text>
+                <Text style={tw("font-roboto text-sm")}>{`0.00 PHP`}</Text>
               </View>
             </View>
             <View style={styles.row}>
@@ -264,31 +264,30 @@ const InvoicePDF = ({
                 Amount Due (PHP):
               </Text>
               <Text style={tw("font-roboto text-sm")}>
-                ₱
                 {Number(
                   data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                ).toLocaleString() || "0.00"}
+                ).toLocaleString() || "0.00"}{" "}
+                PHP
               </Text>
             </View>
           </View>
         </View>
-
-        {/* NOTES and TERMS */}
-        <View style={tw("flex flex-col items-start gap-2 pt-10 w-full")}>
-          <Text style={tw("text-sm text-red-600")}>Notes</Text>
-          <View style={tw("flex flex-col items-start gap-1 w-full")}>
-            <Text style={tw("font-roboto text-sm")}>Bank Name: BDO</Text>
-            <Text style={tw("font-roboto text-sm")}>
-              Account Name: Lightweight Information Technology Solutions
-            </Text>
-            <Text style={tw("font-roboto text-sm")}>
-              Bank Account Number: 000-000-00-00
-            </Text>
-            <Text style={tw("font-roboto text-sm")}>
-              Bank Address: 1488 Quezon Avenue, 1103 South Triangle, Scout
-              Albano, Quezon City, Philippines
-            </Text>
-          </View>
+      </View>
+      {/* NOTES and TERMS */}
+      <View style={tw("flex flex-col items-start gap-2 px-9 pb-9 w-full")}>
+        <Text style={tw("text-sm text-red-600")}>Notes</Text>
+        <View style={tw("flex flex-col items-start gap-1 w-full")}>
+          <Text style={tw("font-roboto text-sm")}>Bank Name: BDO</Text>
+          <Text style={tw("font-roboto text-sm")}>
+            Account Name: Lightweight Information Technology Solutions
+          </Text>
+          <Text style={tw("font-roboto text-sm")}>
+            Bank Account Number: 000-000-00-00
+          </Text>
+          <Text style={tw("font-roboto text-sm")}>
+            Bank Address: 1488 Quezon Avenue, 1103 South Triangle, Scout Albano,
+            Quezon City, Philippines
+          </Text>
         </View>
       </View>
     </Page>
