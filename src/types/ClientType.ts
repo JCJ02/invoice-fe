@@ -13,6 +13,7 @@ export type ClientType = {
     createdAt: Date;
     updatedAt: Date;
     deleteAt: Date;
+    invoices?: InvoiceType[]
 };
   
 export type ClientResponse = {
