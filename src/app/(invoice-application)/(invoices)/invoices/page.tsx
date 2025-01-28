@@ -209,76 +209,77 @@ const Invoices = () => {
                   </TableCell>
                 </TableRow>
               ) : data && data?.data?.clients?.length > 0 ? (
-                data?.data?.clients?.map((client: ClientType) =>
-                  client?.invoices?.length
-                    ? client?.invoices?.map(
-                        (invoice: InvoiceType, index: number) => (
-                          <TableRow
-                            key={invoice.id}
-                            className={
-                              index % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
-                            }
-                          >
-                            <TableCell className="flex flex-col gap-1">
-                              <label className="text-sm">
-                                {client.companyName}
-                              </label>
-                              <label className="text-sm text-gray-500">
-                                {invoice.invoiceNumber}
-                              </label>
-                            </TableCell>
-                            <TableCell>{invoice.description}</TableCell>
-                            <TableCell className="flex flex-col gap-1">
-                              <label className="text-sm">
-                                {new Date(
-                                  invoice.issuedDate
-                                ).toLocaleDateString()}
-                              </label>
-                              <label className="text-sm">
-                                {new Date(invoice.dueDate).toLocaleDateString()}
-                              </label>
-                            </TableCell>
-                            <TableCell>
-                              ₱{" "}
-                              {parseFloat(
-                                invoice.totalOutstanding
-                              ).toLocaleString()}{" "}
-                              PHP
-                            </TableCell>
-                            <TableCell className="flex items-center gap-1">
-                              {/* VIEW INVOICES */}
-                              <Button
-                                className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                                onClick={(event: React.FormEvent) => {
-                                  openViewInvoicesModal(event, client);
-                                }}
-                              >
-                                <IoEyeOutline />
-                              </Button>
-
-                              {/* EDIT INVOICES */}
-                              <Button
-                                className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                                onClick={openEditInvoicesForm}
-                              >
-                                <FaRegEdit />
-                              </Button>
-
-                              {/* DELETE INVOICE */}
-                              <Button
-                                className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                                onClick={(event: React.FormEvent) => {
-                                  openDeleteInvoiceModal(event, invoice);
-                                }}
-                              >
-                                <MdDeleteOutline />
-                              </Button>
-                            </TableCell>
-                          </TableRow>
-                        )
-                      )
-                    : null
-                )
+                (() => {
+                  let rowIndex = 0; // SEPERATE COUNTER TO TRACK ROW ORDER GLOBALLY
+                  return data?.data?.clients?.flatMap((client: ClientType) =>
+                    client?.invoices?.length
+                      ? client?.invoices?.map((invoice: InvoiceType) => {
+                          rowIndex++; // INCREMENT FOR EACH ROW
+                          return (
+                            <TableRow
+                              key={invoice.id}
+                              className={
+                                rowIndex % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
+                              }
+                            >
+                              <TableCell className="flex flex-col gap-1">
+                                <label className="text-sm">
+                                  {client.companyName}
+                                </label>
+                                <label className="text-sm text-gray-500">
+                                  {invoice.invoiceNumber}
+                                </label>
+                              </TableCell>
+                              <TableCell>{invoice.description}</TableCell>
+                              <TableCell className="flex flex-col gap-1">
+                                <label className="text-sm">
+                                  {new Date(
+                                    invoice.issuedDate
+                                  ).toLocaleDateString()}
+                                </label>
+                                <label className="text-sm">
+                                  {new Date(
+                                    invoice.dueDate
+                                  ).toLocaleDateString()}
+                                </label>
+                              </TableCell>
+                              <TableCell>
+                                ₱{" "}
+                                {parseFloat(
+                                  invoice.totalOutstanding
+                                ).toLocaleString()}{" "}
+                                PHP
+                              </TableCell>
+                              <TableCell className="flex items-center gap-1">
+                                <Button
+                                  className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                                  onClick={(event: React.FormEvent) =>
+                                    openViewInvoicesModal(event, client)
+                                  }
+                                >
+                                  <IoEyeOutline />
+                                </Button>
+                                <Button
+                                  className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                                  onClick={openEditInvoicesForm}
+                                >
+                                  <FaRegEdit />
+                                </Button>
+                                <Button
+                                  className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
+                                  onClick={(event: React.FormEvent) =>
+                                    openDeleteInvoiceModal(event, invoice)
+                                  }
+                                >
+                                  <MdDeleteOutline />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })
+                      : []
+                  );
+                })()
               ) : (
                 <TableRow>
                   <TableCell
@@ -292,6 +293,7 @@ const Invoices = () => {
               )}
             </TableBody>
           </Table>
+
           {/* PAGINATION */}
           <Pagination className="justify-end">
             <PaginationContent className="flex items-center">
