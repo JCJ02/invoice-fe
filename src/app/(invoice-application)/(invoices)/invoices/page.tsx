@@ -108,8 +108,7 @@ const Invoices = () => {
     setSelectedInvoice(invoice);
     setEditInvoicesFormOpen(true);
   };
-  const closeEditInvoicesForm = (event: React.FocusEvent) => {
-    event.preventDefault();
+  const closeEditInvoicesForm = () => {
     setEditInvoicesFormOpen(false);
   };
 
