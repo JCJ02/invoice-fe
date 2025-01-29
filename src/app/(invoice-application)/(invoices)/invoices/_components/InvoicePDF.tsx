@@ -87,7 +87,7 @@ const InvoicePDF = ({
       <View style={[styles.column, styles.padding, styles.gap]}>
         {/* HEADER */}
         <View style={styles.row}>
-          <Image src={LWSMainLogo.src} style={tw("w-40")} />
+          <Image src={LWSMainLogo.src} style={tw("pb-10 w-40")} />
           <View style={tw("flex flex-col items-end")}>
             <Text style={tw("font-roboto text-sm")}>Lightweight Solutions</Text>
             <Text style={tw("font-roboto text-sm")}>(02) 750-920-95</Text>
