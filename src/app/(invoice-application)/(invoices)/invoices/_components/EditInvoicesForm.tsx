@@ -1,20 +1,73 @@
 import Button from "@/components/Button";
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import lwsMainLogo from "../../../../../assets/images/lws-main-logo.png";
 import { MdAccessAlarms, MdOutlineKeyboardArrowRight } from "react-icons/md";
+import InputFields from "@/components/InputFields";
+import { ClientType } from "@/types/ClientType";
+import formattedDate from "@/utils/date";
+import useEditInvoiceMutation from "../_hooks/useEditInvoiceMutation";
+import useEditInvoiceForm from "../_hooks/useEditInvoiceForm";
+import { InvoiceType } from "@/types/InvoiceType";
 
 type EditInvoiceFormProps = {
-  closeModal: () => void;
+  closeModal: any;
+  client: ClientType;
+  invoice: InvoiceType;
 };
 
-const EditInvoicesForm = ({ closeModal }: EditInvoiceFormProps) => {
+const EditInvoicesForm = ({
+  closeModal,
+  client,
+  invoice,
+}: EditInvoiceFormProps) => {
+  const {
+    currentValues,
+    setCurrentValues,
+    errors,
+    totalOutstanding,
+    handleChange,
+    validateEditInvoiceForm,
+  } = useEditInvoiceForm();
+
+  useEffect(() => {
+    if (invoice) {
+      const invoiceWithDate = {
+        ...invoice,
+        dueDate: invoice.dueDate ? new Date(invoice.dueDate) : new Date(), // DEFAULT DATE IF NULL
+      };
+      setCurrentValues(invoiceWithDate);
+    }
+  }, [invoice, setCurrentValues]);
+
+  const editInvoiceMutation = useEditInvoiceMutation(invoice.id);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleUpdateInvoice = (event: React.FormEvent) => {
+    event.preventDefault();
+    if (validateEditInvoiceForm()) {
+      editInvoiceMutation.mutate(currentValues, {
+        onSuccess: () => {
+          closeModal();
+        },
+        onError: () => {
+          const message =
+            "Oops, Invalid Crendentials! Please Check Your Credentials!";
+          setErrorMessage(message);
+        },
+      });
+    }
+  };
+
   useEffect(() => {
     document.title = "Edit Invoices - Invoice Application";
   }, []);
   return (
     <>
-      <form className="bg-white flex font-poppins">
+      <form
+        className="bg-white flex font-poppins"
+        onSubmit={handleUpdateInvoice}
+      >
         {/* EDIT INVOICE FORM */}
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full">
@@ -30,6 +83,127 @@ const EditInvoicesForm = ({ closeModal }: EditInvoiceFormProps) => {
                   </p>
                   <p className="text-xs">Makati City Metro Manila 1210</p>
                 </div>
+              </div>
+
+              {/* CLIENT INFORMATION */}
+              <div className="flex justify-between items-start gap-2 font-poppins w-full">
+                <div className="flex items-start gap-8 w-full">
+                  {/* BILLED TO */}
+                  <div className="flex flex-col items-start gap-1">
+                    <h1 className="text-xs text-red-600">Billed To</h1>
+                    <div className="flex flex-col items-start">
+                      <label className="text-xs">{client.companyName}</label>
+                      <label className="text-xs">
+                        {`${client.firstname} ${client.lastname}`}
+                      </label>
+                    </div>
+                  </div>
+
+                  {/* DATE OF ISSUE & DUE */}
+                  <div className="flex flex-col items-start gap-3">
+                    <div className="flex flex-col items-start gap-1">
+                      <h1 className="text-xs text-red-600">Date of Issue</h1>
+                      <label className="text-xs">{formattedDate}</label>
+                    </div>
+                  </div>
+                </div>
+
+                {/* AMOUNT DUE */}
+                <div className="flex flex-col items-start gap-1">
+                  <h1 className="text-xs text-red-600">Amount Due (PHP)</h1>
+                  <label className="text-xl">
+                    {`₱${totalOutstanding.toFixed(2) || 0.0}`}
+                  </label>
+                </div>
+              </div>
+
+              {/* EDIT INVOICES */}
+              <div className="flex flex-col items-center gap-1 border-t-2 border-red-600 w-full">
+                {/* FIELDS TITLE */}
+                <div className="flex justify-between items-center py-2 w-full">
+                  <label className="text-xs text-red-600 w-1/4">
+                    Description
+                  </label>
+                  <label className="text-xs text-red-600 w-1/5">Due Date</label>
+                  <label className="text-xs text-red-600 w-1/6">Rate</label>
+                  <label className="text-xs text-red-600 w-1/6">Quantity</label>
+                  <label className="text-xs text-red-600 w-1/6">
+                    Line Total
+                  </label>
+                </div>
+
+                {/* INVOICE FIELDS */}
+                <div className="flex justify-between items-start gap-1 w-full">
+                  <div className="flex flex-col items-start w-1/4">
+                    <InputFields
+                      className="text-xs w-full"
+                      placeholder="Description"
+                      name="description"
+                      value={currentValues.description}
+                      onChange={handleChange}
+                    />
+                    {errors?.description && (
+                      <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                        {errors?.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start w-1/5">
+                    <InputFields
+                      className="text-xs py-2 w-full"
+                      type="date"
+                      name="dueDate"
+                      value={currentValues.dueDate?.toISOString().split("T")[0]}
+                      onChange={handleChange}
+                    />
+                    {errors.dueDate && (
+                      <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                        {errors.dueDate}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start w-1/6">
+                    <InputFields
+                      className="text-xs w-full"
+                      placeholder="Rate"
+                      type="number"
+                      name="rate"
+                      value={currentValues.rate || 0}
+                      onChange={handleChange}
+                    />
+                    {errors.rate && (
+                      <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                        {errors.rate}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex flex-col items-start w-1/6">
+                    <InputFields
+                      className="text-xs w-full"
+                      placeholder="Quantity"
+                      type="number"
+                      name="quantity"
+                      value={currentValues.quantity || 0}
+                      onChange={handleChange}
+                    />
+                    {errors.quantity && (
+                      <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                        {errors.quantity}
+                      </p>
+                    )}
+                  </div>
+                  <InputFields
+                    className="text-xs w-1/6"
+                    placeholder="Line Total"
+                    value={`₱${totalOutstanding.toFixed(2) || 0.0}`}
+                    readOnly
+                  />
+                </div>
+                {errorMessage && (
+                  <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                    {errorMessage}
+                  </p>
+                )}
               </div>
 
               {/* NOTES and TERMS */}
