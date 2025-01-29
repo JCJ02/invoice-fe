@@ -28,7 +28,7 @@ import generatePaginationLinks from "@/utils/generatePaginationLinks";
 import Modal from "@/components/Modal";
 import SelectClientModal from "./_components/SelectClientModal";
 import DeleteInvoiceModal from "./_components/DeleteInvoiceModal";
-import EditInvoicesForm from "./_components/EditInvoicesForm";
+import EditInvoicesForm from "./_components/EditInvoiceForm";
 import { ClientType } from "@/types/ClientType";
 import NewInvoicesForm from "./_components/NewInvoicesForm";
 import { InvoiceType } from "@/types/InvoiceType";
