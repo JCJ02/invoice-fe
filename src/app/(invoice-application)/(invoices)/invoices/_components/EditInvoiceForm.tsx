@@ -16,7 +16,7 @@ type EditInvoiceFormProps = {
   invoice: InvoiceType;
 };
 
-const EditInvoicesForm = ({
+const EditInvoiceForm = ({
   closeModal,
   client,
   invoice,
@@ -363,4 +363,4 @@ const EditInvoicesForm = ({
   );
 };
 
-export default EditInvoicesForm;
+export default EditInvoiceForm;
