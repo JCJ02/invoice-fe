@@ -35,6 +35,8 @@ const EditInvoiceForm = ({
       const invoiceWithDate = {
         ...invoice,
         dueDate: invoice.dueDate ? new Date(invoice.dueDate) : new Date(), // DEFAULT DATE IF NULL
+        rate: Number(invoice.rate),
+        quantity: Number(invoice.quantity),
       };
       setCurrentValues(invoiceWithDate);
     }
@@ -50,13 +52,22 @@ const EditInvoiceForm = ({
         onSuccess: () => {
           closeModal();
         },
-        onError: () => {
+        onError: (error) => {
+          console.error("Error While Updating Invoice", error);
           const message =
             "Oops, Invalid Crendentials! Please Check Your Credentials!";
           setErrorMessage(message);
         },
       });
     }
+  };
+
+  const handleAddADiscount = (event: React.FormEvent) => {
+    event.preventDefault();
+  };
+
+  const handleRequestADeposit = (event: React.FormEvent) => {
+    event.preventDefault();
   };
 
   useEffect(() => {
@@ -72,7 +83,8 @@ const EditInvoiceForm = ({
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full">
             <h1 className="text-xl font-semibold w-full">Edit Invoice</h1>
-            <div className="flex flex-col items-start py-12 px-8 gap-24 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] w-full">
+            <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] w-full">
+              {/* HEADER */}
               <div className="flex justify-between items-start gap-10 lg:gap-20 w-full">
                 <Image className="w-32" alt="LWS Main Logo" src={lwsMainLogo} />
                 <div className="flex flex-col items-end">
@@ -195,7 +207,9 @@ const EditInvoiceForm = ({
                   <InputFields
                     className="text-xs w-1/6"
                     placeholder="Line Total"
-                    value={`₱${totalOutstanding.toFixed(2) || 0.0}`}
+                    value={
+                      (currentValues.rate || 0) * (currentValues.quantity || 0)
+                    }
                     readOnly
                   />
                 </div>
@@ -204,6 +218,54 @@ const EditInvoiceForm = ({
                     {errorMessage}
                   </p>
                 )}
+              </div>
+
+              {/* RESULTS */}
+              <div className="flex flex-col items-end w-full">
+                <div className="flex flex-col items-start w-1/3">
+                  <div className="flex justify-between items-center w-full">
+                    <div className="self-end w-full">
+                      <label className="text-xs">Subtotal:</label>
+                    </div>
+                    <label className="text-xs">₱0.00</label>
+                  </div>
+                  <Button
+                    className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
+                    onClick={handleAddADiscount}
+                  >
+                    Add Discount
+                  </Button>
+                  <div className="flex justify-between items-center w-full">
+                    <label className="text-xs">Tax:</label>
+                    <label className="text-xs">₱0.00</label>
+                  </div>
+                  <div className="flex flex-col items-start border-t-[1px] border-b-[1px] border-[#BBBBBB] py-1 my-1 w-full">
+                    <div className="flex justify-between items-center w-full">
+                      <label className="text-xs">Total:</label>
+                      <label className="text-xs">{`₱${totalOutstanding.toFixed(
+                        2
+                      )}`}</label>
+                    </div>
+                    <div className="flex justify-between items-center w-full">
+                      <label className="text-xs">Amount Paid:</label>
+                      <label className="text-xs">₱0.00</label>
+                    </div>
+                  </div>
+                  <div className="flex justify-between items-center w-full">
+                    <label className="text-xs text-red-600">
+                      Amount Due (PHP):
+                    </label>
+                    <label className="text-xs">{`₱${totalOutstanding.toFixed(
+                      2
+                    )}`}</label>
+                  </div>
+                  <Button
+                    className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
+                    onClick={handleRequestADeposit}
+                  >
+                    Request a Deposit
+                  </Button>
+                </div>
               </div>
 
               {/* NOTES and TERMS */}
