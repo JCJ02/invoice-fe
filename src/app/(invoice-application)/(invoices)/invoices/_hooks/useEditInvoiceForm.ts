@@ -1,5 +1,5 @@
 import { EditInvoice, updateInvoiceSchema } from "@/utils/validations/InvoicesSchema";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type EditInvoiceWithTotal = EditInvoice & {
     lineTotal?: number;
@@ -28,13 +28,39 @@ const useEditInvoiceForm = () => {
         return Math.round(value * 100) / 100; 
     };
 
-    const calculateTotalOutstanding = (invoice: EditInvoiceWithTotal) => {
-        if (!invoice) return;
+    // const calculateTotalOutstanding = (invoice: EditInvoiceWithTotal) => {
+    //     if (!invoice) return;
 
-        const total = invoice.lineTotal || 0;
+    //     const total = invoice.lineTotal || 0;
+    //     setTotalOutstanding(decimalFormat(total));
+    // };    
+    const calculateTotalOutstanding = (invoice: EditInvoice) => {
+        if (!invoice.rate || !invoice.quantity) return;
+        
+        const total = invoice.rate * invoice.quantity;
         setTotalOutstanding(decimalFormat(total));
-    };    
+    };
 
+    // const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    //     const { name, value, type } = target;
+    //     setCurrentValues((previousValues) => {
+    //         const updatedValues = { 
+    //             ...previousValues, 
+    //             [name]: 
+    //                 type === "number"
+    //                     ? value.trim() === "" ? 0 : decimalFormat(parseFloat(value))
+    //                     : name === "dueDate"
+    //                     ? new Date(value)
+    //                     : value
+    //         };
+    
+    //         if (name === "rate" || name === "quantity") {
+    //             calculateTotalOutstanding(updatedValues);
+    //         }
+    
+    //         return updatedValues;
+    //     });
+    // };
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type } = target;
         setCurrentValues((previousValues) => {
@@ -48,6 +74,7 @@ const useEditInvoiceForm = () => {
                         : value
             };
     
+            // Recalculate totalOutstanding when rate or quantity changes
             if (name === "rate" || name === "quantity") {
                 calculateTotalOutstanding(updatedValues);
             }
@@ -72,6 +99,11 @@ const useEditInvoiceForm = () => {
         setCurrentValues(currentValues);
         return true;
     }
+
+    useEffect(() => {
+        // RECALCULATE TOTALOUSTANDING WHENEVER RATE OR QUANTITY CHANGES
+        calculateTotalOutstanding(currentValues);
+    }, [currentValues.rate, currentValues.quantity]);
 
     return {
         currentValues,
