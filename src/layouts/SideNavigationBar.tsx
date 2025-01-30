@@ -9,8 +9,6 @@ import { MdOutlineLogout } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { BsPeople } from "react-icons/bs";
-import { useRouter } from "next/navigation";
-import { Bounce, toast } from "react-toastify";
 import {
   Tooltip,
   TooltipContent,
@@ -19,7 +17,6 @@ import {
 } from "@/components/ui/tooltip";
 
 const SideNavigationBar = () => {
-  const router = useRouter();
   const pathname = usePathname();
 
   const [isMobileView, setDesktopView] = useState(false);
@@ -33,24 +30,6 @@ const SideNavigationBar = () => {
     window.addEventListener("resize", responsiveView);
     return () => window.removeEventListener("resize", responsiveView);
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("admin");
-    toast.success("Logged Out Successfully!", {
-      toastId: "loggedOutSuccess",
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-    router.push("/sign-in");
-  };
 
   return (
     <>
@@ -110,23 +89,6 @@ const SideNavigationBar = () => {
               </TooltipProvider>
             </li>
           </ul>
-
-          <div className="bottom-0 flex justify-center items-center border-[#BBBBBB] border-t-2 h-[80px] w-full">
-            {/* LOG OUT BUTTON */}
-            <button
-              className="font-poppins text-lg cursor-pointer hover:bg-[#D2232D] hover:text-white hover:px-2 hover:py-1 hover:rounded-sm w-full"
-              onClick={handleLogout}
-            >
-              {isMobileView ? (
-                <MdOutlineLogout className="w-full" />
-              ) : (
-                <div className="flex justify-between items-center w-full">
-                  <label className="cursor-pointer">Log out</label>
-                  <MdOutlineLogout />
-                </div>
-              )}
-            </button>
-          </div>
         </div>
       </div>
     </>
