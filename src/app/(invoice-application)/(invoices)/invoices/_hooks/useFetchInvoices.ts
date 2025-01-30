@@ -17,7 +17,7 @@ interface Invoice {
   updatedAt: Date;
   deleteAt: Date;
 }
-
+  
 interface Client {
   id: number;
   firstname: string;
@@ -33,27 +33,27 @@ interface Client {
   deleteAt: Date;
   invoices: Invoice[];
 }
-
+  
 interface InvoicesResponse {
-  data: {
-    clients: Client[];
-    totalClients: number;
-  };
-  message: string;
-  code: number;
+    data: {
+      clients: Client[];
+      totalClients: number;
+    };
+    message: string;
+    code: number;
 }
 
-const useFetchInvoices = (query: string, page: number, limit: number) => {
+const useFetchInvoices = (query?: string, page?: number, limit?: number) => {
     const router = useRouter();
     const token = localStorage.getItem("token");
-      
+  
     if (!token) {
       router.push("/sign-in");
     }
   
     const { data, isLoading, isError, error } = useFetch<InvoicesResponse>(
       "invoices",
-      `${baseUrl}api/client/retrieve/invoice-list/`,
+      `${baseUrl}api/client/`,
       {
         params: {
           query,
