@@ -34,6 +34,8 @@ const useNewClientMutation = () => {
                 theme: "light",
                 transition: Bounce,
             });
+            UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
+            UseQueryClient.invalidateQueries({queryKey: ["client"]});
             UseQueryClient.invalidateQueries({queryKey: ["clients"]});
         }
     });
