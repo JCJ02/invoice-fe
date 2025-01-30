@@ -21,9 +21,14 @@ import InvoicePDF from "./InvoicePDF";
 type NewInvoiceFormProps = {
   closeModal: any;
   client: ClientType;
+  invoice: InvoiceType;
 };
 
-const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
+const ViewInvoicesModal = ({
+  closeModal,
+  client,
+  invoice,
+}: NewInvoiceFormProps) => {
   const { data, isLoading, isError, error } = useFetchClientId(client.id);
   console.log(`Client ID: ${client.id}`);
 
@@ -36,6 +41,7 @@ const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
           isError={isError}
           error={error}
           client={client}
+          invoice={invoice}
           formattedDate={formattedDate}
         />
       ).toBlob();
@@ -58,10 +64,10 @@ const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
   return (
     <>
       <div className="bg-white flex font-poppins">
-        {/* NEW INVOICE MODAL */}
+        {/* VIEW INVOICE MODAL */}
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full" key={client.id}>
-            <h1 className="text-xl font-semibold w-full">New Invoice</h1>
+            <h1 className="text-xl font-semibold w-full">View Invoices</h1>
             {/* INVOICE SECTION */}
             <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
               <div className="flex justify-between items-start gap-10 lg:gap-20 w-full">
@@ -100,7 +106,8 @@ const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
                     <div className="flex flex-col items-start gap-1">
                       <h1 className="text-xs text-red-600">Invoice Number</h1>
                       <label className="text-xs">
-                        {data?.data.client.invoices?.[1]?.invoiceNumber}
+                        {/* {data?.data.client.invoices?.[1]?.invoiceNumber} */}
+                        {invoice.invoiceNumber}
                       </label>
                     </div>
                   </div>
@@ -111,9 +118,10 @@ const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
                   <h1 className="text-xs text-red-600">Amount Due (PHP)</h1>
                   <label className="text-xl">
                     ₱
-                    {Number(
+                    {/* {Number(
                       data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                    ).toLocaleString() || "0.00"}
+                    ).toLocaleString() || "0.00"} */}
+                    {invoice.totalOutstanding}
                   </label>
                 </div>
               </div>
@@ -209,9 +217,10 @@ const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
                       <label className="text-xs">Total:</label>
                       <label className="text-xs">
                         ₱
-                        {Number(
+                        {/* {Number(
                           data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                        ).toLocaleString() || "0.00"}
+                        ).toLocaleString() || "0.00"} */}
+                        {invoice.totalOutstanding}
                       </label>
                     </div>
 
@@ -226,9 +235,10 @@ const ViewInvoicesModal = ({ closeModal, client }: NewInvoiceFormProps) => {
                     </label>
                     <label className="text-xs">
                       ₱
-                      {Number(
+                      {/* {Number(
                         data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                      ).toLocaleString() || "0.00"}
+                      ).toLocaleString() || "0.00"} */}
+                      {invoice.totalOutstanding}
                     </label>
                   </div>
                 </div>
