@@ -115,10 +115,12 @@ const Invoices = () => {
   // HANDLE VIEW INVOICES MODAL
   const openViewInvoicesModal = (
     event: React.FormEvent,
-    client: ClientType
+    client: ClientType,
+    invoice: InvoiceType
   ) => {
     event.preventDefault();
     setSelectedClient(client);
+    setSelectedInvoice(invoice);
     setViewInvoicesModalOpen(true);
   };
   const closeViewInvoicesModal = (event: React.FormEvent) => {
@@ -128,9 +130,6 @@ const Invoices = () => {
 
   useEffect(() => {
     document.title = "Invoices - Invoice Application";
-    // console.log(
-    //   data && data.data.clients.filter((client) => client.invoices.length > 0)
-    // );
   });
 
   return (
@@ -262,7 +261,11 @@ const Invoices = () => {
                                 <Button
                                   className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
                                   onClick={(event: React.FormEvent) =>
-                                    openViewInvoicesModal(event, client)
+                                    openViewInvoicesModal(
+                                      event,
+                                      client,
+                                      invoice
+                                    )
                                   }
                                 >
                                   <IoEyeOutline />
@@ -417,9 +420,10 @@ const Invoices = () => {
           onClose={closeViewInvoicesModal}
           className="flex-col justify-start 2xl:justify-center py-20 2xl:py-0 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-screen w-full"
         >
-          {isViewInvoicesModalOpen && selectedClient ? (
+          {isViewInvoicesModalOpen && selectedClient && selectedInvoice ? (
             <ViewInvoicesModal
               client={selectedClient}
+              invoice={selectedInvoice}
               closeModal={closeViewInvoicesModal}
             />
           ) : null}

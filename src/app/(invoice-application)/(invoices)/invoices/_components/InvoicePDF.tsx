@@ -80,6 +80,7 @@ const InvoicePDF = ({
   isError,
   error,
   client,
+  invoice,
   formattedDate,
 }: any) => (
   <Document>
@@ -134,7 +135,8 @@ const InvoicePDF = ({
                   Invoice Number
                 </Text>
                 <Text style={tw("font-roboto text-sm")}>
-                  {data?.data.client.invoices?.[1]?.invoiceNumber}
+                  {/* {data?.data.client.invoices?.[1]?.invoiceNumber} */}
+                  {invoice.invoiceNumber}
                 </Text>
               </View>
             </View>
@@ -144,10 +146,10 @@ const InvoicePDF = ({
           <View style={tw("flex flex-col items-end gap-1 w-full")}>
             <Text style={tw("text-sm text-red-600")}>Amount Due (PHP)</Text>
             <Text style={tw("font-roboto text-xl")}>
-              {Number(
+              {/* {Number(
                 data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-              ).toLocaleString() || "0.00"}{" "}
-              PHP
+              ).toLocaleString() || "0.00"}{" "} */}
+              {invoice.totalOutstanding} PHP
             </Text>
           </View>
         </View>
@@ -247,10 +249,10 @@ const InvoicePDF = ({
               <View style={styles.row}>
                 <Text style={tw("font-roboto text-sm")}>Total:</Text>
                 <Text style={tw("font-roboto text-sm")}>
-                  {Number(
+                  {/* {Number(
                     data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                  ).toLocaleString() || "0.00"}{" "}
-                  PHP
+                  ).toLocaleString() || "0.00"}{" "} */}
+                  {invoice.totalOutstanding} PHP
                 </Text>
               </View>
 
@@ -264,10 +266,10 @@ const InvoicePDF = ({
                 Amount Due (PHP):
               </Text>
               <Text style={tw("font-roboto text-sm")}>
-                {Number(
+                {/* {Number(
                   data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                ).toLocaleString() || "0.00"}{" "}
-                PHP
+                ).toLocaleString() || "0.00"}{" "} */}
+                {invoice.totalOutstanding} PHP
               </Text>
             </View>
           </View>

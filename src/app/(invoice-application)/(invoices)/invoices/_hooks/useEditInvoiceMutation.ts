@@ -31,6 +31,8 @@ const useEditInvoiceMutation = (invoiceId: number) => {
                 transition: Bounce,
             });
             UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
+            UseQueryClient.invalidateQueries({queryKey: ["client"]});
+            UseQueryClient.invalidateQueries({queryKey: ["clients"]});
         }
     });
 

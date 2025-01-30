@@ -31,6 +31,8 @@ const useNewInvoicesMutation = (clientId: number) => {
                 transition: Bounce,
             });
             UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
+            UseQueryClient.invalidateQueries({queryKey: ["client"]});
+            UseQueryClient.invalidateQueries({queryKey: ["clients"]});
         }
     });
     return newInvoicesMutation;

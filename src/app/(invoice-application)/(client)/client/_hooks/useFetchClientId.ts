@@ -1,5 +1,5 @@
 import baseUrl from "@/utils/baseUrl";
-import { ClientResponse, ClientWithInvoicesResponse } from "@/types/ClientType";
+import { ClientWithInvoicesResponse } from "@/types/ClientType";
 import useFetch from "@/hooks/useFetch";
 
 const useFetchClientId = (clientId: number) => {
