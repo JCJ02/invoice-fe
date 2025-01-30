@@ -12,7 +12,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import useFetchInvoices from "./_hooks/useFetchInvoices";
@@ -227,6 +226,9 @@ const Invoices = () => {
                               className={
                                 rowIndex % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
                               }
+                              onClick={(event: React.FormEvent) =>
+                                openViewInvoicesModal(event, client, invoice)
+                              }
                             >
                               <TableCell className="flex flex-col gap-1">
                                 <label className="text-sm">
@@ -250,31 +252,18 @@ const Invoices = () => {
                                 </label>
                               </TableCell>
                               <TableCell>
-                                ₱{" "}
+                                ₱
                                 {parseFloat(
                                   invoice.totalOutstanding
                                 ).toLocaleString()}{" "}
                                 PHP
                               </TableCell>
                               <TableCell className="flex items-center gap-1">
-                                {/* VIEW INVOICES */}
-                                <Button
-                                  className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                                  onClick={(event: React.FormEvent) =>
-                                    openViewInvoicesModal(
-                                      event,
-                                      client,
-                                      invoice
-                                    )
-                                  }
-                                >
-                                  <IoEyeOutline />
-                                </Button>
-
                                 {/* EDIT INVOICES FORM */}
                                 <Button
                                   className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
                                   onClick={(event: React.FocusEvent) => {
+                                    event.stopPropagation();
                                     openEditInvoicesForm(
                                       event,
                                       client,
@@ -288,9 +277,10 @@ const Invoices = () => {
                                 {/* DELETE INVOICE MODAL */}
                                 <Button
                                   className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                                  onClick={(event: React.FormEvent) =>
-                                    openDeleteInvoiceModal(event, invoice)
-                                  }
+                                  onClick={(event: React.FormEvent) => {
+                                    event.stopPropagation();
+                                    openDeleteInvoiceModal(event, invoice);
+                                  }}
                                 >
                                   <MdDeleteOutline />
                                 </Button>
