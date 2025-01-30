@@ -26,7 +26,7 @@ const DeleteInvoiceModal = ({
     <>
       <div
         className="bg-[#FFFFFF] flex flex-col items-center font-poppins gap-5 py-8 px-12"
-        // key={client.id}
+        key={invoice.id}
       >
         <MdDeleteOutline className="text-7xl text-red-700" />
         <h1 className="text-md md:text-lg lg:text-xl font-semibold">
