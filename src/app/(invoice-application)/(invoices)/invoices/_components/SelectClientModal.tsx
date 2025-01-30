@@ -48,8 +48,9 @@ const SelectClientModal = ({
               </option>
             )}
             {isError && (
-              <option className="text-sm text-red-600">{`Error: ${error?.message || "An Unknown Error Occurred."
-                }`}</option>
+              <option className="text-sm text-red-600">{`Error: ${
+                error?.message || "An Unknown Error Occurred."
+              }`}</option>
             )}
             {data && data?.data.clients.length > 0 ? (
               data.data.clients.map((client: ClientType) => (

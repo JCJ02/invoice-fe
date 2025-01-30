@@ -10,9 +10,5 @@ export default function InvoiceApplicationLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      {children}
-    </>
-  );
+  return <>{children}</>;
 }

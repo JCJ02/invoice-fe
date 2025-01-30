@@ -151,8 +151,9 @@ const Client = () => {
                       colSpan={5}
                       className="text-center text-xs md:text-md lg:text-lg text-red-500"
                     >
-                      {`Error: ${error?.message || "An Unknown Error Occurred."
-                        }`}
+                      {`Error: ${
+                        error?.message || "An Unknown Error Occurred."
+                      }`}
                     </TableCell>
                   </TableRow>
                 ) : data && data?.data.clients.length > 0 ? (

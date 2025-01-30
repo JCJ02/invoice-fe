@@ -44,11 +44,11 @@ interface InvoicesResponse {
 }
 
 const useFetchInvoices = (query: string, page: number, limit: number) => {
+    const router = useRouter();
     const token = localStorage.getItem("token");
-  
+      
     if (!token) {
       router.push("/sign-in");
-      throw new Error("Authorization Token is Missing!");
     }
   
     const { data, isLoading, isError, error } = useFetch<InvoicesResponse>(
