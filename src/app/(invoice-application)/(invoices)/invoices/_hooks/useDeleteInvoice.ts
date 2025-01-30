@@ -1,4 +1,3 @@
-// src/hooks/useDeleteClient.ts
 import { Bounce, toast } from "react-toastify";
 import useDelete from "@/hooks/useDelete";
 import baseUrl from "@/utils/baseUrl";

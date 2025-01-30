@@ -44,7 +44,7 @@ const DeleteInvoiceModal = ({
           </Button>
           <Button
             className="text-sm md:text-md lg:text-lg px-5 lg:px-8"
-            // onClick={handleDelete}
+            onClick={handleDelete}
           >
             Yes
           </Button>
