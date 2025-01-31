@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import lwsMainLogo from "../../../../../assets/images/lws-main-logo.png";
+import LWSMainLogo from "../../../../../assets/images/lws-main-logo.png";
 import { MdAccessAlarms, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import Button from "@/components/Button";
 import Image from "next/image";
@@ -9,6 +9,7 @@ import { ClientType } from "@/types/ClientType";
 import formattedDate from "@/utils/date";
 import useNewInvoicesForm from "../_hooks/useNewInvoicesForm";
 import useNewInvoicesMutation from "../_hooks/useNewInvoicesMutation";
+import { Bounce, toast } from "react-toastify";
 
 type NewInvoiceFormProps = {
   closeModal: any;
@@ -27,6 +28,11 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
   const newInvoicesMutation = useNewInvoicesMutation(client.id);
   // console.log(`Client ID: ${client.id}`);
   const [errorMessage, setErrorMessage] = useState("");
+  const [dueDate, setDueDate] = useState("");
+
+  const handleDueDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setDueDate(event.target.value);
+  };
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
@@ -34,7 +40,8 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
       const payload = {
         invoices: invoicesValue.map((invoice: any) => ({
           ...invoice,
-          dueDate: invoice.dueDate.toISOString().split("T")[0],
+          // dueDate: invoice.dueDate.toISOString().split("T")[0],
+          dueDate,
         })),
       };
 
@@ -44,6 +51,22 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
           setErrorMessage(error.message || "Submission Failed!"),
       });
     }
+  };
+
+  const handleSentTo = (event: React.FormEvent) => {
+    event.preventDefault();
+    toast.warning("On Process Feature!", {
+      toastId: "onProcessFeature",
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+      transition: Bounce,
+    });
   };
 
   const handleAddADiscount = (event: React.FormEvent) => {
@@ -69,9 +92,9 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
           <h1 className="text-xl font-semibold w-full">New Invoice</h1>
           <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
             {/* HEADER */}
-            <div className="flex justify-between items-start gap-10 lg:gap-20 w-full">
-              <Image className="w-32" alt="LWS Main Logo" src={lwsMainLogo} />
-              <div className="flex flex-col items-end">
+            <div className="flex justify-between items-start gap-10 lg:gap-15 w-full">
+              <Image className="w-32" alt="LWS Main Logo" src={LWSMainLogo} />
+              <div className="flex flex-col items-end w-full">
                 <p className="text-xs">Lightweight Solutions</p>
                 <p className="text-xs">(02) 750-920-95</p>
                 <p className="text-xs">
@@ -99,29 +122,46 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     <h1 className="text-xs text-red-600">Date of Issue</h1>
                     <label className="text-xs">{formattedDate}</label>
                   </div>
+                  <div className="flex flex-col items-start gap-1">
+                    <h1 className="text-xs text-red-600">Date of Due</h1>
+                    <label className="text-xs">
+                      <InputFields
+                        className="text-xs border-0 p-0"
+                        type="date"
+                        name="dueDate"
+                        value={dueDate}
+                        onChange={handleDueDateChange}
+                      />
+                      {/* {errors?.dueDate && (
+                        <p className="font-poppins text-red-700 text-xs md:text-md w-full">
+                          {errors?.dueDate}
+                        </p>
+                      )} */}
+                    </label>
+                  </div>
                 </div>
               </div>
 
               {/* AMOUNT DUE */}
               <div className="flex flex-col items-start gap-1">
                 <h1 className="text-xs text-red-600">Amount Due (PHP)</h1>
-                <label className="text-xl">{`₱${totalOutstanding.toFixed(
-                  2
-                )}`}</label>
+                <label className="text-xl">{`₱${totalOutstanding.toLocaleString()}`}</label>
               </div>
             </div>
 
             {/* ADD INVOICES */}
             <div className="flex flex-col items-center gap-1 border-t-2 border-red-600 w-full">
               {/* FIELDS TITLE */}
-              <div className="flex justify-between items-center py-2 w-full">
-                <label className="text-xs text-red-600 w-1/4">
+              <div className="flex justify-between items-center gap-1 py-2 w-full">
+                <label className="text-xs text-red-600 w-3/5">
                   Description
                 </label>
-                <label className="text-xs text-red-600 w-1/5">Due Date</label>
+                {/* <label className="text-xs text-red-600 w-1/5">Due Date</label> */}
                 <label className="text-xs text-red-600 w-1/6">Rate</label>
-                <label className="text-xs text-red-600 w-1/6">Quantity</label>
-                <label className="text-xs text-red-600 w-1/6">Line Total</label>
+                <label className="text-xs text-red-600 w-1/12">QTY</label>
+                <label className="text-xs text-center text-red-600 w-1/6">
+                  Line Total
+                </label>
               </div>
 
               {/* LINE FIELDS */}
@@ -130,9 +170,9 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   key={index}
                   className="flex justify-between items-start gap-1 w-full"
                 >
-                  <div className="flex flex-col items-start w-1/4">
+                  <div className="flex flex-col items-start w-3/5">
                     <InputFields
-                      className="text-xs w-full"
+                      className="text-xs border-0 px-0 w-full"
                       placeholder="Description"
                       name="description"
                       value={invoice.description}
@@ -144,27 +184,13 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col items-start w-1/5">
-                    <InputFields
-                      className="text-xs py-2 w-full"
-                      type="date"
-                      name="dueDate"
-                      value={invoice.dueDate?.toISOString().split("T")[0]}
-                      onChange={handleChange(index)}
-                    />
-                    {errors[index]?.dueDate && (
-                      <p className="font-poppins text-red-700 text-xs md:text-md w-full">
-                        {errors[index]?.dueDate}
-                      </p>
-                    )}
-                  </div>
                   <div className="flex flex-col items-start w-1/6">
                     <InputFields
-                      className="text-xs w-full"
+                      className="text-xs border-0 px-0 w-full"
                       placeholder="Rate"
                       type="number"
                       name="rate"
-                      value={invoice.rate || 0}
+                      value={Number(invoice.rate || 0).toFixed(2)}
                       onChange={handleChange(index)}
                     />
                     {errors[index]?.rate && (
@@ -173,9 +199,9 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                       </p>
                     )}
                   </div>
-                  <div className="flex flex-col items-start w-1/6">
+                  <div className="flex flex-col items-start w-1/12">
                     <InputFields
-                      className="text-xs w-full"
+                      className="text-xs text-center border-0 px-0 w-full"
                       placeholder="Quantity"
                       type="number"
                       name="quantity"
@@ -189,9 +215,9 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     )}
                   </div>
                   <InputFields
-                    className="text-xs w-1/6"
+                    className="text-xs text-center border-0 px-0 w-1/6"
                     placeholder="Line Total"
-                    value={(invoice.lineTotal || 0).toFixed(2)}
+                    value={Number(invoice.lineTotal || 0).toFixed(2)}
                     readOnly
                   />
                 </div>
@@ -231,9 +257,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 <div className="flex flex-col items-start border-t-[1px] border-b-[1px] border-[#BBBBBB] py-1 my-1 w-full">
                   <div className="flex justify-between items-center w-full">
                     <label className="text-xs">Total:</label>
-                    <label className="text-xs">{`₱${totalOutstanding.toFixed(
-                      2
-                    )}`}</label>
+                    <label className="text-xs">{`₱${totalOutstanding.toLocaleString()}`}</label>
                   </div>
                   <div className="flex justify-between items-center w-full">
                     <label className="text-xs">Amount Paid:</label>
@@ -244,9 +268,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   <label className="text-xs text-red-600">
                     Amount Due (PHP):
                   </label>
-                  <label className="text-xs">{`₱${totalOutstanding.toFixed(
-                    2
-                  )}`}</label>
+                  <label className="text-xs">{`₱${totalOutstanding.toLocaleString()}`}</label>
                 </div>
                 <Button
                   className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"
@@ -288,7 +310,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
           <Button className="text-xs border-2 border-[#D2232D] px-4 lg:px-10">
             Save
           </Button>
-          <Button className="text-xs border-2 border-[#D2232D] px-4 lg:px-10">
+          <Button
+            className="text-xs border-2 border-[#D2232D] px-4 lg:px-10"
+            onClick={handleSentTo}
+          >
             Send To
           </Button>
         </div>

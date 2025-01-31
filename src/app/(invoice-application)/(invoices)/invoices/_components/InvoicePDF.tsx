@@ -128,6 +128,16 @@ const InvoicePDF = ({
                 </Text>
                 <Text style={tw("font-roboto text-sm")}>{formattedDate}</Text>
               </View>
+              <View style={tw("flex flex-col items-start gap-1")}>
+                <Text style={tw("font-roboto text-sm text-red-600")}>
+                  Date of Due
+                </Text>
+                <Text style={tw("font-roboto text-sm")}>
+                  {new Date(invoice.dueDate)
+                    .toLocaleDateString("en-GB")
+                    .replace(/\//g, "-")}
+                </Text>
+              </View>
             </View>
 
             <View style={tw("flex flex-col items-start gap-3")}>
@@ -162,19 +172,19 @@ const InvoicePDF = ({
             <View
               style={tw("flex flex-row justify-between items-center w-full")}
             >
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/4")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-3/5")}>
                 Description
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
+              {/* <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
                 Due Date
-              </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
+              </Text> */}
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/6")}>
                 Rate
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/6")}>
-                Quantity
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
+                QTY
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/6")}>
                 Line Total
               </Text>
             </View>
@@ -203,20 +213,20 @@ const InvoicePDF = ({
                     )}
                     key={invoice.id}
                   >
-                    <Text style={tw("font-roboto text-sm w-1/4")}>
+                    <Text style={tw("font-roboto text-sm w-3/5")}>
                       {invoice.description}
                     </Text>
-                    <Text style={tw("font-roboto text-sm w-1/5")}>
+                    {/* <Text style={tw("font-roboto text-sm w-1/5")}>
                       {new Date(invoice.dueDate).toLocaleDateString()}
-                    </Text>
-                    <Text style={tw("font-roboto text-sm w-1/5")}>
+                    </Text> */}
+                    <Text style={tw("font-roboto text-sm w-1/6")}>
                       <Image src={PesoSign.src} style={tw("h-2 w-2")} />
                       {Number(invoice.rate).toLocaleString()}
                     </Text>
-                    <Text style={tw("font-roboto text-sm w-1/6")}>
+                    <Text style={tw("font-roboto text-sm w-1/12")}>
                       {invoice.quantity}
                     </Text>
-                    <Text style={tw("font-poppins text-sm w-1/5")}>
+                    <Text style={tw("font-poppins text-sm w-1/6")}>
                       <Image src={PesoSign.src} style={tw("h-2 w-2")} />
                       {Number(invoice.lineTotal).toLocaleString()}
                     </Text>

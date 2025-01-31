@@ -17,6 +17,7 @@ import useFetchClientId from "@/app/(invoice-application)/(client)/client/_hooks
 import { InvoiceType } from "@/types/InvoiceType";
 import { pdf } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF";
+import { format } from "date-fns";
 
 type NewInvoiceFormProps = {
   closeModal: any;
@@ -30,7 +31,7 @@ const ViewInvoicesModal = ({
   invoice,
 }: NewInvoiceFormProps) => {
   const { data, isLoading, isError, error } = useFetchClientId(client.id);
-  console.log(`Client ID: ${client.id}`);
+  // console.log(`Client ID: ${client.id}`);
 
   const handleDownloadInvoicePDF = async () => {
     try {
@@ -70,9 +71,10 @@ const ViewInvoicesModal = ({
             <h1 className="text-xl font-semibold w-full">View Invoices</h1>
             {/* INVOICE SECTION */}
             <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
-              <div className="flex justify-between items-start gap-10 lg:gap-20 w-full">
+              {/* HEADER */}
+              <div className="flex justify-between items-start gap-10 lg:gap-15 w-full">
                 <Image className="w-32" alt="LWS Main Logo" src={LWSMainLogo} />
-                <div className="flex flex-col items-end">
+                <div className="flex flex-col items-end w-full">
                   <p className="text-xs">Lightweight Solutions</p>
                   <p className="text-xs">(02) 750-920-95</p>
                   <p className="text-xs">
@@ -100,6 +102,12 @@ const ViewInvoicesModal = ({
                       <h1 className="text-xs text-red-600">Date of Issue</h1>
                       <label className="text-xs">{formattedDate}</label>
                     </div>
+                    <div className="flex flex-col items-start gap-1">
+                      <h1 className="text-xs text-red-600">Date of Due</h1>
+                      <label className="text-xs">
+                        {format(new Date(invoice.dueDate), "dd-MM-yyyy")}
+                      </label>
+                    </div>
                   </div>
 
                   <div className="flex flex-col items-start gap-3">
@@ -121,7 +129,8 @@ const ViewInvoicesModal = ({
                     {/* {Number(
                       data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
                     ).toLocaleString() || "0.00"} */}
-                    {invoice.totalOutstanding}
+                    {Number(invoice.totalOutstanding).toLocaleString() ||
+                      "0.00"}
                   </label>
                 </div>
               </div>
@@ -129,19 +138,16 @@ const ViewInvoicesModal = ({
               {/* INVOICE TABLE */}
               <div className="flex flex-col items-center gap-1 border-t-2 border-red-600 w-full">
                 <Table>
-                  <TableHeader>
+                  <TableHeader className="border-b-0 border-white">
                     <TableRow>
-                      <TableHead className="text-xs text-red-600">
+                      <TableHead className="text-xs text-red-600 w-3/5">
                         Description
-                      </TableHead>
-                      <TableHead className="text-xs text-red-600 ">
-                        Due Date
                       </TableHead>
                       <TableHead className="text-xs text-red-600 ">
                         Rate
                       </TableHead>
                       <TableHead className="text-xs text-red-600 ">
-                        Quantity
+                        QTY
                       </TableHead>
                       <TableHead className="text-xs text-red-600 ">
                         Line Total
@@ -177,19 +183,15 @@ const ViewInvoicesModal = ({
                               {invoice.description}
                             </TableCell>
                             <TableCell className="text-xs">
-                              {new Date(invoice.dueDate).toLocaleDateString()}
+                              ₱{Number(invoice.rate).toLocaleString() || "0.00"}
                             </TableCell>
-                            <TableCell className="text-xs">
-                              {Number(invoice.rate).toFixed(2).toLocaleString()}
-                            </TableCell>
-                            <TableCell className="text-xs">
+                            <TableCell className="text-xs text-center">
                               {invoice.quantity}
                             </TableCell>
                             <TableCell className="text-xs">
                               ₱
-                              {Number(invoice.lineTotal)
-                                .toFixed(2)
-                                .toLocaleString()}
+                              {Number(invoice.lineTotal).toLocaleString() ||
+                                "0.00"}
                             </TableCell>
                           </TableRow>
                         )
@@ -220,7 +222,8 @@ const ViewInvoicesModal = ({
                         {/* {Number(
                           data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
                         ).toLocaleString() || "0.00"} */}
-                        {invoice.totalOutstanding}
+                        {Number(invoice.totalOutstanding).toLocaleString() ||
+                          "0.00"}
                       </label>
                     </div>
 
@@ -236,9 +239,10 @@ const ViewInvoicesModal = ({
                     <label className="text-xs">
                       ₱
                       {/* {Number(
-                        data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                      ).toLocaleString() || "0.00"} */}
-                      {invoice.totalOutstanding}
+                          data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
+                        ).toLocaleString() || "0.00"} */}
+                      {Number(invoice.totalOutstanding).toLocaleString() ||
+                        "0.00"}
                     </label>
                   </div>
                 </div>
