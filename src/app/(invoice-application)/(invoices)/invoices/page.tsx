@@ -32,6 +32,7 @@ import { ClientType } from "@/types/ClientType";
 import NewInvoicesForm from "./_components/NewInvoicesForm";
 import { InvoiceType } from "@/types/InvoiceType";
 import ViewInvoicesModal from "./_components/ViewInvoicesModal";
+import { format } from "date-fns";
 
 const Invoices = () => {
   useAuthentication();
@@ -241,14 +242,22 @@ const Invoices = () => {
                               <TableCell>{invoice.description}</TableCell>
                               <TableCell className="flex flex-col gap-1">
                                 <label className="text-sm">
-                                  {new Date(
+                                  {/* {new Date(
                                     invoice.issuedDate
-                                  ).toLocaleDateString()}
+                                  ).toLocaleDateString()} */}
+                                  {format(
+                                    new Date(invoice.issuedDate),
+                                    "dd-MM-yyyy"
+                                  )}
                                 </label>
                                 <label className="text-sm">
-                                  {new Date(
+                                  {/* {new Date(
                                     invoice.dueDate
-                                  ).toLocaleDateString()}
+                                  ).toLocaleDateString()} */}
+                                  {format(
+                                    new Date(invoice.dueDate),
+                                    "dd-MM-yyyy"
+                                  )}
                                 </label>
                               </TableCell>
                               <TableCell>
