@@ -9,7 +9,8 @@ import { ClientType } from "@/types/ClientType";
 import formattedDate from "@/utils/date";
 import useNewInvoicesForm from "../_hooks/useNewInvoicesForm";
 import useNewInvoicesMutation from "../_hooks/useNewInvoicesMutation";
-import { Bounce, toast } from "react-toastify";
+import { Textarea } from "@/components/ui/textarea";
+import useDraftInvoicesMutation from "../_hooks/useDraftInvoicesMutation";
 
 type NewInvoiceFormProps = {
   closeModal: any;
@@ -26,48 +27,104 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
     handleAddInvoiceLine,
   } = useNewInvoicesForm();
   const newInvoicesMutation = useNewInvoicesMutation(client.id);
+  const draftInvoicesMutation = useDraftInvoicesMutation(client.id);
   // console.log(`Client ID: ${client.id}`);
   const [errorMessage, setErrorMessage] = useState("");
   const [dueDate, setDueDate] = useState("");
+  const [notes, setNotes] = useState("");
+  const [terms, setTerms] = useState("");
 
   const handleDueDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setDueDate(event.target.value);
   };
+  const handleNotesChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setNotes(event.target.value);
+  };
+  const handleTermsChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTerms(event.target.value);
+  };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmitCombined = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (validateNewInvoicesForm()) {
-      const payload = {
-        invoices: invoicesValue.map((invoice: any) => ({
-          ...invoice,
-          // dueDate: invoice.dueDate.toISOString().split("T")[0],
-          dueDate,
-        })),
-      };
+    const submitter = (event.nativeEvent as any).submitter;
+    if (submitter && submitter.name === "save") {
+      // CALL THE SAVE SUBMISSION LOGIC
+      if (validateNewInvoicesForm()) {
+        const payload = {
+          invoices: invoicesValue.map((invoice: any) => ({
+            ...invoice,
+            dueDate,
+            notes,
+            terms,
+          })),
+        };
 
-      newInvoicesMutation.mutate(payload, {
-        onSuccess: () => closeModal(),
-        onError: (error: any) =>
-          setErrorMessage(error.message || "Submission Failed!"),
-      });
+        newInvoicesMutation.mutate(payload, {
+          onSuccess: () => closeModal(),
+          onError: (error: any) =>
+            setErrorMessage(error.message || "Submission Failed!"),
+        });
+      }
+    } else {
+      // CALL THE DRAFT SUBMISSION LOGIC
+      if (validateNewInvoicesForm()) {
+        const payload = {
+          invoices: invoicesValue.map((invoice: any) => ({
+            ...invoice,
+            dueDate,
+            notes,
+            terms,
+          })),
+        };
+
+        draftInvoicesMutation.mutate(payload, {
+          onSuccess: () => closeModal(),
+          onError: (error: any) =>
+            setErrorMessage(error.message || "Failed to Draft!"),
+        });
+      }
     }
   };
 
-  const handleSentTo = (event: React.FormEvent) => {
-    event.preventDefault();
-    toast.warning("On Process Feature!", {
-      toastId: "onProcessFeature",
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  };
+  // const handleSubmit = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   if (validateNewInvoicesForm()) {
+  //     const payload = {
+  //       invoices: invoicesValue.map((invoice: any) => ({
+  //         ...invoice,
+  //         dueDate,
+  //         notes,
+  //         terms,
+  //       })),
+  //     };
+
+  //     newInvoicesMutation.mutate(payload, {
+  //       onSuccess: () => closeModal(),
+  //       onError: (error: any) =>
+  //         setErrorMessage(error.message || "Submission Failed!"),
+  //     });
+  //   }
+  // };
+
+  // const handleDraft = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   if (validateNewInvoicesForm()) {
+  //     const payload = {
+  //       invoices: invoicesValue.map((invoice: any) => ({
+  //         ...invoice,
+  //         dueDate,
+  //         notes,
+  //         terms,
+  //       })),
+  //     };
+
+  //     draftInvoicesMutation.mutate(payload, {
+  //       onSuccess: () => closeModal(),
+  //       onError: (error: any) =>
+  //         setErrorMessage(error.message || "Failed to Draft!"),
+  //     });
+  //   }
+  // };
 
   const handleAddADiscount = (event: React.FormEvent) => {
     event.preventDefault();
@@ -78,13 +135,17 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
   };
 
   useEffect(() => {
+    setDueDate(new Date().toISOString().split("T")[0]);
+  }, []);
+
+  useEffect(() => {
     document.title = "New Invoices - Invoice Application";
   }, []);
   return (
     <form
       className="bg-white flex font-poppins"
       key={client.id}
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmitCombined}
     >
       {/* NEW INVOICE FORM */}
       <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
@@ -132,11 +193,6 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                         value={dueDate}
                         onChange={handleDueDateChange}
                       />
-                      {/* {errors?.dueDate && (
-                        <p className="font-poppins text-red-700 text-xs md:text-md w-full">
-                          {errors?.dueDate}
-                        </p>
-                      )} */}
                     </label>
                   </div>
                 </div>
@@ -152,13 +208,14 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
             {/* ADD INVOICES */}
             <div className="flex flex-col items-center gap-1 border-t-2 border-red-600 w-full">
               {/* FIELDS TITLE */}
-              <div className="flex justify-between items-center gap-1 py-2 w-full">
-                <label className="text-xs text-red-600 w-3/5">
+              <div className="flex justify-between items-center py-2 w-full">
+                <label className="text-xs text-red-600 w-2/5">
                   Description
                 </label>
-                {/* <label className="text-xs text-red-600 w-1/5">Due Date</label> */}
                 <label className="text-xs text-red-600 w-1/6">Rate</label>
-                <label className="text-xs text-red-600 w-1/12">QTY</label>
+                <label className="text-xs text-center text-red-600 w-1/12">
+                  QTY
+                </label>
                 <label className="text-xs text-center text-red-600 w-1/6">
                   Line Total
                 </label>
@@ -168,9 +225,9 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
               {invoicesValue.map((invoice, index) => (
                 <div
                   key={index}
-                  className="flex justify-between items-start gap-1 w-full"
+                  className="flex justify-between items-start w-full"
                 >
-                  <div className="flex flex-col items-start w-3/5">
+                  <div className="flex flex-col items-start w-2/5">
                     <InputFields
                       className="text-xs border-0 px-0 w-full"
                       placeholder="Description"
@@ -190,7 +247,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                       placeholder="Rate"
                       type="number"
                       name="rate"
-                      value={Number(invoice.rate || 0).toFixed(2)}
+                      value={Number(invoice.rate || 0)}
                       onChange={handleChange(index)}
                     />
                     {errors[index]?.rate && (
@@ -217,7 +274,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                   <InputFields
                     className="text-xs text-center border-0 px-0 w-1/6"
                     placeholder="Line Total"
-                    value={Number(invoice.lineTotal || 0).toFixed(2)}
+                    value={Number(invoice.lineTotal || 0).toLocaleString()}
                     readOnly
                   />
                 </div>
@@ -280,20 +337,26 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
             </div>
 
             {/* NOTES and TERMS */}
-            <div className="flex flex-col items-start gap-5 w-full">
-              <div className="flex flex-col items-start">
+            <div className="flex flex-col items-start gap-4 w-full">
+              <div className="flex flex-col items-start gap-1 w-full">
                 <h1 className="text-xs text-red-600">Notes</h1>
-                <label className="text-xs text-justify">
-                  Enter note or bank transfer details (optional).
-                </label>
+                <Textarea
+                  className="bg-white text-xs md:text-xs lg:text-xs border-0 focus:border-white placeholder-black md:placeholder-black lg:placeholder-black p-0 w-full"
+                  placeholder="Enter note or bank transfer details (optional)."
+                  name="notes"
+                  value={notes}
+                  onChange={handleNotesChange}
+                />
               </div>
-              <div className="flex flex-col items-start">
+              <div className="flex flex-col items-start gap-1 w-full">
                 <h1 className="text-xs text-red-600">Terms</h1>
-                <label className="text-xs text-justify">
-                  Enter your terms and condition. (Pro tip: It pays to be
-                  polite. Lightweight Solutions invoice app that include
-                  “Please” and “thanks” get paid up to 2 days faster.).
-                </label>
+                <Textarea
+                  className="bg-white text-xs md:text-xs lg:text-xs border-0 focus:border-white placeholder-black md:placeholder-black lg:placeholder-black p-0 w-full"
+                  placeholder={`Enter your terms and condition. (Pro tip: It pays to be polite. Lightweight Solutions invoice app that include “Please” and “thanks” get paid up to 2 days faster.).`}
+                  name="terms"
+                  value={terms}
+                  onChange={handleTermsChange}
+                />
               </div>
             </div>
           </div>
@@ -307,14 +370,19 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
           >
             Cancel
           </Button>
-          <Button className="text-xs border-2 border-[#D2232D] px-4 lg:px-10">
+          <Button
+            className="text-xs border-2 border-[#D2232D] px-4 lg:px-10"
+            type="submit"
+            name="save"
+          >
             Save
           </Button>
           <Button
             className="text-xs border-2 border-[#D2232D] px-4 lg:px-10"
-            onClick={handleSentTo}
+            type="submit"
+            name="draft"
           >
-            Send To
+            Draft
           </Button>
         </div>
       </div>
@@ -355,13 +423,13 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
           </div>
-          <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
+          {/* <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
             <div className="flex items-start gap-1">
               <MdAccessAlarms />
               <div className="flex flex-col items-start">
                 <label className="text-xs">Make Recurring</label>
                 <label className="text-xs text-[#BBBBBB]">
-                  Bill Your Clienet Automatically
+                  Bill Your Client Automatically
                 </label>
               </div>
             </div>
@@ -369,7 +437,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
-          </div>
+          </div> */}
 
           {/* FOR SAMPLE SECTION */}
           <h1 className="text-xs mt-8">For Sample</h1>
