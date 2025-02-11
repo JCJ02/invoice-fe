@@ -9,6 +9,8 @@ export type InvoiceType = {
     issuedDate: string;
     dueDate: string;
     totalOutstanding: string;
+    notes?: string,
+    terms?: string,
     createdAt: Date;
     updatedAt: Date;
     deletedAt?: Date
