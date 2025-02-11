@@ -5,9 +5,19 @@ type ButtonProps = {
   className?: string;
   children: any;
   onClick?: any;
+  disabled?: boolean;
+  type?: "button" | "submit" | "reset";
+  name?: string;
 };
 
-const Button = ({ className, children, onClick }: ButtonProps) => {
+const Button = ({
+  className,
+  children,
+  onClick,
+  disabled,
+  type,
+  name,
+}: ButtonProps) => {
   return (
     <button
       className={cn(
@@ -15,6 +25,9 @@ const Button = ({ className, children, onClick }: ButtonProps) => {
         className
       )}
       onClick={onClick}
+      disabled={disabled}
+      type={type}
+      name={name}
     >
       {children}
     </button>
