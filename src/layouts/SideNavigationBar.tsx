@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import lwsLogo from "../assets/images/lws-logo.png";
 import lwsFavicon from "../assets/images/lws-favicon.png";
 import Link from "next/link";
-import { MdOutlineLogout } from "react-icons/md";
 import { usePathname } from "next/navigation";
 import { LiaFileInvoiceDollarSolid } from "react-icons/lia";
 import { BsPeople } from "react-icons/bs";
