@@ -27,6 +27,7 @@ const useDeleteInvoice = (invoiceId: number) => {
             UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
             UseQueryClient.invalidateQueries({queryKey: ["client"]});
             UseQueryClient.invalidateQueries({queryKey: ["clients"]});
+            UseQueryClient.invalidateQueries({queryKey: ["sum"]});
         },
         onError: (error: any) => {
             toast.error(`Failed To Delete: ${error.response?.data?.message || "Unknown Error"}`, {
