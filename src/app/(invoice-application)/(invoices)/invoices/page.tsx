@@ -33,6 +33,9 @@ import NewInvoicesForm from "./_components/NewInvoicesForm";
 import { InvoiceType } from "@/types/InvoiceType";
 import ViewInvoicesModal from "./_components/ViewInvoicesModal";
 import { format } from "date-fns";
+import useFetchSumTotalOutstanding from "./_hooks/useFetchSumTotalOutstanding";
+import useFetchSumDraftTotalOutstanding from "./_hooks/useFetchSumDraftTotalOutstanding";
+import useFetchSumDueDateTotalOutstanding from "./_hooks/useFetchSumDueDateTotalOutstanding";
 
 const Invoices = () => {
   useAuthentication();
@@ -47,6 +50,20 @@ const Invoices = () => {
   const [selectedInvoice, setSelectedInvoice] = useState<InvoiceType | null>(
     null
   );
+  const { sumTotalOutstandingData, stillLoading, hasError, showError } =
+    useFetchSumTotalOutstanding();
+  const {
+    sumDraftTotalOutstandingData,
+    draftLoading,
+    draftError,
+    displayError,
+  } = useFetchSumDraftTotalOutstanding();
+  const {
+    sumDueDateTotalOutstandingData,
+    dueDateLoading,
+    dueDateError,
+    viewError,
+  } = useFetchSumDueDateTotalOutstanding();
 
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -145,21 +162,53 @@ const Invoices = () => {
         {/* 2ND SECTION */}
         <div className="flex flex-col md:flex-row md:justify-around items-center gap-4 pt-2 pb-5 pl-4 pr-8 w-full">
           <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-              ₱0.00m PHP
-            </h1>
+            {dueDateLoading ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱0 PHP
+              </h1>
+            ) : dueDateError ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                {`Error: ${viewError?.message || "An Unknown Error Occurred."}`}
+              </h1>
+            ) : sumDueDateTotalOutstandingData ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱{sumDueDateTotalOutstandingData.data.sum.toLocaleString()} PHP
+              </h1>
+            ) : null}
             <p className="text-[#BBBBBB] text-xs">Overdue</p>
           </div>
           <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-              ₱0.00m PHP
-            </h1>
+            {stillLoading ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱0 PHP
+              </h1>
+            ) : hasError ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                {`Error: ${showError?.message || "An Unknown Error Occurred."}`}
+              </h1>
+            ) : sumTotalOutstandingData ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱{sumTotalOutstandingData.data.sum.toLocaleString()} PHP
+              </h1>
+            ) : null}
             <p className="text-[#BBBBBB] text-xs">Total Outstanding</p>
           </div>
           <div className="flex flex-col items-center">
-            <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-              ₱0.00m PHP
-            </h1>
+            {draftLoading ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱0 PHP
+              </h1>
+            ) : draftError ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                {`Error: ${
+                  displayError?.message || "An Unknown Error Occurred."
+                }`}
+              </h1>
+            ) : sumDraftTotalOutstandingData ? (
+              <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
+                ₱{sumDraftTotalOutstandingData.data.sum.toLocaleString()} PHP
+              </h1>
+            ) : null}
             <p className="text-[#BBBBBB] text-xs">In Draft</p>
           </div>
         </div>
@@ -223,7 +272,7 @@ const Invoices = () => {
                           rowIndex++; // INCREMENT FOR EACH ROW
                           return (
                             <TableRow
-                              key={invoice.id}
+                              key={`${client.id}-${invoice.id}`}
                               className={
                                 rowIndex % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"
                               }
@@ -297,7 +346,15 @@ const Invoices = () => {
                             </TableRow>
                           );
                         })
-                      : []
+                      : // <TableRow key={client.id}>
+                        //   <TableCell
+                        //     colSpan={5}
+                        //     className="text-center text-xs md:text-md lg:text-lg text-gray-500"
+                        //   >
+                        //     No Data Found
+                        //   </TableCell>
+                        // </TableRow>
+                        []
                   );
                 })()
               ) : (
@@ -305,7 +362,6 @@ const Invoices = () => {
                   <TableCell
                     colSpan={5}
                     className="text-center text-xs md:text-md lg:text-lg text-gray-500"
-                    key={null}
                   >
                     No Data Found
                   </TableCell>
