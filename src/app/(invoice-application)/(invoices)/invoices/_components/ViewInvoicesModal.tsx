@@ -2,7 +2,6 @@ import Button from "@/components/Button";
 import { ClientType } from "@/types/ClientType";
 import Image from "next/image";
 import React, { useEffect } from "react";
-import { MdAccessAlarms, MdOutlineKeyboardArrowRight } from "react-icons/md";
 import LWSMainLogo from "../../../../../assets/images/lws-main-logo.png";
 import formattedDate from "@/utils/date";
 import {
@@ -68,7 +67,7 @@ const ViewInvoicesModal = ({
         {/* VIEW INVOICE MODAL */}
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full" key={client.id}>
-            <h1 className="text-xl font-semibold w-full">View Invoices</h1>
+            <h1 className="text-xl font-semibold w-full">View Invoice</h1>
             {/* INVOICE SECTION */}
             <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
               {/* HEADER */}
@@ -140,16 +139,16 @@ const ViewInvoicesModal = ({
                 <Table>
                   <TableHeader className="border-b-0 border-white">
                     <TableRow>
-                      <TableHead className="text-xs text-red-600 w-3/5">
+                      <TableHead className="text-xs text-red-600 w-2/5">
                         Description
                       </TableHead>
-                      <TableHead className="text-xs text-red-600 ">
+                      <TableHead className="text-xs text-red-600 w-1/12">
                         Rate
                       </TableHead>
-                      <TableHead className="text-xs text-red-600 ">
+                      <TableHead className="text-xs text-red-600 w-1/12">
                         QTY
                       </TableHead>
-                      <TableHead className="text-xs text-red-600 ">
+                      <TableHead className="text-xs text-red-600 w-1/12">
                         Line Total
                       </TableHead>
                     </TableRow>
@@ -185,7 +184,7 @@ const ViewInvoicesModal = ({
                             <TableCell className="text-xs">
                               ₱{Number(invoice.rate).toLocaleString() || "0.00"}
                             </TableCell>
-                            <TableCell className="text-xs text-center">
+                            <TableCell className="text-xs">
                               {invoice.quantity}
                             </TableCell>
                             <TableCell className="text-xs">
@@ -250,19 +249,13 @@ const ViewInvoicesModal = ({
 
               {/* NOTES and TERMS */}
               <div className="flex flex-col items-start gap-5 w-full">
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start gap-1 w-full">
                   <h1 className="text-xs text-red-600">Notes</h1>
-                  <label className="text-xs text-justify">
-                    Enter note or bank transfer details (optional).
-                  </label>
+                  <label className="text-xs">{invoice.notes}</label>
                 </div>
-                <div className="flex flex-col items-start">
+                <div className="flex flex-col items-start gap-1 w-full">
                   <h1 className="text-xs text-red-600">Terms</h1>
-                  <label className="text-xs text-justify">
-                    Enter your terms and condition. (Pro tip: It pays to be
-                    polite. Lightweight Solutions invoice app that include
-                    “Please” and “thanks” get paid up to 2 days faster.).
-                  </label>
+                  <label className="text-xs">{invoice.terms}</label>
                 </div>
               </div>
             </div>
@@ -282,122 +275,6 @@ const ViewInvoicesModal = ({
             >
               Download PDF
             </Button>
-          </div>
-        </div>
-
-        {/* SETTINGS SECTION */}
-        <div className="flex flex-col items-start gap-1 py-10 pl-8 w-2/6 lg:w-[320px]">
-          <h1 className="text-md font-semibold">Settings</h1>
-          <div className="flex flex-col w-full">
-            {/* FOR THIS INVOICE SECTION */}
-            <h1 className="text-xs">For This Invoice</h1>
-            <div className="flex justify-between items-start gap-1 py-3 border-t-[1px] border-b-[1px] border-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <label className="text-xs">Accept Online Payment</label>
-                  <label className="text-xs text-[#BBBBBB]">
-                    Let Clients Pay You Online
-                  </label>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <label className="text-black text-xs">No</label>
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
-            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <label className="text-xs">Customize Invoice Style</label>
-                  <label className="text-xs text-[#BBBBBB]">
-                    Change Template, Color and Font
-                  </label>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <label className="text-black text-xs">No</label>
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
-            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <label className="text-xs">Make Recurring</label>
-                  <label className="text-xs text-[#BBBBBB]">
-                    Bill Your Clienet Automatically
-                  </label>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <label className="text-black text-xs">No</label>
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
-
-            {/* FOR SAMPLE SECTION */}
-            <h1 className="text-xs mt-8">For Sample</h1>
-            <div className="flex justify-between items-start gap-1 py-3 border-t-[1px] border-b-[1px] border-t-[#BBBBBB] border-b-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <h1 className="text-xs">Send Reminders</h1>
-                  <p className="text-xs text-[#BBBBBB]">
-                    At Customizable Intervals
-                  </p>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <label className="text-black text-xs">No</label>
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
-            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <h1 className="text-xs">Charge Late Fees</h1>
-                  <p className="text-xs text-[#BBBBBB]">
-                    Percentage or Flat Rate Fees
-                  </p>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <label className="text-black text-xs">No</label>
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
-            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <h1 className="text-xs">Country & Language</h1>
-                  <p className="text-xs text-[#BBBBBB]">
-                    PHP, English (United States)
-                  </p>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
-            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-              <div className="flex items-start gap-1">
-                <MdAccessAlarms />
-                <div className="flex flex-col items-start">
-                  <h1 className="text-xs">Invoice Attatchments</h1>
-                  <p className="break-words text-xs text-[#BBBBBB]">
-                    Attatch PDF copy to emails
-                  </p>
-                </div>
-              </div>
-              <Button className="flex items-center bg-white">
-                <label className="text-black text-xs">No</label>
-                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-              </Button>
-            </div>
           </div>
         </div>
       </div>
