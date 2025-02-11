@@ -172,19 +172,16 @@ const InvoicePDF = ({
             <View
               style={tw("flex flex-row justify-between items-center w-full")}
             >
-              <Text style={tw("font-roboto text-sm text-red-600 w-3/5")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/2")}>
                 Description
               </Text>
-              {/* <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
-                Due Date
-              </Text> */}
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/6")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
                 Rate
               </Text>
               <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
                 QTY
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/6")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
                 Line Total
               </Text>
             </View>
@@ -213,20 +210,17 @@ const InvoicePDF = ({
                     )}
                     key={invoice.id}
                   >
-                    <Text style={tw("font-roboto text-sm w-3/5")}>
+                    <Text style={tw("font-roboto text-sm w-1/2")}>
                       {invoice.description}
                     </Text>
-                    {/* <Text style={tw("font-roboto text-sm w-1/5")}>
-                      {new Date(invoice.dueDate).toLocaleDateString()}
-                    </Text> */}
-                    <Text style={tw("font-roboto text-sm w-1/6")}>
+                    <Text style={tw("font-roboto text-sm w-1/12")}>
                       <Image src={PesoSign.src} style={tw("h-2 w-2")} />
                       {Number(invoice.rate).toLocaleString()}
                     </Text>
                     <Text style={tw("font-roboto text-sm w-1/12")}>
                       {invoice.quantity}
                     </Text>
-                    <Text style={tw("font-poppins text-sm w-1/6")}>
+                    <Text style={tw("font-poppins text-sm w-1/12")}>
                       <Image src={PesoSign.src} style={tw("h-2 w-2")} />
                       {Number(invoice.lineTotal).toLocaleString()}
                     </Text>
@@ -291,19 +285,13 @@ const InvoicePDF = ({
       </View>
       {/* NOTES and TERMS */}
       <View style={tw("flex flex-col items-start gap-2 px-10 pb-10 w-full")}>
-        <Text style={tw("text-sm text-red-600")}>Notes</Text>
         <View style={tw("flex flex-col items-start gap-1 w-full")}>
-          <Text style={tw("font-roboto text-sm")}>Bank Name: BDO</Text>
-          <Text style={tw("font-roboto text-sm")}>
-            Account Name: Lightweight Information Technology Solutions
-          </Text>
-          <Text style={tw("font-roboto text-sm")}>
-            Bank Account Number: 000-000-00-00
-          </Text>
-          <Text style={tw("font-roboto text-sm")}>
-            Bank Address: 1488 Quezon Avenue, 1103 South Triangle, Scout Albano,
-            Quezon City, Philippines
-          </Text>
+          <Text style={tw("text-sm text-red-600")}>Notes</Text>
+          <Text style={tw("font-roboto text-sm")}>{invoice.notes}</Text>
+        </View>
+        <View style={tw("flex flex-col items-start gap-1 w-full")}>
+          <Text style={tw("text-sm text-red-600")}>Terms</Text>
+          <Text style={tw("font-roboto text-sm")}>{invoice.terms}</Text>
         </View>
       </View>
     </Page>
