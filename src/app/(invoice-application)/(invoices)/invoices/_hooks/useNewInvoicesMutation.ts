@@ -9,7 +9,7 @@ interface NewInvoicesResponse {
     description: string,
     rate: number,
     quantity: number,
-    dueDate: Date
+    dueDate: Date,
 }
 
 const useNewInvoicesMutation = (clientId: number) => {
@@ -33,6 +33,7 @@ const useNewInvoicesMutation = (clientId: number) => {
             UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
             UseQueryClient.invalidateQueries({queryKey: ["client"]});
             UseQueryClient.invalidateQueries({queryKey: ["clients"]});
+            UseQueryClient.invalidateQueries({queryKey: ["sum"]});
         }
     });
     return newInvoicesMutation;
