@@ -11,6 +11,8 @@ type EditInvoiceErrors = {
     rate?: string,
     quantity?: string,
     dueDate?: string,
+    notes?: string,
+    terms?: string
 }
 
 const useEditInvoiceForm = () => {
@@ -18,7 +20,9 @@ const useEditInvoiceForm = () => {
         description: "",
         rate: 0.00,
         quantity: 0.00,
-        dueDate: new Date()
+        dueDate: new Date(),
+        notes: "",
+        terms: ""
     }
     const [currentValues, setCurrentValues] = useState<EditInvoice>(selectedValues);
     const [errors, setErrors] = useState<EditInvoiceErrors>({});
@@ -27,13 +31,7 @@ const useEditInvoiceForm = () => {
     const decimalFormat = (value: number) => {
         return Math.round(value * 100) / 100; 
     };
-
-    // const calculateTotalOutstanding = (invoice: EditInvoiceWithTotal) => {
-    //     if (!invoice) return;
-
-    //     const total = invoice.lineTotal || 0;
-    //     setTotalOutstanding(decimalFormat(total));
-    // };    
+  
     const calculateTotalOutstanding = (invoice: EditInvoice) => {
         if (!invoice.rate || !invoice.quantity) return;
         
@@ -41,27 +39,7 @@ const useEditInvoiceForm = () => {
         setTotalOutstanding(decimalFormat(total));
     };
 
-    // const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
-    //     const { name, value, type } = target;
-    //     setCurrentValues((previousValues) => {
-    //         const updatedValues = { 
-    //             ...previousValues, 
-    //             [name]: 
-    //                 type === "number"
-    //                     ? value.trim() === "" ? 0 : decimalFormat(parseFloat(value))
-    //                     : name === "dueDate"
-    //                     ? new Date(value)
-    //                     : value
-    //         };
-    
-    //         if (name === "rate" || name === "quantity") {
-    //             calculateTotalOutstanding(updatedValues);
-    //         }
-    
-    //         return updatedValues;
-    //     });
-    // };
-    const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value, type } = target;
         setCurrentValues((previousValues) => {
             const updatedValues = { 

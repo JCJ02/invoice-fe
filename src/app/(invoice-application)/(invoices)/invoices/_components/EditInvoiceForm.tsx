@@ -10,6 +10,7 @@ import useEditInvoiceMutation from "../_hooks/useEditInvoiceMutation";
 import useEditInvoiceForm from "../_hooks/useEditInvoiceForm";
 import { InvoiceType } from "@/types/InvoiceType";
 import { Bounce, toast } from "react-toastify";
+import { Textarea } from "@/components/ui/textarea";
 
 type EditInvoiceFormProps = {
   closeModal: any;
@@ -45,11 +46,6 @@ const EditInvoiceForm = ({
 
   const editInvoiceMutation = useEditInvoiceMutation(invoice.id);
   const [errorMessage, setErrorMessage] = useState("");
-  const [dueDate, setDueDate] = useState("");
-
-  const handleDueDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setDueDate(event.target.value);
-  };
 
   const handleUpdateInvoice = (event: React.FormEvent) => {
     event.preventDefault();
@@ -68,10 +64,10 @@ const EditInvoiceForm = ({
     }
   };
 
-  const handleSentTo = (event: React.FormEvent) => {
+  const handleDraft = (event: React.FormEvent) => {
     event.preventDefault();
-    toast.warning("On Process Feature!", {
-      toastId: "onProcessFeature",
+    toast.warning("THIS FEATURE IS COMING SOON!", {
+      toastId: "draftButton",
       position: "top-right",
       autoClose: 1500,
       hideProgressBar: false,
@@ -105,7 +101,7 @@ const EditInvoiceForm = ({
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full">
             <h1 className="text-xl font-semibold w-full">Edit Invoice</h1>
-            <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] w-full">
+            <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
               {/* HEADER */}
               <div className="flex justify-between items-start gap-10 lg:gap-15 w-full">
                 <Image className="w-32" alt="LWS Main Logo" src={LWSMainLogo} />
@@ -166,25 +162,26 @@ const EditInvoiceForm = ({
               </div>
 
               {/* EDIT INVOICES */}
-              <div className="flex flex-col items-center gap-1 border-t-2 border-red-600 w-full">
+              <div className="flex flex-col items-center border-t-2 border-red-600 w-full">
                 {/* FIELDS TITLE */}
                 <div className="flex justify-between items-center py-2 w-full">
-                  <label className="text-xs text-red-600 w-3/5">
+                  <label className="text-xs text-red-600 w-2/5">
                     Description
                   </label>
-                  {/* <label className="text-xs text-red-600 w-1/5">Due Date</label> */}
                   <label className="text-xs text-red-600 w-1/6">Rate</label>
-                  <label className="text-xs text-red-600 w-1/12">QTY</label>
+                  <label className="text-xs text-center text-red-600 w-1/12">
+                    QTY
+                  </label>
                   <label className="text-xs text-center text-red-600 w-1/6">
                     Line Total
                   </label>
                 </div>
 
                 {/* INVOICE FIELDS */}
-                <div className="flex justify-between items-start gap-1 w-full">
-                  <div className="flex flex-col items-start w-3/5">
+                <div className="flex justify-between items-start w-full">
+                  <div className="flex flex-col items-start w-2/5">
                     <InputFields
-                      className="text-xs border-0 w-full"
+                      className="text-xs border-0 px-0 w-full"
                       placeholder="Description"
                       name="description"
                       value={currentValues.description}
@@ -196,23 +193,9 @@ const EditInvoiceForm = ({
                       </p>
                     )}
                   </div>
-                  {/* <div className="flex flex-col items-start w-1/5">
-                    <InputFields
-                      className="text-xs border-0 py-2 w-full"
-                      type="date"
-                      name="dueDate"
-                      value={currentValues.dueDate?.toISOString().split("T")[0]}
-                      onChange={handleChange}
-                    />
-                    {errors.dueDate && (
-                      <p className="font-poppins text-red-700 text-xs md:text-md w-full">
-                        {errors.dueDate}
-                      </p>
-                    )}
-                  </div> */}
                   <div className="flex flex-col items-start w-1/6">
                     <InputFields
-                      className="text-xs border-0 w-full"
+                      className="text-xs border-0 px-0 w-full"
                       placeholder="Rate"
                       type="number"
                       name="rate"
@@ -227,7 +210,7 @@ const EditInvoiceForm = ({
                   </div>
                   <div className="flex flex-col items-start w-1/12">
                     <InputFields
-                      className="text-xs text-center border-0 w-full"
+                      className="text-xs text-center border-0 px-0 w-full"
                       placeholder="Quantity"
                       type="number"
                       name="quantity"
@@ -241,7 +224,7 @@ const EditInvoiceForm = ({
                     )}
                   </div>
                   <InputFields
-                    className="text-xs text-center border-0 w-1/6"
+                    className="text-xs text-center border-0 px-0 w-1/6"
                     placeholder="Line Total"
                     value={(
                       (currentValues.rate || 0) * (currentValues.quantity || 0)
@@ -306,19 +289,25 @@ const EditInvoiceForm = ({
 
               {/* NOTES and TERMS */}
               <div className="flex flex-col items-start gap-5 w-full">
-                <div className="flex flex-col items-start">
-                  <h1 className="text-xs text-red-700">Notes</h1>
-                  <label className="text-xs text-justify">
-                    Enter note or bank transfer details (optional).
-                  </label>
+                <div className="flex flex-col items-start gap-1 w-full">
+                  <h1 className="text-xs text-red-600">Notes</h1>
+                  <Textarea
+                    className="bg-white text-xs md:text-xs lg:text-xs border-0 focus:border-white placeholder-black md:placeholder-black lg:placeholder-black p-0 w-full"
+                    placeholder="Enter note or bank transfer details (optional)."
+                    name="notes"
+                    value={currentValues.notes || ""}
+                    onChange={handleChange}
+                  />
                 </div>
-                <div className="flex flex-col items-start">
-                  <h1 className="text-xs text-red-700">Terms</h1>
-                  <label className="text-xs text-justify">
-                    Enter your terms and condition. (Pro tip: It pays to be
-                    polite. Lightweight Solutions invoice app that include
-                    “Please” and “thanks” get paid up to 2 days faster.).
-                  </label>
+                <div className="flex flex-col items-start gap-1 w-full">
+                  <h1 className="text-xs text-red-600">Terms</h1>
+                  <Textarea
+                    className="bg-white text-xs md:text-xs lg:text-xs border-0 focus:border-white placeholder-black md:placeholder-black lg:placeholder-black p-0 w-full"
+                    placeholder={`Enter your terms and condition. (Pro tip: It pays to be polite. Lightweight Solutions invoice app that include “Please” and “thanks” get paid up to 2 days faster.).`}
+                    name="terms"
+                    value={currentValues.terms || ""}
+                    onChange={handleChange}
+                  />
                 </div>
               </div>
             </div>
@@ -337,9 +326,9 @@ const EditInvoiceForm = ({
             </Button>
             <Button
               className="text-xs border-2 border-[#D2232D] px-4 lg:px-10"
-              onClick={handleSentTo}
+              onClick={handleDraft}
             >
-              Send To
+              Draft
             </Button>
           </div>
         </div>
@@ -380,13 +369,13 @@ const EditInvoiceForm = ({
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
             </div>
-            <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
+            {/* <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
               <div className="flex items-start gap-1">
                 <MdAccessAlarms />
                 <div className="flex flex-col items-start">
                   <label className="text-xs">Make Recurring</label>
                   <label className="text-xs text-[#BBBBBB]">
-                    Bill Your Clienet Automatically
+                    Bill Your Client Automatically
                   </label>
                 </div>
               </div>
@@ -394,7 +383,7 @@ const EditInvoiceForm = ({
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
-            </div>
+            </div> */}
 
             {/* FOR SAMPLE SECTION */}
             <h1 className="text-xs mt-8">For Sample</h1>
@@ -439,6 +428,7 @@ const EditInvoiceForm = ({
                 </div>
               </div>
               <Button className="flex items-center bg-white">
+                <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
             </div>
