@@ -482,6 +482,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
               </div>
             </div>
             <Button className="flex items-center bg-white">
+              <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
           </div>
