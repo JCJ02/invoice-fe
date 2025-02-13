@@ -403,7 +403,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </label>
               </div>
             </div>
-            <Button className="flex items-center bg-white">
+            <Button
+              className="flex items-center bg-white"
+              onClick={(event: React.FormEvent) => event.preventDefault()}
+            >
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
@@ -418,26 +421,29 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </label>
               </div>
             </div>
-            <Button className="flex items-center bg-white">
+            <Button
+              className="flex items-center bg-white"
+              onClick={(event: React.FormEvent) => event.preventDefault()}
+            >
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
           </div>
           {/* <div className="flex justify-between items-start gap-1 py-3 border-b-[1px] border-[#BBBBBB] w-full">
-            <div className="flex items-start gap-1">
-              <MdAccessAlarms />
-              <div className="flex flex-col items-start">
-                <label className="text-xs">Make Recurring</label>
-                <label className="text-xs text-[#BBBBBB]">
-                  Bill Your Client Automatically
-                </label>
+              <div className="flex items-start gap-1">
+                <MdAccessAlarms />
+                <div className="flex flex-col items-start">
+                  <label className="text-xs">Make Recurring</label>
+                  <label className="text-xs text-[#BBBBBB]">
+                    Bill Your Client Automatically
+                  </label>
+                </div>
               </div>
-            </div>
-            <Button className="flex items-center bg-white">
-              <label className="text-black text-xs">No</label>
-              <MdOutlineKeyboardArrowRight className="text-black text-xs" />
-            </Button>
-          </div> */}
+              <Button className="flex items-center bg-white">
+                <label className="text-black text-xs">No</label>
+                <MdOutlineKeyboardArrowRight className="text-black text-xs" />
+              </Button>
+            </div> */}
 
           {/* FOR SAMPLE SECTION */}
           <h1 className="text-xs mt-8">For Sample</h1>
@@ -451,7 +457,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </p>
               </div>
             </div>
-            <Button className="flex items-center bg-white">
+            <Button
+              className="flex items-center bg-white"
+              onClick={(event: React.FormEvent) => event.preventDefault()}
+            >
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
@@ -466,7 +475,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </p>
               </div>
             </div>
-            <Button className="flex items-center bg-white">
+            <Button
+              className="flex items-center bg-white"
+              onClick={(event: React.FormEvent) => event.preventDefault()}
+            >
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
@@ -481,7 +493,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </p>
               </div>
             </div>
-            <Button className="flex items-center bg-white">
+            <Button
+              className="flex items-center bg-white"
+              onClick={(event: React.FormEvent) => event.preventDefault()}
+            >
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
@@ -496,7 +511,10 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                 </p>
               </div>
             </div>
-            <Button className="flex items-center bg-white">
+            <Button
+              className="flex items-center bg-white"
+              onClick={(event: React.FormEvent) => event.preventDefault()}
+            >
               <label className="text-black text-xs">No</label>
               <MdOutlineKeyboardArrowRight className="text-black text-xs" />
             </Button>
