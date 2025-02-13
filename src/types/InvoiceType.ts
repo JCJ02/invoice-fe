@@ -11,6 +11,8 @@ export type InvoiceType = {
     totalOutstanding: string;
     notes?: string,
     terms?: string,
+    isDraft?: boolean,
+    isRecurring?: boolean,
     createdAt: Date;
     updatedAt: Date;
     deletedAt?: Date
