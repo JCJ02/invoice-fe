@@ -11,6 +11,7 @@ import useEditInvoiceForm from "../_hooks/useEditInvoiceForm";
 import { InvoiceType } from "@/types/InvoiceType";
 import { Bounce, toast } from "react-toastify";
 import { Textarea } from "@/components/ui/textarea";
+import { format } from "date-fns";
 
 type EditInvoiceFormProps = {
   closeModal: any;
@@ -64,21 +65,21 @@ const EditInvoiceForm = ({
     }
   };
 
-  const handleDraft = (event: React.FormEvent) => {
-    event.preventDefault();
-    toast.warning("THIS FEATURE IS COMING SOON!", {
-      toastId: "draftButton",
-      position: "top-right",
-      autoClose: 1500,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-      transition: Bounce,
-    });
-  };
+  // const handleDraft = (event: React.FormEvent) => {
+  //   event.preventDefault();
+  //   toast.warning("THIS FEATURE IS COMING SOON!", {
+  //     toastId: "draftButton",
+  //     position: "top-right",
+  //     autoClose: 1500,
+  //     hideProgressBar: false,
+  //     closeOnClick: true,
+  //     pauseOnHover: true,
+  //     draggable: true,
+  //     progress: undefined,
+  //     theme: "light",
+  //     transition: Bounce,
+  //   });
+  // };
 
   const handleAddADiscount = (event: React.FormEvent) => {
     event.preventDefault();
@@ -101,6 +102,15 @@ const EditInvoiceForm = ({
         <div className="flex flex-col justify-between items-start gap-4 border-r-[1px] border-[#BBBBBB] p-10 w-2/3 lg:w-[640px]">
           <div className="flex flex-col gap-4 w-full">
             <h1 className="text-xl font-semibold w-full">Edit Invoice</h1>
+            {invoice.isDraft && (
+              <div className="bg-[#D2232D33] flex items-center gap-2 py-1 pl-1 w-full">
+                <h1 className="font-bold text-xs">Draft</h1>
+                <p className="text-xs">
+                  You created this Invoice on{" "}
+                  <b>{format(invoice.issuedDate, "MMMM d, yyyy")}</b>
+                </p>
+              </div>
+            )}
             <div className="flex flex-col items-start py-12 px-8 gap-10 [box-shadow:0_0_25px_5px_rgba(0,0,0,0.1)] overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-[720px] w-full">
               {/* HEADER */}
               <div className="flex justify-between items-start gap-10 lg:gap-15 w-full">
@@ -324,12 +334,12 @@ const EditInvoiceForm = ({
             <Button className="text-xs border-2 border-[#D2232D] px-4 lg:px-10">
               Save
             </Button>
-            <Button
+            {/* <Button
               className="text-xs border-2 border-[#D2232D] px-4 lg:px-10"
               onClick={handleDraft}
             >
               Draft
-            </Button>
+            </Button> */}
           </div>
         </div>
 
@@ -349,7 +359,10 @@ const EditInvoiceForm = ({
                   </label>
                 </div>
               </div>
-              <Button className="flex items-center bg-white">
+              <Button
+                className="flex items-center bg-white"
+                onClick={(event: React.FormEvent) => event.preventDefault()}
+              >
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
@@ -364,7 +377,10 @@ const EditInvoiceForm = ({
                   </label>
                 </div>
               </div>
-              <Button className="flex items-center bg-white">
+              <Button
+                className="flex items-center bg-white"
+                onClick={(event: React.FormEvent) => event.preventDefault()}
+              >
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
@@ -397,7 +413,10 @@ const EditInvoiceForm = ({
                   </p>
                 </div>
               </div>
-              <Button className="flex items-center bg-white">
+              <Button
+                className="flex items-center bg-white"
+                onClick={(event: React.FormEvent) => event.preventDefault()}
+              >
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
@@ -412,7 +431,10 @@ const EditInvoiceForm = ({
                   </p>
                 </div>
               </div>
-              <Button className="flex items-center bg-white">
+              <Button
+                className="flex items-center bg-white"
+                onClick={(event: React.FormEvent) => event.preventDefault()}
+              >
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
@@ -427,7 +449,10 @@ const EditInvoiceForm = ({
                   </p>
                 </div>
               </div>
-              <Button className="flex items-center bg-white">
+              <Button
+                className="flex items-center bg-white"
+                onClick={(event: React.FormEvent) => event.preventDefault()}
+              >
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
@@ -442,7 +467,10 @@ const EditInvoiceForm = ({
                   </p>
                 </div>
               </div>
-              <Button className="flex items-center bg-white">
+              <Button
+                className="flex items-center bg-white"
+                onClick={(event: React.FormEvent) => event.preventDefault()}
+              >
                 <label className="text-black text-xs">No</label>
                 <MdOutlineKeyboardArrowRight className="text-black text-xs" />
               </Button>
