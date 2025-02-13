@@ -346,15 +346,16 @@ const Invoices = () => {
                             </TableRow>
                           );
                         })
-                      : // <TableRow key={client.id}>
-                        //   <TableCell
-                        //     colSpan={5}
-                        //     className="text-center text-xs md:text-md lg:text-lg text-gray-500"
-                        //   >
-                        //     No Data Found
-                        //   </TableCell>
-                        // </TableRow>
-                        []
+                      : [
+                          <TableRow key={client.id}>
+                            <TableCell
+                              colSpan={5}
+                              className="text-center text-xs md:text-md lg:text-lg text-gray-500"
+                            >
+                              No Data Found
+                            </TableCell>
+                          </TableRow>,
+                        ]
                   );
                 })()
               ) : (
