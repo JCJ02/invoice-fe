@@ -25,11 +25,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import generatePaginationLinks from "@/utils/generatePaginationLinks";
 import NewClientForm from "@/app/(invoice-application)/(client)/client/_components/NewClientForm";
 import EditClient from "./_components/EditClientForm";
 import ViewClientModal from "./_components/ViewClientModal";
 import DeleteClientModal from "./_components/DeleteClientModal";
+import generatePaginationLinks from "@/utils/generatePaginationLinks";
 
 const Client = () => {
   useAuthentication();
