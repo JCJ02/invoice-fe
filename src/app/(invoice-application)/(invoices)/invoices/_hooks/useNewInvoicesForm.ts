@@ -12,7 +12,8 @@ type NewInvoicesErrors = {
     quantity?: string,
     dueDate?: string,
     notes?: string,
-    terms?: string
+    terms?: string,
+    isRecurring?: boolean
 }
 
 const useNewInvoicesForm = () => {
@@ -22,7 +23,8 @@ const useNewInvoicesForm = () => {
         quantity: 1.00,
         dueDate: new Date(),
         notes: "",
-        terms: ""
+        terms: "",
+        isRecurring: false
     }
     const [invoicesValue, setInvoicesValue] = useState<NewInvoicesWithTotal[]>([defaultValues]);
     const [errors, setErrors] = useState<NewInvoicesErrors[]>([]);
@@ -58,6 +60,14 @@ const useNewInvoicesForm = () => {
             return invoices;
         });
     };
+
+    const handleCheckboxChange = (index: number, checked: boolean) => {
+        setInvoicesValue((previous) => {
+          const updatedInvoices = [...previous];
+          updatedInvoices[index].isRecurring = checked;
+          return updatedInvoices;
+        });
+      };
 
     const validateNewInvoicesForm = () => {
 
@@ -97,6 +107,7 @@ const useNewInvoicesForm = () => {
         totalOutstanding,
         errors,
         handleChange,
+        handleCheckboxChange,
         validateNewInvoicesForm,
         handleAddInvoiceLine
     }

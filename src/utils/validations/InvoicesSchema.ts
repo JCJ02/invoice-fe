@@ -29,6 +29,7 @@ const invoicesSchema = z.object({
 
     notes: z.string().optional().nullable(),
     terms: z.string().optional().nullable(),
+    isRecurring: z.boolean().optional().nullable()
 });
 
 const updateInvoiceSchema = z.object({
@@ -58,6 +59,7 @@ const updateInvoiceSchema = z.object({
 
     notes: z.string().optional().nullable(),
     terms: z.string().optional().nullable(),
+    isRecurring: z.boolean().optional().nullable()
 });
 
 const createManyInvoices = z.array(invoicesSchema);

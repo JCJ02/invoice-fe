@@ -11,6 +11,7 @@ import useNewInvoicesForm from "../_hooks/useNewInvoicesForm";
 import useNewInvoicesMutation from "../_hooks/useNewInvoicesMutation";
 import { Textarea } from "@/components/ui/textarea";
 import useDraftInvoicesMutation from "../_hooks/useDraftInvoicesMutation";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type NewInvoiceFormProps = {
   closeModal: any;
@@ -23,6 +24,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
     errors,
     totalOutstanding,
     handleChange,
+    handleCheckboxChange,
     validateNewInvoicesForm,
     handleAddInvoiceLine,
   } = useNewInvoicesForm();
@@ -208,8 +210,11 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
             {/* ADD INVOICES */}
             <div className="flex flex-col items-center gap-1 border-t-2 border-red-600 w-full">
               {/* FIELDS TITLE */}
-              <div className="flex justify-between items-center py-2 w-full">
-                <label className="text-xs text-red-600 w-2/5">
+              <div className="flex justify-between items-center gap-1 py-2 w-full">
+                <label className="text-xs text-center text-red-600 w-1/12">
+                  RECUR
+                </label>
+                <label className="text-xs text-red-600 w-1/2">
                   Description
                 </label>
                 <label className="text-xs text-red-600 w-1/6">Rate</label>
@@ -225,9 +230,17 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
               {invoicesValue.map((invoice, index) => (
                 <div
                   key={index}
-                  className="flex justify-between items-start w-full"
+                  className="flex justify-between items-center gap-1 w-full"
                 >
-                  <div className="flex flex-col items-start w-2/5">
+                  <div className="flex flex-col items-center w-1/12">
+                    <Checkbox
+                      checked={invoice.isRecurring || false}
+                      onCheckedChange={(checked) =>
+                        handleCheckboxChange(index, checked as boolean)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col items-start w-1/2">
                     <InputFields
                       className="text-xs border-0 px-0 w-full"
                       placeholder="Description"
