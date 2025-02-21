@@ -467,6 +467,7 @@ const Invoices = () => {
           ) : null}
         </Modal>
 
+        {/* VIEW INVOICES MODAL */}
         <Modal
           isOpen={isViewInvoicesModalOpen}
           onClose={closeViewInvoicesModal}

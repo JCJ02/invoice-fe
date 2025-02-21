@@ -17,3 +17,11 @@ export type InvoiceType = {
     updatedAt: Date;
     deletedAt?: Date
 };
+
+export type InvoiceResponse = {
+    data: {
+        invoice: InvoiceType[]
+    };
+    message?: string;
+    code?: number;
+}

@@ -17,6 +17,7 @@ import { InvoiceType } from "@/types/InvoiceType";
 import { pdf } from "@react-pdf/renderer";
 import InvoicePDF from "./InvoicePDF";
 import { format } from "date-fns";
+// import useFetchInvoiceNumber from "../_hooks/useFetchInvoiceNumber";
 
 type NewInvoiceFormProps = {
   closeModal: any;
@@ -29,8 +30,14 @@ const ViewInvoicesModal = ({
   client,
   invoice,
 }: NewInvoiceFormProps) => {
-  const { data, isLoading, isError, error } = useFetchClientId(client.id);
+  const { data, isLoading, isError, error } = useFetchClientId(
+    client.id,
+    invoice.invoiceNumber
+  );
   // console.log(`Client ID: ${client.id}`);
+
+  // const { invoicesData, areInvoicesLoading, areInvoicesError, invoiceError } =
+  //   useFetchInvoiceNumber(invoice.invoiceNumber);
 
   const handleDownloadInvoicePDF = async () => {
     try {
