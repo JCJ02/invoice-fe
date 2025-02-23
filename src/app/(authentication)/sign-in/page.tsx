@@ -160,9 +160,8 @@ const SignIn = () => {
               </div>
               <button
                 id="sign-in"
-                className={`${
-                  loading ? "bg-[#E47B81]" : "bg-[#D2232D]"
-                } font-poppins text-white p-1 my-5 rounded-md hover:bg-[#E47B81] w-full`}
+                className={`${loading ? "bg-[#E47B81]" : "bg-[#D2232D]"
+                  } font-poppins text-white p-1 my-5 rounded-md hover:bg-[#E47B81] w-full`}
                 type="submit"
                 disabled={loading}
               >

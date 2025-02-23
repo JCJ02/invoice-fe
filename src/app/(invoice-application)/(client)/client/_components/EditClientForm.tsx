@@ -173,11 +173,10 @@ const EditClient = ({ client, closeModal }: EditClientProps) => {
               </label>
             </Button>
             <div
-              className={`${
-                showBusinessNumberField
+              className={`${showBusinessNumberField
                   ? "flex flex-col items-start w-full"
                   : "hidden"
-              }`}
+                }`}
             >
               <label className="text-xs md:text-sm">Business Number</label>
               <InputFields
@@ -206,11 +205,10 @@ const EditClient = ({ client, closeModal }: EditClientProps) => {
               </label>
             </Button>
             <div
-              className={`${
-                showMobilePhoneField
+              className={`${showMobilePhoneField
                   ? "flex flex-col items-start w-full"
                   : "hidden"
-              }`}
+                }`}
             >
               <label className="text-xs md:text-sm">Mobile Phone</label>
               <InputFields
@@ -239,9 +237,8 @@ const EditClient = ({ client, closeModal }: EditClientProps) => {
               </label>
             </Button>
             <div
-              className={`${
-                showAddress ? "flex flex-col items-start w-full" : "hidden"
-              }`}
+              className={`${showAddress ? "flex flex-col items-start w-full" : "hidden"
+                }`}
             >
               <label className="text-xs md:text-sm">Address</label>
               <InputFields

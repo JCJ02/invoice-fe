@@ -41,7 +41,7 @@ const useLoginMutation = () => {
         theme: "light",
         transition: Bounce,
       });
-      if(!authenticationToken) {
+      if (!authenticationToken) {
         setAuthenticationToken(data.data.token);
       } else {
         console.log(`Token is already Set: ${authenticationToken}`);

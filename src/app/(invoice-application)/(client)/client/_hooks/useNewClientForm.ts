@@ -33,7 +33,7 @@ const useNewClientForm = () => {
 
     const validateNewClientForm = () => {
         const result = newClientSchema.safeParse(values);
-        if(result.error) {
+        if (result.error) {
             const errorMessages = result.error.flatten().fieldErrors;
             setErrors({
                 firstname: errorMessages.firstname?.[0],

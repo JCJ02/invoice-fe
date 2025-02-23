@@ -14,7 +14,7 @@ interface DraftInvoicesResponse {
 
 const useDraftInvoicesMutation = (clientId: number) => {
     const UseQueryClient = useQueryClient();
-    const draftInvoicesMutation = usePost<{invoices: NewInvoices[]}, DraftInvoicesResponse[]>({
+    const draftInvoicesMutation = usePost<{ invoices: NewInvoices[] }, DraftInvoicesResponse[]>({
         url: `${baseUrl}api/client/draft-invoices/${clientId}`,
         requiresAuthentication: true,
         onSuccess: () => {
@@ -30,10 +30,10 @@ const useDraftInvoicesMutation = (clientId: number) => {
                 theme: "light",
                 transition: Bounce,
             });
-            UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
-            UseQueryClient.invalidateQueries({queryKey: ["client"]});
-            UseQueryClient.invalidateQueries({queryKey: ["clients"]});
-            UseQueryClient.invalidateQueries({queryKey: ["sum"]});
+            UseQueryClient.invalidateQueries({ queryKey: ["invoices"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["client"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["clients"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["sum"] });
         }
     });
     return draftInvoicesMutation;

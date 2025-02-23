@@ -14,7 +14,7 @@ interface NewInvoicesResponse {
 
 const useNewInvoicesMutation = (clientId: number) => {
     const UseQueryClient = useQueryClient();
-    const newInvoicesMutation = usePost<{invoices: NewInvoices[]}, NewInvoicesResponse[]>({
+    const newInvoicesMutation = usePost<{ invoices: NewInvoices[] }, NewInvoicesResponse[]>({
         url: `${baseUrl}api/client/create-invoices/${clientId}`,
         requiresAuthentication: true,
         onSuccess: () => {
@@ -30,10 +30,10 @@ const useNewInvoicesMutation = (clientId: number) => {
                 theme: "light",
                 transition: Bounce,
             });
-            UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
-            UseQueryClient.invalidateQueries({queryKey: ["client"]});
-            UseQueryClient.invalidateQueries({queryKey: ["clients"]});
-            UseQueryClient.invalidateQueries({queryKey: ["sum"]});
+            UseQueryClient.invalidateQueries({ queryKey: ["invoices"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["client"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["clients"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["sum"] });
         }
     });
     return newInvoicesMutation;

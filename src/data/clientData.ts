@@ -9,7 +9,7 @@ interface ClientType {
     mobilePhone: string;
     address: string;
 }
-  
+
 export const clientData: ClientType[] = [
     {
         id: 1,
@@ -177,4 +177,3 @@ export const clientData: ClientType[] = [
         address: "Stockholm, Sweden",
     },
 ];
-  

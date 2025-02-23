@@ -17,7 +17,7 @@ type NewInvoicesErrors = {
 }
 
 const useNewInvoicesForm = () => {
-    const defaultValues: NewInvoicesWithTotal  = {
+    const defaultValues: NewInvoicesWithTotal = {
         description: "",
         rate: 0.00,
         quantity: 1.00,
@@ -31,7 +31,7 @@ const useNewInvoicesForm = () => {
     const [totalOutstanding, setTotalOutstanding] = useState<number>(0.00);
 
     const decimalFormat = (value: number) => {
-        return Math.round(value * 100) / 100; 
+        return Math.round(value * 100) / 100;
     };
 
     const calculateTotalOutstanding = (invoices: NewInvoicesWithTotal[]) => {
@@ -49,8 +49,8 @@ const useNewInvoicesForm = () => {
                     type === "number"
                         ? decimalFormat(Number(value))
                         : name === "dueDate"
-                        ? new Date(value)
-                        : value
+                            ? new Date(value)
+                            : value
             };
 
             if (name === "rate" || name === "quantity") {
@@ -63,11 +63,11 @@ const useNewInvoicesForm = () => {
 
     const handleCheckboxChange = (index: number, checked: boolean) => {
         setInvoicesValue((previous) => {
-          const updatedInvoices = [...previous];
-          updatedInvoices[index].isRecurring = checked;
-          return updatedInvoices;
+            const updatedInvoices = [...previous];
+            updatedInvoices[index].isRecurring = checked;
+            return updatedInvoices;
         });
-      };
+    };
 
     const validateNewInvoicesForm = () => {
 
@@ -81,7 +81,7 @@ const useNewInvoicesForm = () => {
                 rate: flattenedErrors.rate?.[index] || "",
                 quantity: flattenedErrors.quantity?.[index] || "",
                 dueDate: flattenedErrors.dueDate?.[index] || "",
-            }));            
+            }));
 
             setErrors(invoicesErrors);
             return false;
@@ -89,7 +89,7 @@ const useNewInvoicesForm = () => {
 
         setErrors([]);
         return true;
-        
+
     }
 
     const handleAddInvoiceLine = (event: React.FocusEvent) => {

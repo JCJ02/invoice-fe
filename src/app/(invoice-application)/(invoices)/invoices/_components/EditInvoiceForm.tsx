@@ -271,9 +271,8 @@ const EditInvoiceForm = ({
                   <div className="flex flex-col items-start border-t-[1px] border-b-[1px] border-[#BBBBBB] py-1 my-1 w-full">
                     <div className="flex justify-between items-center w-full">
                       <label className="text-xs">Total:</label>
-                      <label className="text-xs">{`₱${
-                        totalOutstanding.toLocaleString() || "0.00"
-                      }`}</label>
+                      <label className="text-xs">{`₱${totalOutstanding.toLocaleString() || "0.00"
+                        }`}</label>
                     </div>
                     <div className="flex justify-between items-center w-full">
                       <label className="text-xs">Amount Paid:</label>
@@ -284,9 +283,8 @@ const EditInvoiceForm = ({
                     <label className="text-xs text-red-600">
                       Amount Due (PHP):
                     </label>
-                    <label className="text-xs">{`₱${
-                      totalOutstanding.toLocaleString() || "0.00"
-                    }`}</label>
+                    <label className="text-xs">{`₱${totalOutstanding.toLocaleString() || "0.00"
+                      }`}</label>
                   </div>
                   <Button
                     className="bg-white text-xs md:text-xs lg:text-xs text-blue-500 p-0 md:p-0 lg:p-0"

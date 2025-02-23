@@ -29,12 +29,12 @@ const useEditInvoiceForm = () => {
     const [totalOutstanding, setTotalOutstanding] = useState<number>(0.00);
 
     const decimalFormat = (value: number) => {
-        return Math.round(value * 100) / 100; 
+        return Math.round(value * 100) / 100;
     };
-  
+
     const calculateTotalOutstanding = (invoice: EditInvoice) => {
         if (!invoice.rate || !invoice.quantity) return;
-        
+
         const total = invoice.rate * invoice.quantity;
         setTotalOutstanding(decimalFormat(total));
     };
@@ -42,28 +42,28 @@ const useEditInvoiceForm = () => {
     const handleChange = ({ target }: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value, type } = target;
         setCurrentValues((previousValues) => {
-            const updatedValues = { 
-                ...previousValues, 
-                [name]: 
+            const updatedValues = {
+                ...previousValues,
+                [name]:
                     type === "number"
                         ? value.trim() === "" ? 0 : decimalFormat(parseFloat(value))
                         : name === "dueDate"
-                        ? new Date(value)
-                        : value
+                            ? new Date(value)
+                            : value
             };
-    
+
             // Recalculate totalOutstanding when rate or quantity changes
             if (name === "rate" || name === "quantity") {
                 calculateTotalOutstanding(updatedValues);
             }
-    
+
             return updatedValues;
         });
     };
 
     const validateEditInvoiceForm = () => {
         const result = updateInvoiceSchema.safeParse(currentValues);
-        if(result.error) {
+        if (result.error) {
             const errorMessages = result.error.flatten().fieldErrors;
             setErrors({
                 description: errorMessages.description?.[0],

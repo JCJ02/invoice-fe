@@ -200,9 +200,8 @@ const Invoices = () => {
               </h1>
             ) : draftError ? (
               <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">
-                {`Error: ${
-                  displayError?.message || "An Unknown Error Occurred."
-                }`}
+                {`Error: ${displayError?.message || "An Unknown Error Occurred."
+                  }`}
               </h1>
             ) : sumDraftTotalOutstandingData ? (
               <h1 className="font-semibold text-[#D2232D] text-md lg:text-2xl">

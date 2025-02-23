@@ -7,7 +7,7 @@ import { useQueryClient } from "@tanstack/react-query";
 
 const useDeleteInvoice = (invoiceId: number) => {
     const UseQueryClient = useQueryClient();
-    
+
     const deleteInvoiceMutation = useDelete<null, ClientResponse>({
         url: `${baseUrl}api/client/delete-invoice/${invoiceId}`,
         requiresAuthentication: true,
@@ -24,10 +24,10 @@ const useDeleteInvoice = (invoiceId: number) => {
                 theme: "light",
                 transition: Bounce,
             });
-            UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
-            UseQueryClient.invalidateQueries({queryKey: ["client"]});
-            UseQueryClient.invalidateQueries({queryKey: ["clients"]});
-            UseQueryClient.invalidateQueries({queryKey: ["sum"]});
+            UseQueryClient.invalidateQueries({ queryKey: ["invoices"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["client"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["clients"] });
+            UseQueryClient.invalidateQueries({ queryKey: ["sum"] });
         },
         onError: (error: any) => {
             toast.error(`Failed To Delete: ${error.response?.data?.message || "Unknown Error"}`, {
