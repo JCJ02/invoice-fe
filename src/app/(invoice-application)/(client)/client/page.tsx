@@ -13,7 +13,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { IoEyeOutline } from "react-icons/io5";
 import { FaRegEdit } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
 import { ClientType } from "@/types/ClientType";
@@ -26,11 +25,11 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import generatePaginationLinks from "@/utils/generatePaginationLinks";
 import NewClientForm from "@/app/(invoice-application)/(client)/client/_components/NewClientForm";
 import EditClient from "./_components/EditClientForm";
 import ViewClientModal from "./_components/ViewClientModal";
 import DeleteClientModal from "./_components/DeleteClientModal";
+import generatePaginationLinks from "@/utils/generatePaginationLinks";
 
 const Client = () => {
   useAuthentication();
@@ -161,6 +160,9 @@ const Client = () => {
                     <TableRow
                       key={client.id}
                       className={index % 2 === 0 ? "bg-[#FBE9EA]" : "bg-white"}
+                      onClick={(event: React.FormEvent) =>
+                        openViewClientModal(event, client)
+                      }
                     >
                       <TableCell className="flex flex-col gap-1">
                         <label className="text-sm">{client.companyName}</label>
@@ -178,20 +180,11 @@ const Client = () => {
                         {client.address}
                       </TableCell>
                       <TableCell className="flex items-center gap-1 h-full">
-                        {/* VIEW BUTTON */}
-                        <Button
-                          className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
-                          onClick={(event: React.FormEvent) =>
-                            openViewClientModal(event, client)
-                          }
-                        >
-                          <IoEyeOutline />
-                        </Button>
-
                         {/* EDIT BUTTON */}
                         <Button
                           className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
                           onClick={(event: React.FormEvent) => {
+                            event.stopPropagation();
                             openEditClientModal(event, client);
                           }}
                         >
@@ -202,6 +195,7 @@ const Client = () => {
                         <Button
                           className="bg-white px-1 lg:px-1 py-1 text-black text-sm"
                           onClick={(event: React.FormEvent) => {
+                            event.stopPropagation();
                             openDeleteClientModal(event, client);
                           }}
                         >

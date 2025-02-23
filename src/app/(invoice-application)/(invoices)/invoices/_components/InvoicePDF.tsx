@@ -1,5 +1,6 @@
 import { InvoiceType } from "@/types/InvoiceType";
 import LWSMainLogo from "../../../../../assets/images/lws-main-logo.png";
+import PesoSign from "../../../../../assets/images/peso-sign.png";
 import {
   Document,
   Font,
@@ -57,7 +58,7 @@ Font.register({
 
 Font.register({
   family: "Roboto",
-  src: "https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap",
+  src: "https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap",
 });
 
 // TAILWIND CSS
@@ -127,6 +128,16 @@ const InvoicePDF = ({
                 </Text>
                 <Text style={tw("font-roboto text-sm")}>{formattedDate}</Text>
               </View>
+              <View style={tw("flex flex-col items-start gap-1")}>
+                <Text style={tw("font-roboto text-sm text-red-600")}>
+                  Date of Due
+                </Text>
+                <Text style={tw("font-roboto text-sm")}>
+                  {new Date(invoice.dueDate)
+                    .toLocaleDateString("en-GB")
+                    .replace(/\//g, "-")}
+                </Text>
+              </View>
             </View>
 
             <View style={tw("flex flex-col items-start gap-3")}>
@@ -135,7 +146,6 @@ const InvoicePDF = ({
                   Invoice Number
                 </Text>
                 <Text style={tw("font-roboto text-sm")}>
-                  {/* {data?.data.client.invoices?.[1]?.invoiceNumber} */}
                   {invoice.invoiceNumber}
                 </Text>
               </View>
@@ -146,10 +156,8 @@ const InvoicePDF = ({
           <View style={tw("flex flex-col items-end gap-1 w-full")}>
             <Text style={tw("text-sm text-red-600")}>Amount Due (PHP)</Text>
             <Text style={tw("font-roboto text-xl")}>
-              {/* {Number(
-                data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-              ).toLocaleString() || "0.00"}{" "} */}
-              {invoice.totalOutstanding} PHP
+              <Image src={PesoSign.src} style={tw("h-4 w-4")} />
+              {Number(invoice.totalOutstanding).toLocaleString()}
             </Text>
           </View>
         </View>
@@ -164,19 +172,16 @@ const InvoicePDF = ({
             <View
               style={tw("flex flex-row justify-between items-center w-full")}
             >
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/4")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/2")}>
                 Description
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
-                Due Date
-              </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
                 Rate
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/6")}>
-                Quantity
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
+                QTY
               </Text>
-              <Text style={tw("font-roboto text-sm text-red-600 w-1/5")}>
+              <Text style={tw("font-roboto text-sm text-red-600 w-1/12")}>
                 Line Total
               </Text>
             </View>
@@ -205,21 +210,19 @@ const InvoicePDF = ({
                     )}
                     key={invoice.id}
                   >
-                    <Text style={tw("font-roboto text-sm w-1/4")}>
+                    <Text style={tw("font-roboto text-sm w-1/2")}>
                       {invoice.description}
                     </Text>
-                    <Text style={tw("font-roboto text-sm w-1/5")}>
-                      {new Date(invoice.dueDate).toLocaleDateString()}
+                    <Text style={tw("font-roboto text-sm w-1/12")}>
+                      <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                      {Number(invoice.rate).toLocaleString()}
                     </Text>
-                    <Text style={tw("font-roboto text-sm w-1/5")}>
-                      {Number(invoice.rate).toFixed(2).toLocaleString()} PHP
-                    </Text>
-                    <Text style={tw("font-roboto text-sm w-1/6")}>
+                    <Text style={tw("font-roboto text-sm w-1/12")}>
                       {invoice.quantity}
                     </Text>
-                    <Text style={tw("font-poppins text-sm w-1/5")}>
-                      {Number(invoice.lineTotal).toFixed(2).toLocaleString()}{" "}
-                      PHP
+                    <Text style={tw("font-poppins text-sm w-1/12")}>
+                      <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                      {Number(invoice.lineTotal).toLocaleString()}
                     </Text>
                   </View>
                 ))
@@ -233,12 +236,18 @@ const InvoicePDF = ({
           <View style={tw("flex flex-col items-start w-2/5")}>
             <View style={styles.row}>
               <Text style={tw("font-roboto text-sm")}>Subtotal:</Text>
-              <Text style={tw("font-roboto text-sm")}>{`0.00 PHP`}</Text>
+              <Text style={tw("font-roboto text-sm")}>
+                <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                {`0.00`}
+              </Text>
             </View>
 
             <View style={styles.row}>
               <Text style={tw("font-roboto text-sm")}>Tax:</Text>
-              <Text style={tw("font-roboto text-sm")}>{`0.00 PHP`}</Text>
+              <Text style={tw("font-roboto text-sm")}>
+                <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                {`0.00`}
+              </Text>
             </View>
 
             <View
@@ -249,16 +258,17 @@ const InvoicePDF = ({
               <View style={styles.row}>
                 <Text style={tw("font-roboto text-sm")}>Total:</Text>
                 <Text style={tw("font-roboto text-sm")}>
-                  {/* {Number(
-                    data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                  ).toLocaleString() || "0.00"}{" "} */}
-                  {invoice.totalOutstanding} PHP
+                  <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                  {Number(invoice.totalOutstanding).toLocaleString()}
                 </Text>
               </View>
 
               <View style={styles.row}>
                 <Text style={tw("font-roboto text-sm")}>Amount Paid:</Text>
-                <Text style={tw("font-roboto text-sm")}>{`0.00 PHP`}</Text>
+                <Text style={tw("font-roboto text-sm")}>
+                  <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                  {`0.00`}
+                </Text>
               </View>
             </View>
             <View style={styles.row}>
@@ -266,30 +276,22 @@ const InvoicePDF = ({
                 Amount Due (PHP):
               </Text>
               <Text style={tw("font-roboto text-sm")}>
-                {/* {Number(
-                  data?.data.client.invoices?.[1]?.totalOutstanding?.toLocaleString()
-                ).toLocaleString() || "0.00"}{" "} */}
-                {invoice.totalOutstanding} PHP
+                <Image src={PesoSign.src} style={tw("h-2 w-2")} />
+                {Number(invoice.totalOutstanding).toLocaleString()}
               </Text>
             </View>
           </View>
         </View>
       </View>
       {/* NOTES and TERMS */}
-      <View style={tw("flex flex-col items-start gap-2 px-9 pb-9 w-full")}>
-        <Text style={tw("text-sm text-red-600")}>Notes</Text>
+      <View style={tw("flex flex-col items-start gap-2 px-10 pb-10 w-full")}>
         <View style={tw("flex flex-col items-start gap-1 w-full")}>
-          <Text style={tw("font-roboto text-sm")}>Bank Name: BDO</Text>
-          <Text style={tw("font-roboto text-sm")}>
-            Account Name: Lightweight Information Technology Solutions
-          </Text>
-          <Text style={tw("font-roboto text-sm")}>
-            Bank Account Number: 000-000-00-00
-          </Text>
-          <Text style={tw("font-roboto text-sm")}>
-            Bank Address: 1488 Quezon Avenue, 1103 South Triangle, Scout Albano,
-            Quezon City, Philippines
-          </Text>
+          <Text style={tw("text-sm text-red-600")}>Notes</Text>
+          <Text style={tw("font-roboto text-sm")}>{invoice.notes}</Text>
+        </View>
+        <View style={tw("flex flex-col items-start gap-1 w-full")}>
+          <Text style={tw("text-sm text-red-600")}>Terms</Text>
+          <Text style={tw("font-roboto text-sm")}>{invoice.terms}</Text>
         </View>
       </View>
     </Page>

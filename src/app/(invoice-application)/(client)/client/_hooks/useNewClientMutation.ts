@@ -37,6 +37,7 @@ const useNewClientMutation = () => {
             UseQueryClient.invalidateQueries({queryKey: ["invoices"]});
             UseQueryClient.invalidateQueries({queryKey: ["client"]});
             UseQueryClient.invalidateQueries({queryKey: ["clients"]});
+            UseQueryClient.invalidateQueries({queryKey: ["sum"]});
         }
     });
 

@@ -4,7 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { NewInvoices } from "@/utils/validations/InvoicesSchema";
 import { Bounce, toast } from 'react-toastify';
 
-interface NewInvoicesResponse {
+interface DraftInvoicesResponse {
     id: number,
     description: string,
     rate: number,
@@ -12,14 +12,14 @@ interface NewInvoicesResponse {
     dueDate: Date,
 }
 
-const useNewInvoicesMutation = (clientId: number) => {
+const useDraftInvoicesMutation = (clientId: number) => {
     const UseQueryClient = useQueryClient();
-    const newInvoicesMutation = usePost<{invoices: NewInvoices[]}, NewInvoicesResponse[]>({
-        url: `${baseUrl}api/client/create-invoices/${clientId}`,
+    const draftInvoicesMutation = usePost<{invoices: NewInvoices[]}, DraftInvoicesResponse[]>({
+        url: `${baseUrl}api/client/draft-invoices/${clientId}`,
         requiresAuthentication: true,
         onSuccess: () => {
-            toast.success('Successfully Created!', {
-                toastId: "newInvoicesSuccess",
+            toast.error('Drafted', {
+                toastId: "draftInvoicesSuccess",
                 position: "top-right",
                 autoClose: 1500,
                 hideProgressBar: false,
@@ -36,7 +36,7 @@ const useNewInvoicesMutation = (clientId: number) => {
             UseQueryClient.invalidateQueries({queryKey: ["sum"]});
         }
     });
-    return newInvoicesMutation;
+    return draftInvoicesMutation;
 }
 
-export default useNewInvoicesMutation;
+export default useDraftInvoicesMutation;

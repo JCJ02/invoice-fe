@@ -9,7 +9,19 @@ export type InvoiceType = {
     issuedDate: string;
     dueDate: string;
     totalOutstanding: string;
+    notes?: string,
+    terms?: string,
+    isDraft?: boolean,
+    isRecurring?: boolean,
     createdAt: Date;
     updatedAt: Date;
     deletedAt?: Date
 };
+
+export type InvoiceResponse = {
+    data: {
+        invoice: InvoiceType[]
+    };
+    message?: string;
+    code?: number;
+}
