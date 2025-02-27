@@ -9,9 +9,9 @@ import formattedDate from "@/utils/date";
 import useEditInvoiceMutation from "../_hooks/useEditInvoiceMutation";
 import useEditInvoiceForm from "../_hooks/useEditInvoiceForm";
 import { InvoiceType } from "@/types/InvoiceType";
-import { Bounce, toast } from "react-toastify";
 import { Textarea } from "@/components/ui/textarea";
 import { format } from "date-fns";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type EditInvoiceFormProps = {
   closeModal: any;
@@ -30,6 +30,7 @@ const EditInvoiceForm = ({
     errors,
     totalOutstanding,
     handleChange,
+    handleCheckboxChange,
     validateEditInvoiceForm,
   } = useEditInvoiceForm();
 
@@ -40,7 +41,10 @@ const EditInvoiceForm = ({
         dueDate: invoice.dueDate ? new Date(invoice.dueDate) : new Date(), // DEFAULT DATE IF NULL
         rate: Number(invoice.rate),
         quantity: Number(invoice.quantity),
+        totalOutstanding: Number(invoice.totalOutstanding),
+        isRecurring: invoice.isRecurring || false,
       };
+      console.log("Initialized invoice values:", invoiceWithDate);
       setCurrentValues(invoiceWithDate);
     }
   }, [invoice, setCurrentValues]);
@@ -105,6 +109,7 @@ const EditInvoiceForm = ({
             {invoice.isDraft && (
               <div className="bg-[#D2232D33] flex items-center gap-2 py-1 pl-1 w-full">
                 <h1 className="font-bold text-xs">Draft</h1>
+                {" - "}
                 <p className="text-xs">
                   You created this Invoice on{" "}
                   <b>{format(invoice.issuedDate, "MMMM d, yyyy")}</b>
@@ -127,7 +132,7 @@ const EditInvoiceForm = ({
 
               {/* CLIENT INFORMATION */}
               <div className="flex justify-between items-start gap-2 font-poppins w-full">
-                <div className="flex items-start gap-8 w-full">
+                <div className="flex items-start gap-4 w-full">
                   {/* BILLED TO */}
                   <div className="flex flex-col items-start gap-1">
                     <h1 className="text-xs text-red-600">Billed To</h1>
@@ -146,10 +151,10 @@ const EditInvoiceForm = ({
                       <label className="text-xs">{formattedDate}</label>
                     </div>
                     <div className="flex flex-col items-start gap-1">
-                      <h1 className="text-xs text-red-600">Date of Issue</h1>
+                      <h1 className="text-xs text-red-600">Date of Due</h1>
                       <label className="text-xs">
                         <InputFields
-                          className="text-xs border-0 p-0 w-full"
+                          className="text-xs border-0 p-0 w-4/5"
                           type="date"
                           name="dueDate"
                           value={
@@ -159,6 +164,15 @@ const EditInvoiceForm = ({
                         />
                       </label>
                     </div>
+                  </div>
+
+                  {/* INVOICE NUMBER */}
+                  <div className="flex flex-col items-start gap-1">
+                    <h1 className="text-xs text-red-600">Invoice Number</h1>
+                    <label className="text-xs">
+                      {/* {data?.data.client.invoices?.[1]?.invoiceNumber} */}
+                      {invoice.invoiceNumber}
+                    </label>
                   </div>
                 </div>
 
@@ -174,8 +188,11 @@ const EditInvoiceForm = ({
               {/* EDIT INVOICES */}
               <div className="flex flex-col items-center border-t-2 border-red-600 w-full">
                 {/* FIELDS TITLE */}
-                <div className="flex justify-between items-center py-2 w-full">
-                  <label className="text-xs text-red-600 w-2/5">
+                <div className="flex justify-between items-center gap-1 py-2 w-full">
+                  <label className="text-xs text-center text-red-600 w-1/12">
+                    RECUR
+                  </label>
+                  <label className="text-xs text-red-600 w-1/2">
                     Description
                   </label>
                   <label className="text-xs text-red-600 w-1/6">Rate</label>
@@ -188,8 +205,16 @@ const EditInvoiceForm = ({
                 </div>
 
                 {/* INVOICE FIELDS */}
-                <div className="flex justify-between items-start w-full">
-                  <div className="flex flex-col items-start w-2/5">
+                <div className="flex justify-between items-center gap-1 w-full">
+                  <div className="flex flex-col items-center w-1/12">
+                    <Checkbox
+                      checked={currentValues.isRecurring || false}
+                      onCheckedChange={(checked) =>
+                        handleCheckboxChange(checked as boolean)
+                      }
+                    />
+                  </div>
+                  <div className="flex flex-col items-start w-1/2">
                     <InputFields
                       className="text-xs border-0 px-0 w-full"
                       placeholder="Description"

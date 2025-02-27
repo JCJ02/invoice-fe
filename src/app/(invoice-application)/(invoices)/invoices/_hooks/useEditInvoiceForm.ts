@@ -13,6 +13,7 @@ type EditInvoiceErrors = {
     dueDate?: string,
     notes?: string,
     terms?: string
+    isRecurring?: boolean
 }
 
 const useEditInvoiceForm = () => {
@@ -22,9 +23,10 @@ const useEditInvoiceForm = () => {
         quantity: 0.00,
         dueDate: new Date(),
         notes: "",
-        terms: ""
+        terms: "",
+        isRecurring: false
     }
-    const [currentValues, setCurrentValues] = useState<EditInvoice>(selectedValues);
+    const [currentValues, setCurrentValues] = useState<EditInvoiceWithTotal>(selectedValues);
     const [errors, setErrors] = useState<EditInvoiceErrors>({});
     const [totalOutstanding, setTotalOutstanding] = useState<number>(0.00);
 
@@ -51,8 +53,8 @@ const useEditInvoiceForm = () => {
                         ? new Date(value)
                         : value
             };
-    
-            // Recalculate totalOutstanding when rate or quantity changes
+
+            // RECALCULATE TOTAL OUTSTANDING WHEN RATE OR QUANTITY CHANGES
             if (name === "rate" || name === "quantity") {
                 calculateTotalOutstanding(updatedValues);
             }
@@ -61,6 +63,15 @@ const useEditInvoiceForm = () => {
         });
     };
 
+    const handleCheckboxChange = (checked: boolean) => {
+        console.log("Checkbox Changed:", checked); // Debugging
+        setCurrentValues((previousValues) => ({
+          ...previousValues,
+          isRecurring: checked,
+        }));
+      };
+      
+    
     const validateEditInvoiceForm = () => {
         const result = updateInvoiceSchema.safeParse(currentValues);
         if(result.error) {
@@ -89,6 +100,7 @@ const useEditInvoiceForm = () => {
         errors,
         totalOutstanding,
         handleChange,
+        handleCheckboxChange,
         validateEditInvoiceForm
     }
 }
