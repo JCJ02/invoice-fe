@@ -54,8 +54,7 @@ const SignIn = () => {
         },
         onError: () => {
           setLoading(false);
-          const message =
-            "Oops, Invalid Crendentials! Please Check Your Credentials!";
+          const message = "Incorrect Username or Password. Please try again.";
           setErrorMessage(message);
         },
       });
