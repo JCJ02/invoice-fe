@@ -67,7 +67,7 @@ const useNewInvoicesForm = () => {
           updatedInvoices[index].isRecurring = checked;
           return updatedInvoices;
         });
-      };
+    };
 
     const validateNewInvoicesForm = () => {
 
