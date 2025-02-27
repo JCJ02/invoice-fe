@@ -189,7 +189,7 @@ const NewInvoicesForm = ({ closeModal, client }: NewInvoiceFormProps) => {
                     <h1 className="text-xs text-red-600">Date of Due</h1>
                     <label className="text-xs">
                       <InputFields
-                        className="text-xs border-0 p-0"
+                        className="text-xs border-0 p-0 w-4/5"
                         type="date"
                         name="dueDate"
                         value={dueDate}
