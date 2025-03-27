@@ -8,7 +8,8 @@ import baseUrl from "@/utils/baseUrl";
 
 interface LoginResponse {
   data: {
-    token: string;
+    accessToken: string;
+    refreshToken: string;
     admin: {
       id: number;
       firstname: string;
@@ -22,13 +23,39 @@ interface LoginResponse {
 const useLoginMutation = () => {
   const router = useRouter();
   const { setUser } = useUser();
-  const [authenticationToken, setAuthenticationToken] = useLocalStorage<string | null>("token", null);
+  const [accessToken, setAccessToken] = useLocalStorage<string | null>("token", null);
+  const [_, setRefreshToken] = useLocalStorage<string | null>("refreshToken", null);
 
   const loginMutation = usePost<Login, LoginResponse>({
     url: `${baseUrl}api/admin/authenticate`,
     requiresAuthentication: false,
     onSuccess: (data) => {
+      if (!data.data?.accessToken || !data.data?.refreshToken) {
+        toast.error("Invalid Token!", {
+          toastId: "invalidToken",
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          transition: Bounce,
+        });
+        return;
+      }
+
+      setAccessToken(data.data.accessToken);
+      setRefreshToken(data.data.refreshToken);
+
+      // SET USER CONTEXT
+      setUser(data.data.admin);
+
+      // REDIRECT TO:
       router.push("/client");
+
+      // RESPONSE or MESSAGE
       toast.success('Logged In Successfully!', {
         toastId: "loggedInSuccess",
         position: "top-right",
@@ -41,18 +68,25 @@ const useLoginMutation = () => {
         theme: "light",
         transition: Bounce,
       });
-      if(!authenticationToken) {
-        setAuthenticationToken(data.data.token);
-      } else {
-        console.log(`Token is already Set: ${authenticationToken}`);
-      }
-      setUser(data.data.admin);
-    }
+    },
+    onError: (error) => {
+      toast.error("Login Failed!", {
+        toastId: "loginError",
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      console.error("Login Error:", error);
+    },
   });
 
   return loginMutation;
 };
 
 export default useLoginMutation;
-
-
