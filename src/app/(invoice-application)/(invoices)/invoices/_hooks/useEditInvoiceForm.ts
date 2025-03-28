@@ -64,7 +64,7 @@ const useEditInvoiceForm = () => {
     };
 
     const handleCheckboxChange = (checked: boolean) => {
-        console.log("Checkbox Changed:", checked); // Debugging
+        // console.log("Checkbox Changed:", checked); // Debugging
         setCurrentValues((previousValues) => ({
           ...previousValues,
           isRecurring: checked,
