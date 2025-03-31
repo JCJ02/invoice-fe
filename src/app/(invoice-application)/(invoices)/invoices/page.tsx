@@ -27,7 +27,6 @@ import generatePaginationLinks from "@/utils/generatePaginationLinks";
 import Modal from "@/components/Modal";
 import SelectClientModal from "./_components/SelectClientModal";
 import DeleteInvoiceModal from "./_components/DeleteInvoiceModal";
-import EditInvoicesForm from "./_components/EditInvoiceForm";
 import { ClientType } from "@/types/ClientType";
 import NewInvoicesForm from "./_components/NewInvoicesForm";
 import { InvoiceType } from "@/types/InvoiceType";
@@ -36,6 +35,8 @@ import { format } from "date-fns";
 import useFetchSumTotalOutstanding from "./_hooks/useFetchSumTotalOutstanding";
 import useFetchSumDraftTotalOutstanding from "./_hooks/useFetchSumDraftTotalOutstanding";
 import useFetchSumDueDateTotalOutstanding from "./_hooks/useFetchSumDueDateTotalOutstanding";
+// import EditInvoicesForm from "./_components/EditInvoicesForm";
+import EditInvoiceForm from "./_components/EditInvoiceForm";
 
 const Invoices = () => {
   useAuthentication();
@@ -260,7 +261,7 @@ const Invoices = () => {
                     colSpan={5}
                     className="text-center text-xs md:text-md lg:text-lg text-red-500"
                   >
-                    {`Error: ${error?.message || "An Unknown Error Occurred."}`}
+                    {`Internal Server Error`}
                   </TableCell>
                 </TableRow>
               ) : data && data?.data?.clients?.length > 0 ? (
@@ -462,13 +463,26 @@ const Invoices = () => {
           className="flex-col justify-start 2xl:justify-center py-20 2xl:py-0 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-screen w-full"
         >
           {isEditInvoicesFormOpen && selectedClient && selectedInvoice ? (
-            <EditInvoicesForm
+            <EditInvoiceForm
               client={selectedClient}
               invoice={selectedInvoice}
               closeModal={closeEditInvoicesForm}
             />
           ) : null}
         </Modal>
+        {/* <Modal
+          isOpen={isEditInvoicesFormOpen}
+          onClose={closeEditInvoicesForm}
+          className="flex-col justify-start 2xl:justify-center py-20 2xl:py-0 overflow-y-scroll [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-track]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-300 dark:[&::-webkit-scrollbar-track]:bg-neutral-700 dark:[&::-webkit-scrollbar-thumb]:bg-neutral-500 h-screen w-full"
+        >
+          {isEditInvoicesFormOpen && selectedClient && selectedInvoice ? (
+            <EditInvoicesForm
+              client={selectedClient}
+              invoice={selectedInvoice}
+              closeModal={closeEditInvoicesForm}
+            />
+          ) : null}
+        </Modal> */}
 
         {/* VIEW INVOICES MODAL */}
         <Modal
