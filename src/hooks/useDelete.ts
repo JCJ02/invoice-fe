@@ -33,7 +33,7 @@ const useDelete = <TRequest, TResponse>({
         headers["Authorization"] = `Bearer ${token}`;
 
         try {
-          const response = await axios.post<TResponse>(url, data, { headers });
+          const response = await axios.delete<TResponse>(url, { data, headers });
           return response.data;
         } catch (error: any) {
           if (isAxiosError(error) && error.response?.status === 401 && refreshToken) {
@@ -52,7 +52,7 @@ const useDelete = <TRequest, TResponse>({
               localStorage.setItem("token", newToken);
               headers.Authorization = `Bearer ${newToken}`;
 
-              const retryResponse = await axios.post<TResponse>(url, data, { headers });
+              const retryResponse = await axios.delete<TResponse>(url, { data, headers });
               return retryResponse.data;
             } catch (refreshError) {
               localStorage.removeItem("token");
