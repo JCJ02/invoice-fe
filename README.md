@@ -27,6 +27,16 @@ Click `Clone or download` and `Download ZIP` to get this repository.
 $ npm install
 ```
 
+## Instructions for Configuring the .env File:
+
+1. Copy the following template into your .env file.
+2. Replace each placeholder (e.g., <YOUR_NEXT_PUBLIC_BASE_URL>,) with the corresponding value for your environment.
+3. Save the file to apply the changes.
+
+```console
+NEXT_PUBLIC_BASE_URL=<YOUR_NEXT_PUBLIC_BASE_URL>
+```
+
 ## To Run the Frontend
 
 ```console
